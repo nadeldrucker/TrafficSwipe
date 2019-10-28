@@ -1,0 +1,2 @@
+Implement API
+https://www.dresden.de/media/pdf/wirtschaft/VVO_Beschreibung_der_Schnittstelle_API_fuer_die_Verbindungsauskunft.pdf
