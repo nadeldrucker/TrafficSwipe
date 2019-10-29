@@ -6,15 +6,21 @@
     app:startDestination="@id/startFragment">
 
     <fragment
-        android:id="@+id/resultFragment"
-        android:name="dev.nadeldrucker.trafficswipe.ResultFragment"
-        android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
-
-    <fragment
         android:id="@+id/startFragment"
         android:name="dev.nadeldrucker.trafficswipe.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_helpSheet"
+            app:destination="@id/helpSheet"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/helpSheet"
+        android:name="dev.nadeldrucker.trafficswipe.HelpSheet"
+        android:label="help_sheet"
+        tools:layout="@layout/help_sheet" >
     </fragment>
 </navigation>

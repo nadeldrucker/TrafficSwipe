@@ -7,7 +7,6 @@
     tools:context=".StartFragment">
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -29,5 +28,6 @@
         app:fabCustomSize="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="40dp" />
+        app:maxImageSize="45dp"
+        app:tint="@color/colorText"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
