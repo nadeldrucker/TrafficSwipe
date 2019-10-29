@@ -27,11 +27,6 @@ public class StartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         FloatingActionButton fabHelp = view.findViewById(R.id.startFragment_helpFab);
-        fabHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet);
-            }
-        });
+        fabHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet));
     }
 }
