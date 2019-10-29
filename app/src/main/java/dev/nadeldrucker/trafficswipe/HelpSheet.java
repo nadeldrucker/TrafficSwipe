@@ -42,7 +42,6 @@ public class HelpSheet extends Fragment {
     public HelpSheet() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.help_sheet, container, false);
