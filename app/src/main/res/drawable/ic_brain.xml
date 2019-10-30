@@ -74,6 +74,7 @@
     </aapt:attr>
     <target android:name="root">
         <aapt:attr name="android:animation">
+<!--            <set android:ordering="sequentially">-->
             <set android:ordering="together">
                 <objectAnimator
                     android:duration="1000"
