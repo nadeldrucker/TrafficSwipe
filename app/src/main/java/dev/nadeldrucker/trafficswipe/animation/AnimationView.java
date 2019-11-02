@@ -61,7 +61,7 @@ public class AnimationView extends View {
     protected void onDraw(Canvas canvas) {
         if (!isInitialized) return;
 
-        drawAnimation();
+        drawPath();
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasBitmapPaint);
         invalidate();
     }
@@ -91,7 +91,9 @@ public class AnimationView extends View {
     /**
      * Draws content onto canvas
      */
-    private void drawAnimation() {
+    private void drawPath() {
+        if (currentMoveCoordinates.isEmpty()) return;
+
         Path p = new Path();
 
         for (int i = 0; i < currentMoveCoordinates.size(); i++) {
