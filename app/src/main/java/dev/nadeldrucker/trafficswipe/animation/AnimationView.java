@@ -4,14 +4,14 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 import dev.nadeldrucker.trafficswipe.R;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class AnimationView extends View {
+public class AnimationView extends SurfaceView {
 
     private final String TAG = this.getClass().getName();
 
@@ -38,10 +38,6 @@ public class AnimationView extends View {
 
     public AnimationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public AnimationView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     @Override
