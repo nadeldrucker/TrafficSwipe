@@ -1,65 +1,81 @@
 package dev.nadeldrucker.trafficswipe.animation;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import androidx.core.content.ContextCompat;
-import dev.nadeldrucker.trafficswipe.R;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class AnimationView extends SurfaceView {
+public class AnimationView extends SurfaceView implements Runnable {
 
     private final String TAG = this.getClass().getName();
 
-    private Canvas canvas;
+    private boolean isRunning = false;
+    private Thread renderingThread;
+    private SurfaceHolder holder;
 
-    private Bitmap canvasBitmap;
-    private Paint canvasBitmapPaint = new Paint();
-    private boolean isInitialized = false;
-
-    private static class AnimationTouchCoordinate {
-        float x, y;
-
-        AnimationTouchCoordinate(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    private List<AnimationTouchCoordinate> currentMoveCoordinates = new LinkedList<>();
+    private Renderable[] renderableList;
+    private TouchPath touchPath;
 
     public AnimationView(Context context) {
         super(context);
+        init();
     }
 
     public AnimationView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        init(w, h);
-    }
+    private boolean isInitialized = false;
 
-    private void init(int width, int height) {
-        canvas = new Canvas();
-        canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(canvasBitmap);
-        setWillNotDraw(false);
+    private void init() {
+        if (isInitialized) return;
         isInitialized = true;
+
+        setZOrderOnTop(true);
+
+        holder = getHolder();
+        holder.setFormat(PixelFormat.TRANSLUCENT);
+        holder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                if (isRunning) return;
+
+                isRunning = true;
+                renderingThread = new Thread(AnimationView.this);
+                renderingThread.start();
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                isRunning = false;
+            }
+        });
+
+        touchPath = new TouchPath();
+
+
+        renderableList = new Renderable[]{
+                touchPath
+        };
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (!isInitialized) return;
+    public void pause(){
 
-        drawPath();
-        canvas.drawBitmap(canvasBitmap, 0, 0, canvasBitmapPaint);
-        invalidate();
+    }
+
+    public void resume(){
+
     }
 
     @Override
@@ -69,14 +85,10 @@ public class AnimationView extends SurfaceView {
 
             if (action == MotionEvent.ACTION_MOVE) {
                 for (int i = 0; i < event.getHistorySize(); i++) {
-                    currentMoveCoordinates.add(new AnimationTouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
+                    touchPath.getTouchPath().add(new TouchPath.AnimationTouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
                 }
-            } else if (!currentMoveCoordinates.isEmpty()) {
-                currentMoveCoordinates.clear();
-            }
-
-            if (action == MotionEvent.ACTION_UP) {
-                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            } else if (!touchPath.getTouchPath().isEmpty()) {
+                touchPath.getTouchPath().clear();
             }
 
             return true;
@@ -84,30 +96,46 @@ public class AnimationView extends SurfaceView {
         return false;
     }
 
-    /**
-     * Draws content onto canvas
-     */
-    private void drawPath() {
-        if (currentMoveCoordinates.isEmpty()) return;
+    private static final int MAX_FPS = 60;
+    private static final int FRAME_TIME = 1000 / MAX_FPS;
+    private static final int MAX_SKIPPED_FRAMES = 5;
 
-        Path p = new Path();
+    @Override
+    public void run() {
+        while (isRunning) {
+            if (holder.getSurface().isValid()) {
+                long beginTime = System.currentTimeMillis();
 
-        for (int i = 0; i < currentMoveCoordinates.size(); i++) {
-            AnimationTouchCoordinate coord = currentMoveCoordinates.get(i);
+                for (Renderable renderable : renderableList) {
+                    renderable.update();
+                }
 
-            if (i == 0) {
-                p.moveTo(coord.x, coord.y);
-            } else {
-                p.lineTo(coord.x, coord.y);
+                Canvas c = holder.lockCanvas();
+                if (c != null) {
+                    c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                    for (Renderable renderable : renderableList) {
+                        renderable.render(c);
+                    }
+                    holder.unlockCanvasAndPost(c);
+                }
+
+                long deltaTime = (System.currentTimeMillis() - beginTime);
+
+                long sleepTime = FRAME_TIME - deltaTime;
+                if (sleepTime > 0) {
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else if (sleepTime < 0) {
+                    int skipped = 0;
+                    while (sleepTime < 0 && skipped < MAX_SKIPPED_FRAMES) {
+                        sleepTime += FRAME_TIME;
+                        skipped++;
+                    }
+                }
             }
         }
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setAntiAlias(true);
-        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-
-        canvas.drawPath(p, paint);
     }
 }
