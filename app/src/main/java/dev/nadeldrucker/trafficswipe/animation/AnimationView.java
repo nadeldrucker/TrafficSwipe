@@ -70,14 +70,6 @@ public class AnimationView extends SurfaceView implements Runnable {
         };
     }
 
-    public void pause(){
-
-    }
-
-    public void resume(){
-
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
