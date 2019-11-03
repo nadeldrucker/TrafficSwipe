@@ -5,15 +5,17 @@ import android.graphics.Canvas;
 /**
  * Class representing a renderable object
  */
-public abstract class Renderable {
+public interface Renderable {
     /**
      * Renders element onto canvas.
      * @param canvas canvas to draw element onto
      */
-    public abstract void render(Canvas canvas);
+    void render(Canvas canvas);
 
     /**
      * Updates element (eg. position)
      */
-    public abstract void update();
+    void update();
+
+
 }

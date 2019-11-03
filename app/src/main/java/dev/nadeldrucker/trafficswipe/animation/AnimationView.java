@@ -2,14 +2,18 @@ package dev.nadeldrucker.trafficswipe.animation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import dev.nadeldrucker.trafficswipe.animation.renderables.AnimatedCursor;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
 
 public class AnimationView extends RenderableView {
 
     private TouchPath touchPath;
+    private AnimatedCursor cursor;
 
     public AnimationView(Context context) {
         super(context);
@@ -24,12 +28,18 @@ public class AnimationView extends RenderableView {
         super.onInit();
 
         touchPath = new TouchPath();
+
+        Paint p = new Paint();
+        p.setColor(Color.GREEN);
+        cursor = new AnimatedCursor((float) getWidth() / 2, (float) getWidth() / 2, p, 20);
+        cursor.setVisible(false);
     }
 
     @Override
     public Renderable[] getRenderables() {
         return new Renderable[]{
-                touchPath
+                touchPath,
+                cursor
         };
     }
 
@@ -37,18 +47,26 @@ public class AnimationView extends RenderableView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
-        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP) {
 
-            if (action == MotionEvent.ACTION_MOVE) {
-                for (int i = 0; i < event.getHistorySize(); i++) {
-                    touchPath.getTouchPath().add(new TouchPath.AnimationTouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
-                }
-            } else if (!touchPath.getTouchPath().isEmpty()) {
-                touchPath.getTouchPath().clear();
+        cursor.setPosition(event.getX(), event.getY());
+
+        if (action == MotionEvent.ACTION_MOVE) {
+            for (int i = 0; i < event.getHistorySize(); i++) {
+                touchPath.getTouchPath().add(new TouchPath.AnimationTouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
             }
 
             return true;
+        } else if (action == MotionEvent.ACTION_UP) {
+            cursor.setVisible(false);
+            touchPath.getTouchPath().clear();
+
+            return true;
+        } else if (action == MotionEvent.ACTION_DOWN) {
+            cursor.setVisible(true);
+
+            return true;
         }
+
         return false;
     }
 }

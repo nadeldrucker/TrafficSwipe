@@ -8,7 +8,7 @@ import android.graphics.Path;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TouchPath extends Renderable {
+public class TouchPath implements Renderable {
 
     public static class AnimationTouchCoordinate {
         float x, y;
@@ -30,7 +30,7 @@ public class TouchPath extends Renderable {
     }
 
     @Override
-    public synchronized void render(Canvas canvas) {
+    public void render(Canvas canvas) {
         if (currentMoveCoordinates.isEmpty()) return;
 
         Path p = new Path();
@@ -55,7 +55,7 @@ public class TouchPath extends Renderable {
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
 
     }
 
