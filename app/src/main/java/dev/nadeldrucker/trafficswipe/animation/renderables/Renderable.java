@@ -1,4 +1,4 @@
-package dev.nadeldrucker.trafficswipe.animation;
+package dev.nadeldrucker.trafficswipe.animation.renderables;
 
 import android.graphics.Canvas;
 

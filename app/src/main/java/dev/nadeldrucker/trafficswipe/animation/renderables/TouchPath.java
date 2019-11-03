@@ -1,11 +1,9 @@
-package dev.nadeldrucker.trafficswipe.animation;
+package dev.nadeldrucker.trafficswipe.animation.renderables;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import androidx.core.content.ContextCompat;
-import dev.nadeldrucker.trafficswipe.R;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +13,7 @@ public class TouchPath extends Renderable {
     public static class AnimationTouchCoordinate {
         float x, y;
 
-        AnimationTouchCoordinate(float x, float y) {
+        public AnimationTouchCoordinate(float x, float y) {
             this.x = x;
             this.y = y;
         }
