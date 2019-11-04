@@ -31,8 +31,13 @@ public class AnimationView extends RenderableView {
 
         Paint p = new Paint();
         p.setColor(Color.GREEN);
-        cursor = new AnimatedCursor((float) getWidth() / 2, (float) getWidth() / 2, p, 20);
-        cursor.setVisible(false);
+        cursor = new AnimatedCursor(0, 0, p, 20);
+    }
+
+    @Override
+    public void onInitSurface() {
+        cursor.setPosition((float) getWidth() / 2, (float) getWidth() / 2);
+        cursor.startAnimation();
     }
 
     @Override
@@ -57,13 +62,11 @@ public class AnimationView extends RenderableView {
 
             return true;
         } else if (action == MotionEvent.ACTION_UP) {
-            cursor.setVisible(false);
             touchPath.getTouchPath().clear();
-
+            cursor.startAnimation();
             return true;
         } else if (action == MotionEvent.ACTION_DOWN) {
-            cursor.setVisible(true);
-
+            cursor.stopAnimation();
             return true;
         }
 

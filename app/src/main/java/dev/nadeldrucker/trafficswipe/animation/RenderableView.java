@@ -52,6 +52,8 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
                 isRunning = true;
                 renderingThread = new Thread(RenderableView.this);
                 renderingThread.start();
+
+                onInitSurface();
             }
 
             @Override
@@ -65,6 +67,8 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
             }
         });
     }
+
+    public abstract void onInitSurface();
 
     private static final int MAX_FPS = 60;
     private static final int FRAME_TIME = 1000 / MAX_FPS;

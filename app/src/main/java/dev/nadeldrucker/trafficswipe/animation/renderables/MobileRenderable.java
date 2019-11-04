@@ -7,7 +7,6 @@ public abstract class MobileRenderable implements Renderable {
 
     private float x, y;
     private float dX = 0, dY = 0;
-    private boolean isVisible = true;
 
     public MobileRenderable(float x, float y) {
         this.x = x;
@@ -55,13 +54,5 @@ public abstract class MobileRenderable implements Renderable {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public void setVisible(boolean visible) {
-        isVisible = visible;
     }
 }
