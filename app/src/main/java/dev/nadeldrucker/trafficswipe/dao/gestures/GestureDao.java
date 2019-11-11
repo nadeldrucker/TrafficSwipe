@@ -1,9 +1,30 @@
 package dev.nadeldrucker.trafficswipe.dao.gestures;
 
+import android.content.Context;
+import android.util.Log;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestureDao {
+
+    private static final String TAG = "GestureDao";
+
+    private final Gson gson = new Gson();
+    private final RequestQueue queue;
+    private final String host;
+
+    public GestureDao(Context context, String host){
+        queue = Volley.newRequestQueue(context);
+        this.host = host;
+    }
 
     /**
      * Normalizes touch path, so that all values range from 0 to 1
@@ -42,6 +63,29 @@ public class GestureDao {
         if (min >= max) throw new IllegalArgumentException("min cant be greater than / equal to max!");
 
         return (val - min) / (max - min);
+    }
+
+    public void sendData(List<List<TouchCoordinate>> paths) {
+        List<List<TouchCoordinate>> normalizedList = paths.stream().map(GestureDao::normalizeTouchPath).collect(Collectors.toList());
+        String json = gson.toJson(normalizedList);
+
+        StringRequest req = new StringRequest(Request.Method.POST, "http://" + host + "/data", response -> {
+            Log.d(TAG, "Received response!");
+        }, error -> {
+            Log.e(TAG, "Received error: " + error.toString());
+        }) {
+            @Override
+            public byte[] getBody() {
+                return json.getBytes(StandardCharsets.UTF_8);
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        queue.add(req);
     }
 
 }

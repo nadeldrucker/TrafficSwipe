@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
+import dev.nadeldrucker.trafficswipe.dao.gestures.GestureDao;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class TrainingDataFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         TouchPathView touchPathView = view.findViewById(R.id.trainingTouchPath);
         touchPathView.setTouchPathFinishedListener(touchPaths -> {
+            new GestureDao(getContext(), "192.168.178.54:3000").sendData(touchPaths);
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), "Path End", Toast.LENGTH_SHORT).show());
         });
     }
