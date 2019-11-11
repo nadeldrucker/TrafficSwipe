@@ -7,6 +7,7 @@
 
     <dev.nadeldrucker.trafficswipe.animation.TouchPathView
             android:layout_width="match_parent"
+            android:id="@+id/trainingTouchPath"
             android:layout_height="0dp"
             app:layout_constrainedHeight="true"
             tools:layout_editor_absoluteX="0dp"

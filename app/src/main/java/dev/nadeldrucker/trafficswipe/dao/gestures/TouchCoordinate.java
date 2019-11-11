@@ -1,0 +1,47 @@
+package dev.nadeldrucker.trafficswipe.dao.gestures;
+
+import android.view.MotionEvent;
+
+public class TouchCoordinate {
+    private float x, y;
+
+    public TouchCoordinate(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Creates new from motion event using the provided coordinates
+     * @param event motion event
+     * @return new {@link #TouchCoordinate(float, float)}
+     */
+    public static TouchCoordinate fromMotionEvent(MotionEvent event){
+        return new TouchCoordinate(event.getX(), event.getY());
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        TouchCoordinate c = (TouchCoordinate) obj;
+        return x == c.getX() && y == c.getY();
+    }
+}

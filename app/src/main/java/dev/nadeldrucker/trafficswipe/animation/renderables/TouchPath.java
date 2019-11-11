@@ -4,38 +4,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.view.MotionEvent;
+import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class TouchPath implements Renderable {
 
-    public static class AnimationTouchCoordinate {
-        float x, y;
-
-        public AnimationTouchCoordinate(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        /**
-         * Creates new from motion event using the provided coordinates
-         * @param event motion event
-         * @return new {@link #AnimationTouchCoordinate(float, float)}
-         */
-        public static AnimationTouchCoordinate fromMotionEvent(MotionEvent event){
-            return new AnimationTouchCoordinate(event.getX(), event.getY());
-        }
-    }
-
-    private final List<AnimationTouchCoordinate> currentMoveCoordinates;
+    private final List<TouchCoordinate> currentMoveCoordinates;
 
     public TouchPath() {
         currentMoveCoordinates = new LinkedList<>();
     }
 
-    public List<AnimationTouchCoordinate> getTouchPath(){
+    public List<TouchCoordinate> getTouchPath(){
         return currentMoveCoordinates;
     }
 
@@ -46,12 +28,12 @@ public class TouchPath implements Renderable {
         Path p = new Path();
 
         for (int i = 0; i < currentMoveCoordinates.size(); i++) {
-            AnimationTouchCoordinate coord = currentMoveCoordinates.get(i);
+            TouchCoordinate coord = currentMoveCoordinates.get(i);
 
             if (i == 0) {
-                p.moveTo(coord.x, coord.y);
+                p.moveTo(coord.getX(), coord.getY());
             } else {
-                p.lineTo(coord.x, coord.y);
+                p.lineTo(coord.getX(), coord.getY());
             }
         }
 

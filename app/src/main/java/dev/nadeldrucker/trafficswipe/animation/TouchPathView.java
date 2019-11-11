@@ -2,17 +2,15 @@ package dev.nadeldrucker.trafficswipe.animation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
-import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath.AnimationTouchCoordinate;
+import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TouchPathView extends RenderableView {
 
@@ -20,6 +18,8 @@ public class TouchPathView extends RenderableView {
 
     private long lastDrawTime = -1;
     private static final long drawTimeout = 1500;
+
+    private Consumer<List<TouchPath>> touchPathFinishedListener;
 
     public TouchPathView(Context context) {
         super(context);
@@ -39,15 +39,19 @@ public class TouchPathView extends RenderableView {
 
     }
 
+    public void setTouchPathFinishedListener(Consumer<List<TouchPath>> consumer){
+        this.touchPathFinishedListener = consumer;
+    }
+
     @Override
     protected void onUpdate() {
         if (lastDrawTime != -1 && System.currentTimeMillis() > lastDrawTime + drawTimeout) {
+            if (touchPathFinishedListener != null) {
+                touchPathFinishedListener.accept(getTouchPaths());
+            }
+
             clearTouchPaths();
             lastDrawTime = -1;
-
-            new Handler(Looper.getMainLooper()).post(() -> {
-                Toast.makeText(getContext(), "Path End", Toast.LENGTH_SHORT).show();
-            });
         }
     }
 
@@ -56,23 +60,23 @@ public class TouchPathView extends RenderableView {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startTouchPath(AnimationTouchCoordinate.fromMotionEvent(event));
+                startTouchPath(TouchCoordinate.fromMotionEvent(event));
                 return true;
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                appendTouchPath(AnimationTouchCoordinate.fromMotionEvent(event));
+                appendTouchPath(TouchCoordinate.fromMotionEvent(event));
                 return true;
         }
 
         return false;
     }
 
-    private void startTouchPath(AnimationTouchCoordinate coordinate) {
+    private void startTouchPath(TouchCoordinate coordinate) {
         touchPaths.add(new TouchPath());
         appendTouchPath(coordinate);
     }
 
-    private void appendTouchPath (AnimationTouchCoordinate coordinate) {
+    private void appendTouchPath (TouchCoordinate coordinate) {
         lastDrawTime = System.currentTimeMillis();
         touchPaths.get(touchPaths.size() - 1).getTouchPath().add(coordinate);
     }

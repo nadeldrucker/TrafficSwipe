@@ -9,11 +9,10 @@ import android.view.MotionEvent;
 import dev.nadeldrucker.trafficswipe.animation.renderables.AnimatedCursor;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
+import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AnimationView extends RenderableView {
 
@@ -59,7 +58,7 @@ public class AnimationView extends RenderableView {
 
         if (action == MotionEvent.ACTION_MOVE) {
             for (int i = 0; i < event.getHistorySize(); i++) {
-                touchPath.getTouchPath().add(new TouchPath.AnimationTouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
+                touchPath.getTouchPath().add(new TouchCoordinate(event.getHistoricalX(i), event.getHistoricalY(i)));
             }
 
             return true;
