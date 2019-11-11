@@ -42,7 +42,6 @@ public class HelpSheet extends Fragment {
     public HelpSheet() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.help_sheet, container, false);
@@ -69,5 +68,6 @@ public class HelpSheet extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         view.findViewById(R.id.helpBackButton).setOnClickListener(l -> Navigation.findNavController(view).popBackStack());
+        view.findViewById(R.id.textViewHelp).setOnClickListener(l -> Navigation.findNavController(view).navigate(R.id.action_helpSheet_to_trainingDataFragment));
     }
 }

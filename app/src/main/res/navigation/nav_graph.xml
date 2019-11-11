@@ -22,5 +22,11 @@
         android:name="dev.nadeldrucker.trafficswipe.HelpSheet"
         android:label="help_sheet"
         tools:layout="@layout/help_sheet" >
+        <action android:id="@+id/action_helpSheet_to_trainingDataFragment"
+                app:destination="@id/trainingDataFragment"/>
     </fragment>
+    <fragment android:id="@+id/trainingDataFragment"
+              android:name="dev.nadeldrucker.trafficswipe.TrainingDataFragment"
+              android:label="TrainingDataFragment"
+              tools:layout="@layout/fragment_training"/>
 </navigation>
