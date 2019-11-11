@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.view.MotionEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,15 @@ public class TouchPath implements Renderable {
         public AnimationTouchCoordinate(float x, float y) {
             this.x = x;
             this.y = y;
+        }
+
+        /**
+         * Creates new from motion event using the provided coordinates
+         * @param event motion event
+         * @return new {@link #AnimationTouchCoordinate(float, float)}
+         */
+        public static AnimationTouchCoordinate fromMotionEvent(MotionEvent event){
+            return new AnimationTouchCoordinate(event.getX(), event.getY());
         }
     }
 

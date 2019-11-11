@@ -10,6 +10,11 @@ import dev.nadeldrucker.trafficswipe.animation.renderables.AnimatedCursor;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class AnimationView extends RenderableView {
 
     private TouchPath touchPath;
@@ -41,11 +46,8 @@ public class AnimationView extends RenderableView {
     }
 
     @Override
-    public Renderable[] getRenderables() {
-        return new Renderable[]{
-                touchPath,
-                cursor
-        };
+    public List<Renderable> getRenderables() {
+        return Arrays.asList(touchPath, cursor);
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -10,6 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 
+import java.util.List;
+
 public abstract class RenderableView extends SurfaceView implements Runnable {
 
     private boolean isRunning = false;
@@ -31,7 +33,7 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
      * Returns a list of all renderables that should be updated and rendered.
      * @return list of renderables to use for rendering
      */
-    public abstract Renderable[] getRenderables();
+    public abstract List<Renderable> getRenderables();
 
     /**
      * Called once when the view is initialized.
@@ -70,6 +72,13 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
 
     public abstract void onInitSurface();
 
+    /**
+     * Called when the view is updated
+     */
+    protected void onUpdate(){
+
+    }
+
     private static final int MAX_FPS = 60;
     private static final int FRAME_TIME = 1000 / MAX_FPS;
     private static final int MAX_SKIPPED_FRAMES = 5;
@@ -80,10 +89,11 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
             if (holder.getSurface().isValid()) {
                 long beginTime = System.currentTimeMillis();
 
-                Renderable[] renderableList = getRenderables();
+                List<Renderable> renderableList = getRenderables();
 
                 for (Renderable renderable : renderableList) {
                     renderable.update();
+                    onUpdate();
                 }
 
                 Canvas c = holder.lockCanvas();
