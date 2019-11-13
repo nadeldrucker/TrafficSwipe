@@ -37,11 +37,18 @@ public class TouchCoordinate {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof TouchCoordinate) {
+            TouchCoordinate c = (TouchCoordinate) obj;
+            return x == c.getX() && y == c.getY();
+        }
+        return false;
+    }
 
-        TouchCoordinate c = (TouchCoordinate) obj;
-        return x == c.getX() && y == c.getY();
+    @Override
+    public String toString() {
+        return "X:" + x + " Y:" + y;
     }
 }

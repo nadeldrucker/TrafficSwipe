@@ -7,10 +7,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -28,15 +30,20 @@ public class GestureDao {
     }
 
     /**
-     * Normalizes touch path, so that all values range from 0 to 1
-     * @param sourcePath source
-     * @return normalized touch path
+     * Normalizes touch paths, so that all values range from 0 to 1
+     * @param sourcePaths source paths
+     * @return normalized touch paths
      */
-    public static List<TouchCoordinate> normalizeTouchPath(List<TouchCoordinate> sourcePath) {
+    public static List<List<TouchCoordinate>> normalizeTouchPaths(List<List<TouchCoordinate>> sourcePaths){
         float minX = Float.POSITIVE_INFINITY, maxX = Float.NEGATIVE_INFINITY;
         float minY = Float.POSITIVE_INFINITY, maxY = Float.NEGATIVE_INFINITY;
 
-        for (TouchCoordinate c : sourcePath) {
+        List<TouchCoordinate> touchCoordinates = sourcePaths
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        for (TouchCoordinate c : touchCoordinates) {
             minX = Math.min(minX, c.getX());
             maxX = Math.max(maxX, c.getX());
             minY = Math.min(minY, c.getY());
@@ -48,8 +55,12 @@ public class GestureDao {
         final float finalMaxY = maxY;
         final float finalMinY = minY;
 
-        return sourcePath.stream()
-                .map(c -> new TouchCoordinate(normalize(c.getX(), finalMinX, finalMaxX), normalize(c.getY(), finalMinY, finalMaxY)))
+        return sourcePaths
+                .stream()
+                .map(path -> path
+                        .parallelStream()
+                        .map(c -> new TouchCoordinate(normalize(c.getX(), finalMinX, finalMaxX), normalize(c.getY(), finalMinY, finalMaxY)))
+                        .collect(Collectors.toList()))
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +83,7 @@ public class GestureDao {
      * @param character character that was drawn
      */
     public CompletableFuture<String> sendData(Character character, List<List<TouchCoordinate>> paths) {
-        List<List<TouchCoordinate>> normalizedList = paths.stream().map(GestureDao::normalizeTouchPath).collect(Collectors.toList());
+        List<List<TouchCoordinate>> normalizedList = normalizeTouchPaths(paths);
 
         String json = gson.toJson(new GestureTrainingEntity(character, normalizedList));
 
@@ -80,7 +91,11 @@ public class GestureDao {
 
         StringRequest req = new StringRequest(Request.Method.POST, "http://" + host + "/data", response -> {
             Log.d(TAG, "Received response!");
-            future.complete("Success!");
+            try {
+                future.complete("Success " + new JSONObject(response).getString("nextChar"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         }, error -> {
             Log.e(TAG, "Received error: " + error.toString());
