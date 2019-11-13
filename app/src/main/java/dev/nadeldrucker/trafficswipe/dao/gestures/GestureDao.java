@@ -7,6 +7,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,11 +24,11 @@ public class GestureDao {
 
     private final Gson gson = new Gson();
     private final RequestQueue queue;
-    private final String host;
+    private final String url;
 
     public GestureDao(Context context, String host){
         queue = Volley.newRequestQueue(context);
-        this.host = host;
+        this.url = "http://" + host;
     }
 
     /**
@@ -78,29 +80,21 @@ public class GestureDao {
     }
 
     /**
-     * Sends data to training server.
+     * Sends data to training server, return next needed char if successful.
      * @param paths touch paths
      * @param character character that was drawn
      */
-    public CompletableFuture<String> sendData(Character character, List<List<TouchCoordinate>> paths) {
+    public CompletableFuture<Character> sendData(Character character, List<List<TouchCoordinate>> paths) {
         List<List<TouchCoordinate>> normalizedList = normalizeTouchPaths(paths);
 
         String json = gson.toJson(new GestureTrainingEntity(character, normalizedList));
 
-        CompletableFuture<String> future = new CompletableFuture<>();
+        CompletableFuture<Character> future = new CompletableFuture<>();
 
-        StringRequest req = new StringRequest(Request.Method.POST, "http://" + host + "/data", response -> {
-            Log.d(TAG, "Received response!");
-            try {
-                future.complete("Success " + new JSONObject(response).getString("nextChar"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }, error -> {
-            Log.e(TAG, "Received error: " + error.toString());
-            future.complete(error.toString());
-        }) {
+        StringRequest req = new StringRequest(Request.Method.POST, url + "/data",
+                response -> future.complete(getNextCharFromJSON(response)),
+                future::completeExceptionally)
+        {
             @Override
             public byte[] getBody() {
                 return json.getBytes(StandardCharsets.UTF_8);
@@ -115,6 +109,26 @@ public class GestureDao {
         queue.add(req);
 
         return future;
+    }
+
+    /**
+     * Get the character which is needed by the training server.
+     * @return character which is needed
+     */
+    public CompletableFuture<Character> getMostNeededCharacter(){
+        CompletableFuture<Character> future = new CompletableFuture<>();
+
+        StringRequest req = new StringRequest(Request.Method.GET, url + "/nextChar",
+                response -> future.complete(getNextCharFromJSON(response)),
+                future::completeExceptionally);
+
+        queue.add(req);
+
+        return future;
+    }
+
+    private static char getNextCharFromJSON(String s){
+        return JsonParser.parseString(s).getAsJsonObject().get("nextChar").getAsString().charAt(0);
     }
 
 }

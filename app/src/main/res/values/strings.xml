@@ -10,4 +10,7 @@
     <string name="help_down_description">Departures for A</string>
     <string name="help_up_description">Show stations near you</string>
     <string name="navigation_back">Back</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="fetching">Fetching...</string>
 </resources>

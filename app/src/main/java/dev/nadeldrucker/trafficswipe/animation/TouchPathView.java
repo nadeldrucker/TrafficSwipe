@@ -10,17 +10,11 @@ import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class TouchPathView extends RenderableView {
 
     private final List<TouchPath> touchPaths = new ArrayList<>();
-
-    private long lastDrawTime = -1;
-    private static final long drawTimeout = 1500;
-
-    private Consumer<List<List<TouchCoordinate>>> touchPathFinishedListener;
 
     public TouchPathView(Context context) {
         super(context);
@@ -38,22 +32,6 @@ public class TouchPathView extends RenderableView {
     @Override
     public void onInitSurface() {
 
-    }
-
-    public void setTouchPathFinishedListener(Consumer<List<List<TouchCoordinate>>> consumer){
-        this.touchPathFinishedListener = consumer;
-    }
-
-    @Override
-    protected void onUpdate() {
-        if (lastDrawTime != -1 && System.currentTimeMillis() > lastDrawTime + drawTimeout) {
-            if (touchPathFinishedListener != null) {
-                touchPathFinishedListener.accept(getTouchPaths());
-            }
-
-            clearTouchPaths();
-            lastDrawTime = -1;
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,7 +56,6 @@ public class TouchPathView extends RenderableView {
     }
 
     private void appendTouchPath (TouchCoordinate coordinate) {
-        lastDrawTime = System.currentTimeMillis();
         touchPaths.get(touchPaths.size() - 1).getTouchPath().add(coordinate);
     }
 
