@@ -12,7 +12,7 @@
         android:layout_width="155dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
+        android:gravity="start"
         android:text="Wilder Mann"
         android:textAlignment="textStart"
         android:textColor="@color/colorText"
