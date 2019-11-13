@@ -2,7 +2,6 @@ package dev.nadeldrucker.trafficswipe.dao.gestures;
 
 import android.content.Context;
 import android.util.Log;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -11,6 +10,8 @@ import com.google.gson.Gson;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class GestureDao {
@@ -65,14 +66,25 @@ public class GestureDao {
         return (val - min) / (max - min);
     }
 
-    public void sendData(List<List<TouchCoordinate>> paths) {
+    /**
+     * Sends data to training server.
+     * @param paths touch paths
+     * @param character character that was drawn
+     */
+    public CompletableFuture<String> sendData(Character character, List<List<TouchCoordinate>> paths) {
         List<List<TouchCoordinate>> normalizedList = paths.stream().map(GestureDao::normalizeTouchPath).collect(Collectors.toList());
-        String json = gson.toJson(normalizedList);
+
+        String json = gson.toJson(new GestureTrainingEntity(character, normalizedList));
+
+        CompletableFuture<String> future = new CompletableFuture<>();
 
         StringRequest req = new StringRequest(Request.Method.POST, "http://" + host + "/data", response -> {
             Log.d(TAG, "Received response!");
+            future.complete("Success!");
+
         }, error -> {
             Log.e(TAG, "Received error: " + error.toString());
+            future.complete(error.toString());
         }) {
             @Override
             public byte[] getBody() {
@@ -86,6 +98,8 @@ public class GestureDao {
         };
 
         queue.add(req);
+
+        return future;
     }
 
 }
