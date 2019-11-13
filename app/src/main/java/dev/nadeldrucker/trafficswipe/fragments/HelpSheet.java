@@ -1,4 +1,4 @@
-package dev.nadeldrucker.trafficswipe;
+package dev.nadeldrucker.trafficswipe.fragments;
 
 
 import android.content.DialogInterface;
@@ -17,6 +17,7 @@ import androidx.transition.TransitionInflater;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import dev.nadeldrucker.trafficswipe.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

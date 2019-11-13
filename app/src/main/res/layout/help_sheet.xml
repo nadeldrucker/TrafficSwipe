@@ -9,7 +9,7 @@
     android:paddingTop="32dp"
     android:paddingLeft="32dp"
     android:paddingRight="32dp"
-    tools:context=".HelpSheet">
+    tools:context=".fragments.HelpSheet">
 
     <TextView
         android:id="@+id/textViewHelp"

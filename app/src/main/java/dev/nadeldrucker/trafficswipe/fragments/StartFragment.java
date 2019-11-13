@@ -1,4 +1,4 @@
-package dev.nadeldrucker.trafficswipe;
+package dev.nadeldrucker.trafficswipe.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.navigation.Navigation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import dev.nadeldrucker.trafficswipe.R;
 
 import java.util.Objects;
 

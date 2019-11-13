@@ -1,4 +1,4 @@
-package dev.nadeldrucker.trafficswipe;
+package dev.nadeldrucker.trafficswipe.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import dev.nadeldrucker.trafficswipe.Constants;
+import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
 import dev.nadeldrucker.trafficswipe.dao.gestures.GestureDao;
 
@@ -28,7 +30,7 @@ public class TrainingDataFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         TouchPathView touchPathView = view.findViewById(R.id.trainingTouchPath);
         touchPathView.setTouchPathFinishedListener(touchPaths -> {
-            CompletableFuture<String> future = new GestureDao(getContext(), "192.168.178.54:3000").sendData('A', touchPaths);
+            CompletableFuture<String> future = new GestureDao(getContext(), Constants.TRAINING_SERVER_HOST).sendData('A', touchPaths);
             future.thenAccept(s -> {
                Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show());
             });

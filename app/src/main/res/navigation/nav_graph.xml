@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="dev.nadeldrucker.trafficswipe.StartFragment"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -19,14 +19,14 @@
     </fragment>
     <fragment
         android:id="@+id/helpSheet"
-        android:name="dev.nadeldrucker.trafficswipe.HelpSheet"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.HelpSheet"
         android:label="help_sheet"
         tools:layout="@layout/help_sheet" >
         <action android:id="@+id/action_helpSheet_to_trainingDataFragment"
                 app:destination="@id/trainingDataFragment"/>
     </fragment>
     <fragment android:id="@+id/trainingDataFragment"
-              android:name="dev.nadeldrucker.trafficswipe.TrainingDataFragment"
+              android:name="dev.nadeldrucker.trafficswipe.fragments.TrainingDataFragment"
               android:label="TrainingDataFragment"
               tools:layout="@layout/fragment_training"/>
 </navigation>
