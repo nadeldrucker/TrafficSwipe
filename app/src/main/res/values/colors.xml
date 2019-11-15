@@ -8,4 +8,29 @@
     <color name="colorText">#FFFFFF</color>
     <color name="colorTextSecondary">#BDBDBD</color>
 
+    <color name="colorSBahn">#408335</color>
+
+
+
+    <color name="colorTheme1a">#17406D</color>
+    <color name="colorTheme1b">#0B5394</color>
+    <color name="colorTheme1c">#073763</color>
+    <color name="colorTheme2a">#0075A2</color>
+    <color name="colorTheme2b">#009DD9</color>
+    <color name="colorTheme2c">#004E6C</color>
+    <color name="colorTheme3a">#0BD0D9</color>
+    <color name="colorTheme3b">#089CA2</color>
+    <color name="colorTheme3c">#05686C</color>
+    <color name="colorTheme4a">#10CF9B</color>
+    <color name="colorTheme4b">#0B9B74</color>
+    <color name="colorTheme4c">#07674D</color>
+    <color name="colorTheme5a">#7CCA62</color>
+    <color name="colorTheme5b">#54A838</color>
+    <color name="colorTheme5c">#387025</color>
+    <color name="colorTheme6a">#A5C249</color>
+    <color name="colorTheme6b">#7E9532</color>
+    <color name="colorTheme6c">#546321</color>
+
+
+
 </resources>
