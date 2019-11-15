@@ -19,6 +19,7 @@ public abstract class AbstractVehicle extends AbstractTransportEntity {
     private String targetDestination;
     private Timestamp scheduledDeparture;
     private Duration delay;
+    final StaticUiElement uiElement=StaticUiElement.getInstance();
 
     /**
      * @param lineId             non-unique identifier for the specified transportation line
