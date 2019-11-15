@@ -19,7 +19,6 @@ public class Tram extends AbstractVehicle {
     public Tram(@NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
         super(lineId, entityId, targetDestination, scheduledDeparture, delay);
     }
-
     @Override
     public Drawable getIcon() {
         return uiElement.adjustColor(uiElement.getCIRCLE(), StaticUiElement.hash(getLineId()));
