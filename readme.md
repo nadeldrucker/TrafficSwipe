@@ -1,5 +1,7 @@
 # TrafficSwipe
 ![App Icon](app/src/main/ic_launcher-web.png "Icon") 
+
+
 TrafficSwipe is a responsive and fast navigation app for public transportation. You can use it with 
 one hand to get departures or navigate in Dresden.
 
