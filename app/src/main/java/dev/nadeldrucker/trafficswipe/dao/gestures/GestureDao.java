@@ -28,7 +28,7 @@ public class GestureDao {
 
     public GestureDao(Context context, String host){
         queue = Volley.newRequestQueue(context);
-        this.url = "http://" + host;
+        this.url = host;
     }
 
     /**
