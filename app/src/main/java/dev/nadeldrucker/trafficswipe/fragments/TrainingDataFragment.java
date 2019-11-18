@@ -1,6 +1,7 @@
 package dev.nadeldrucker.trafficswipe.fragments;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
 import dev.nadeldrucker.trafficswipe.dao.gestures.GestureDao;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class TrainingDataFragment extends Fragment {
@@ -53,7 +55,10 @@ public class TrainingDataFragment extends Fragment {
                 return;
             }
 
-            CompletableFuture<Character> future = gestureDao.sendData(currentChar, touchPathView.getTouchPaths());
+            String androidId = Settings.Secure.getString(Objects.requireNonNull(getContext()).getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+
+            CompletableFuture<Character> future = gestureDao.sendData(currentChar, touchPathView.getTouchPaths(), androidId);
             tvChar.setText(R.string.fetching);
             btnSubmit.setEnabled(false);
 
