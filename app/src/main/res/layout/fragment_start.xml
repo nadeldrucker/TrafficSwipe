@@ -26,10 +26,23 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_help"
-        app:fabCustomSize="70dp"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/startFragment_searchFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp"
+        app:tint="@color/colorText"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/startFragment_searchFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_search"
+        app:fabCustomSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="45dp"
+        app:maxImageSize="35dp"
         app:tint="@color/colorText"/>
 
     <dev.nadeldrucker.trafficswipe.animation.TouchPathView
@@ -39,4 +52,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
