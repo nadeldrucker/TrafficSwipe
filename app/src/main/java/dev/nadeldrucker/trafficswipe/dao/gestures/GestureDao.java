@@ -85,9 +85,7 @@ public class GestureDao {
      * @param character character that was drawn
      */
     public CompletableFuture<Character> sendData(Character character, List<List<TouchCoordinate>> paths) {
-        List<List<TouchCoordinate>> normalizedList = normalizeTouchPaths(paths);
-
-        String json = gson.toJson(new GestureTrainingEntity(character, normalizedList));
+        String json = gson.toJson(new GestureTrainingEntity(character, paths));
 
         CompletableFuture<Character> future = new CompletableFuture<>();
 
