@@ -83,9 +83,10 @@ public class GestureDao {
      * Sends data to training server, return next needed char if successful.
      * @param paths touch paths
      * @param character character that was drawn
+     * @param userId unique id identifying the user
      */
-    public CompletableFuture<Character> sendData(Character character, List<List<TouchCoordinate>> paths) {
-        String json = gson.toJson(new GestureTrainingEntity(character, paths));
+    public CompletableFuture<Character> sendData(Character character, List<List<TouchCoordinate>> paths, String userId) {
+        String json = gson.toJson(new GestureTrainingEntity(character, paths, userId));
 
         CompletableFuture<Character> future = new CompletableFuture<>();
 
