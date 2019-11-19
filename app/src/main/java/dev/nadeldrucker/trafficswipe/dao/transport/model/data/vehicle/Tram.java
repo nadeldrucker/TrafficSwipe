@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.android.volley.RequestQueue;
 
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -16,8 +17,8 @@ public class Tram extends AbstractVehicle {
      * @param scheduledDeparture departure without delay
      * @param delay              zero, but not null, if there is no delay
      */
-    public Tram(@NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
-        super(lineId, entityId, targetDestination, scheduledDeparture, delay);
+    public Tram(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
+        super(queue, lineId, entityId, targetDestination, scheduledDeparture, delay);
     }
 
     @Override

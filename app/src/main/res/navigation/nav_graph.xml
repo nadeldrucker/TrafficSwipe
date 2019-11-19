@@ -16,6 +16,9 @@
             app:enterAnim="@anim/slide_up"
             app:popExitAnim="@anim/slide_down"
             app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_startFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/helpSheet"
@@ -29,4 +32,9 @@
               android:name="dev.nadeldrucker.trafficswipe.fragments.TrainingDataFragment"
               android:label="TrainingDataFragment"
               tools:layout="@layout/fragment_training"/>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
 </navigation>

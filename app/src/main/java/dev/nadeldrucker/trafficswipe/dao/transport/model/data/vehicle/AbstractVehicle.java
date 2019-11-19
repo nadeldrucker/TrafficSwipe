@@ -1,13 +1,12 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle;
 
 import android.graphics.drawable.Drawable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import java.sql.Timestamp;
 import java.time.Duration;
 
+import com.android.volley.RequestQueue;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.AbstractTransportEntity;
 
 
@@ -30,7 +29,8 @@ public abstract class AbstractVehicle extends AbstractTransportEntity {
      * @param scheduledDeparture departure without delay
      * @param delay              zero, but not null, if there is no delay; null if api doesn't provide delay
      */
-    public AbstractVehicle(@NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @Nullable Duration delay) {
+    public AbstractVehicle(RequestQueue queue,  @NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @Nullable Duration delay) {
+        super(queue);
         this.lineId = lineId;
         this.entityId = entityId;
         this.targetDestination = targetDestination;

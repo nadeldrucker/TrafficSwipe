@@ -25,7 +25,7 @@ public class VvoEntrypoint extends Entrypoint {
             if (response.getResponse().isPresent()) {
                 List<Station> stations = response.getResponse().get().getStops()
                         .stream()
-                        .map(VvoStation::fromJVVOStop)
+                        .map(stop -> VvoStation.fromJVVOStop(queue, stop))
                         .collect(Collectors.toList());
                 future.complete(stations);
             } else if (response.getError().isPresent()) {
