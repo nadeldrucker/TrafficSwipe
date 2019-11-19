@@ -2,6 +2,7 @@ package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 
 import org.jetbrains.annotations.NotNull;
+import org.threeten.bp.ZonedDateTime;
 
 import java.sql.Timestamp;
 import java.util.SortedSet;
@@ -27,7 +28,7 @@ public class Route implements Comparable {
         return route;
     }
 
-    public Timestamp getStartTime() {
+    public ZonedDateTime getStartTime() {
         return route.first().getConnection().getActualDeparture();
     }
 

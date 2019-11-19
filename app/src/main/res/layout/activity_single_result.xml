@@ -12,17 +12,16 @@
         android:id="@+id/layColor"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@color/colorAccent"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvLineNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="360"
             android:gravity="center"
+            android:text="360"
             android:textAlignment="center"
             android:textSize="20sp" />
     </RelativeLayout>

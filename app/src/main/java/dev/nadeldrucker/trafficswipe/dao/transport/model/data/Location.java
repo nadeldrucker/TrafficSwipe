@@ -3,7 +3,7 @@ package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 /**
  * Location specified by latitude and longitude.
  */
-public class Location {
+public abstract class Location {
 
     private double latitude;
     private double longitude;

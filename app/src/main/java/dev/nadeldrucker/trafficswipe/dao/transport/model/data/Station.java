@@ -1,5 +1,7 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.RequestQueue;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVe
 /**
  * Represents a station in the public transport network.
  */
-public abstract class Station extends AbstractTransportEntity {
+public class Station extends AbstractTransportEntity {
     private String name;
     private String shortage;
     private Location location;
@@ -40,5 +42,21 @@ public abstract class Station extends AbstractTransportEntity {
         return location;
     }
 
-    public abstract CompletableFuture<List<AbstractVehicle>> getDepartures();
+    public CompletableFuture<List<AbstractVehicle>> getDepartures() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Station) {
+            if (((Station) obj).shortage != null || shortage != null)
+                return shortage.equals(((Station) obj).shortage);
+            return ((Station) obj).name.equals(name);
+        } else if (obj instanceof Location)
+            return location.getLatitude() == ((Location) obj).getLatitude() && location.getLongitude() == ((Location) obj).getLongitude();
+
+
+        return false;
+    }
 }

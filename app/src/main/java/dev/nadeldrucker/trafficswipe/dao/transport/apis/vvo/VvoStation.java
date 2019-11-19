@@ -1,15 +1,18 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
 import com.android.volley.RequestQueue;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
 import dev.nadeldrucker.jvvo.Models.Stop;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Departure;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
+@Deprecated
 public class VvoStation extends Station {
 
     private String stopId;

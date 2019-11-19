@@ -1,8 +1,7 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
 import com.android.volley.RequestQueue;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Departure;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
@@ -10,6 +9,10 @@ import org.threeten.bp.ZonedDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Departure;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+
+@Deprecated
 public class VvoDeparture extends Departure {
 
     public VvoDeparture(RequestQueue queue, Station departureStation, String destinationStation, String lineNumber, ZonedDateTime departureTime) {

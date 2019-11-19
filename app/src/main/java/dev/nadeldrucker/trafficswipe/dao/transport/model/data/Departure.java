@@ -1,11 +1,13 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 import com.android.volley.RequestQueue;
-import org.threeten.bp.ZonedDateTime;
+
+import java.time.ZonedDateTime;
 
 /**
  * A departure from a specific station
  */
+@Deprecated
 public abstract class Departure extends AbstractTransportEntity {
 
     private Station departureStation;

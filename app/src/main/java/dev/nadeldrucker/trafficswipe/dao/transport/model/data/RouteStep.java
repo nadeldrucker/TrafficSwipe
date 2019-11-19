@@ -37,6 +37,6 @@ public class RouteStep implements Comparable {
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof RouteStep))
             throw new IllegalArgumentException("You can only compare objects of the class RouteStep");
-        return this.connection.getScheduledDeparture().compareTo(((RouteStep) o).connection.getScheduledDeparture());
+        return this.connection.getRemainingTime(start).compareTo(((RouteStep) o).connection.getScheduledDeparture());
     }
 }

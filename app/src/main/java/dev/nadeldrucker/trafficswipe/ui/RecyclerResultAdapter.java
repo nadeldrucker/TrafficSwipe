@@ -4,23 +4,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Departure;
-import org.threeten.bp.Instant;
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
+import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
-    private List<Departure> departures;
+    private List<AbstractVehicle> vehicles;
 
-    public RecyclerResultAdapter(List<Departure> departures){
-        this.departures = departures;
+    public RecyclerResultAdapter(List<AbstractVehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @NonNull
@@ -32,25 +30,24 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Departure departure = departures.get(position);
-        holder.lineNumber.setText(departure.getLineNumber());
-        holder.destination.setText(departure.getDestination());
-
-        ZonedDateTime timeUntilDeparture = departure.getDepartureTime().minus(ZonedDateTime.now().toEpochSecond(), ChronoUnit.SECONDS);
-        holder.departureTime.setText(timeUntilDeparture.format(DateTimeFormatter.ofPattern("[HH:]mm:ss")));
+        AbstractVehicle vehicle = vehicles.get(position);
+        holder.lineNumber.setText(vehicle.getLineId());
+        holder.destination.setText(vehicle.getDestinationString());
+        holder.lineNumber.setBackground(vehicle.getIcon());
+        holder.departureTime.setText(vehicle.getRemainingTime(null)); //Todo pass Location
     }
 
     @Override
     public int getItemCount() {
-        return departures.size();
+        return vehicles.size();
     }
 
-    public List<Departure> getDepartures() {
-        return departures;
+    public List<AbstractVehicle> getVehicles() {
+        return vehicles;
     }
 
-    public void setDepartures(List<Departure> departures) {
-        this.departures = departures;
+    public void setVehicles(List<AbstractVehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

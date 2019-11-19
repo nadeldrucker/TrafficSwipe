@@ -1,13 +1,19 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle;
 
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import java.sql.Timestamp;
-import java.time.Duration;
 
 import com.android.volley.RequestQueue;
+
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.AbstractTransportEntity;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
 
 /**
@@ -18,57 +24,78 @@ public abstract class AbstractVehicle extends AbstractTransportEntity {
     private String lineId;
     private String entityId;
     private String targetDestination;
-    private Timestamp scheduledDeparture;
-    private Duration delay;
     final StaticUiElement uiElement=StaticUiElement.getInstance();
+    private SortedMap<DepartureTime, Station> stops;
 
     /**
      * @param lineId             non-unique identifier for the specified transportation line
      * @param entityId           unique object identifier for later use, if provided by the api
-     * @param targetDestination  destination as on the sign of the transportation
-     * @param scheduledDeparture departure without delay
-     * @param delay              zero, but not null, if there is no delay; null if api doesn't provide delay
+     * @param stops              All stops
+     * @param targetDestination  destination as on the sign of the transportation, if null, last stop will be taken
      */
-    public AbstractVehicle(RequestQueue queue,  @NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @Nullable Duration delay) {
+    public AbstractVehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<DepartureTime, Station> stops, String targetDestination) {
         super(queue);
         this.lineId = lineId;
         this.entityId = entityId;
+        this.stops = stops;
         this.targetDestination = targetDestination;
-        this.scheduledDeparture = scheduledDeparture;
-        this.delay = delay;
+
+
+
     }
 
+    /**
+     * @return non-unique identifier for the specified transportation line
+     */
     public String getLineId() {
         return lineId;
     }
 
+    /**
+     * Currently not in use
+     *
+     * @return unique value provided by the api to track or identify this vehicle
+     */
     public String getEntityId() {
         return entityId;
     }
 
-    public String getTargetDestination() {
-        return targetDestination;
-    }
-
-    public Timestamp getScheduledDeparture() {
-        return scheduledDeparture;
-    }
-
-    public Timestamp getActualDeparture() {
-        return new Timestamp(scheduledDeparture.getTime() + delay.toMillis()); // STOPSHIP: 16.11.2019 API version incompatible
-    }
-
-
-    public Duration getDelay() {
-        return delay;
+    /**
+     * Get the last stop as Station object.
+     * Do not create a String out of this to show the user the destination
+     * use getDestinationSting() instead
+     *
+     * @return last Stop as Station
+     */
+    public Station getTargetDestination() {
+        return stops.get(stops.lastKey());
     }
 
     /**
-     * @return icon for this line
+     * Get a formatted String to show waiting time on gui
+     *
+     * @param location where the user wants to board
+     * @return time until vehicle departures from location
+     */
+    public String getRemainingTime(Location location) {
+        return "TODO implement me"; //Todo
+
+    }
+
+    /**
+     * Get either an explicit DestinationString or the name of the last stop
+     *
+     * @return Name of Destination
+     */
+    public String getDestinationString() {
+        if (targetDestination != null) return targetDestination;
+        return stops.get(stops.lastKey()).getName();
+    }
+
+
+    /**
+     * @return icon for this vehicle
      */
     public abstract Drawable getIcon();
-
-    //imageView.setBackground(StaticUiElement.getInstance().adjustColor(ContextCompat.getDrawable(this,R.drawable.circle)));
-    //imageView.setBackground(StaticUiElement.getInstance().adjustColor(ContextCompat.getDrawable(this,R.drawable.square)));
 
 }
