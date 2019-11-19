@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.StaticUiElement;
 
 public class HostNavActivity extends AppCompatActivity {
@@ -15,9 +16,8 @@ public class HostNavActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         new StaticUiElement(getApplicationContext()); //fixme Potential reference leak because context is stored static
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_host_nav);
-
-
 
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import java.sql.Timestamp;
 import java.time.Duration;
 
+import com.android.volley.RequestQueue;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.AbstractTransportEntity;
 
 
@@ -28,7 +29,8 @@ public abstract class AbstractVehicle extends AbstractTransportEntity {
      * @param scheduledDeparture departure without delay
      * @param delay              zero, but not null, if there is no delay
      */
-    public AbstractVehicle(@NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
+    public AbstractVehicle(RequestQueue queue,  @NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
+        super(queue);
         this.lineId = lineId;
         this.entityId = entityId;
         this.targetDestination = targetDestination;
