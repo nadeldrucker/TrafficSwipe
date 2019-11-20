@@ -11,8 +11,8 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestExcep
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
-@Deprecated
 public class VvoEntrypoint extends Entrypoint {
 
     public VvoEntrypoint(RequestQueue queue) {
@@ -42,6 +42,21 @@ public class VvoEntrypoint extends Entrypoint {
     public CompletableFuture<Route> getRoute(Station start, Station destination) {
         CompletableFuture<Route> future = new CompletableFuture<>();
         return future;
+    }
+
+    @Override
+    public CompletableFuture<List<Route>> getRoutes(Station from, Station to) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public CompletableFuture<List<Vehicle>> getDepartures(Station from) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public CompletableFuture<List<Vehicle>> getDepartures(Station from, Station over) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
 
