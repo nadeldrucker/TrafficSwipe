@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
  * A departure from a specific station
  */
 @Deprecated
-public abstract class Departure extends AbstractTransportEntity {
+public abstract class Departure extends TransportEntity {
 
     private Station departureStation;
     private String lineNumber;

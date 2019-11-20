@@ -7,12 +7,12 @@ import com.android.volley.RequestQueue;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 /**
  * Represents a station in the public transport network.
  */
-public class Station extends AbstractTransportEntity {
+public class Station extends TransportEntity {
     private String name;
     private String shortage;
     private Location location;
@@ -42,7 +42,7 @@ public class Station extends AbstractTransportEntity {
         return location;
     }
 
-    public CompletableFuture<List<AbstractVehicle>> getDepartures() {
+    public CompletableFuture<List<Vehicle>> getDepartures() {
         //TODO
         return null;
     }

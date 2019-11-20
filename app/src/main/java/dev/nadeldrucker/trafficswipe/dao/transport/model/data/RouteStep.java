@@ -5,16 +5,16 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 /**
  * RouteStep is one little step of a route. It contains a start, stop and a vehicle.
  */
 public class RouteStep implements Comparable<RouteStep> {
     private Station start, stop;
-    private AbstractVehicle connection;
+    private Vehicle connection;
 
-    public RouteStep(@NonNull Station start, @NonNull Station stop, @NonNull AbstractVehicle connection) {
+    public RouteStep(@NonNull Station start, @NonNull Station stop, @NonNull Vehicle connection) {
         this.start = start;
         this.stop = stop;
         this.connection = connection;
@@ -28,7 +28,7 @@ public class RouteStep implements Comparable<RouteStep> {
         return stop;
     }
 
-    public AbstractVehicle getConnection() {
+    public Vehicle getConnection() {
         return connection;
     }
 

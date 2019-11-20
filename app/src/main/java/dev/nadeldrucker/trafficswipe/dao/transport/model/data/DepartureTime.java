@@ -5,13 +5,11 @@ import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
-import java.io.Serializable;
-
 
 /**
  * Class to bundle scheduled departure together with a delay
  */
-public class DepartureTime extends AbstractTransportEntity implements Comparable<DepartureTime> {
+public class DepartureTime extends TransportEntity implements Comparable<DepartureTime> {
 
     private ZonedDateTime departure;
     private long delay;

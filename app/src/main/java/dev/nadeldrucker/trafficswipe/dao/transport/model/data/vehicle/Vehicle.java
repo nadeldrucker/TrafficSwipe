@@ -10,7 +10,7 @@ import com.android.volley.RequestQueue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.AbstractTransportEntity;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
@@ -19,7 +19,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 /**
  * Superclass of all public transport data entities.
  */
-public abstract class AbstractVehicle extends AbstractTransportEntity {
+public abstract class Vehicle extends TransportEntity {
 
     private String lineId;
     private String entityId;
@@ -33,7 +33,7 @@ public abstract class AbstractVehicle extends AbstractTransportEntity {
      * @param stops              All stops
      * @param targetDestination  destination as on the sign of the transportation, if null, last stop will be taken
      */
-    public AbstractVehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<DepartureTime, Station> stops, String targetDestination) {
+    public Vehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<DepartureTime, Station> stops, String targetDestination) {
         super(queue);
         this.lineId = lineId;
         this.entityId = entityId;

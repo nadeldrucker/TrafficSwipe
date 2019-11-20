@@ -2,11 +2,11 @@ package dev.nadeldrucker.trafficswipe.dao.transport.model.connection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.AbstractTransportEntity;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
 
 import java.util.Optional;
 
-public class Response<T extends AbstractTransportEntity> {
+public class Response<T extends TransportEntity> {
 
     public enum ResponseStatus {
         SUCCESS,

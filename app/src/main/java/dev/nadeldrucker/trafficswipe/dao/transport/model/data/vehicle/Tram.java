@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
-public class Tram extends AbstractVehicle {
+public class Tram extends Vehicle {
     /**
      * @param lineId             non-unique identifier for the specified transportation line
      * @param entityId           unique object identifier for later use, if provided by the api

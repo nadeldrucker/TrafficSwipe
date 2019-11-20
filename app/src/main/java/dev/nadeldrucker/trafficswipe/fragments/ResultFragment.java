@@ -24,7 +24,7 @@ import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.dao.transport.TransportApiFactory;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
 
 public class ResultFragment extends Fragment {
@@ -59,7 +59,7 @@ public class ResultFragment extends Fragment {
         tvName.setText(name);
     }
 
-    private void onDeparturesChanged(List<AbstractVehicle> departures) {
+    private void onDeparturesChanged(List<Vehicle> departures) {
         recyclerAdapter.setVehicles(departures);
         recyclerAdapter.notifyDataSetChanged();
     }

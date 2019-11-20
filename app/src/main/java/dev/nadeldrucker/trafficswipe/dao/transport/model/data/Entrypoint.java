@@ -1,10 +1,8 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 import com.android.volley.RequestQueue;
-import dev.nadeldrucker.jvvo.Models.Stop;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,7 +47,7 @@ public abstract class Entrypoint {
      * @param from stop
      * @return future of departures from stop
      */
-    public abstract CompletableFuture<List<AbstractVehicle>> getDepartures(Station from);
+    public abstract CompletableFuture<List<Vehicle>> getDepartures(Station from);
 
     /**
      * Get all departures from a stop that also stops at a specific point / has the direction to
@@ -58,7 +56,7 @@ public abstract class Entrypoint {
      * @param over vehicle must stop at least here
      * @return future of list of all vehicles that match the query
      */
-    public abstract CompletableFuture<List<AbstractVehicle>> getDepartures(Station from, Station over);
+    public abstract CompletableFuture<List<Vehicle>> getDepartures(Station from, Station over);
 
 
 }

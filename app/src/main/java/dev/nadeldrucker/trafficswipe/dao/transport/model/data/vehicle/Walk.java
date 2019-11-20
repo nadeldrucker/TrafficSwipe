@@ -15,7 +15,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
 @Deprecated
 // See Issue 15
-public class Walk extends AbstractVehicle {
+public class Walk extends Vehicle {
     /**
      * @param targetDestination  where to stop the walk
      * @param scheduledDeparture scheduled start of walk

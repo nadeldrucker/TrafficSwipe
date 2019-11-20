@@ -7,11 +7,11 @@ import java.io.Serializable;
 /**
  * Superclass of all public transport data entities.
  */
-public abstract class AbstractTransportEntity implements Serializable {
+public abstract class TransportEntity implements Serializable {
 
     private RequestQueue queue;
 
-    public AbstractTransportEntity(RequestQueue queue) {
+    public TransportEntity(RequestQueue queue) {
         this.queue = queue;
     }
 

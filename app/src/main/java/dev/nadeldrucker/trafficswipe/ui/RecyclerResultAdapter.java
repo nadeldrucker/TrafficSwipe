@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVehicle;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
-    private List<AbstractVehicle> vehicles;
+    private List<Vehicle> vehicles;
 
-    public RecyclerResultAdapter(List<AbstractVehicle> vehicles) {
+    public RecyclerResultAdapter(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
@@ -30,7 +30,7 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AbstractVehicle vehicle = vehicles.get(position);
+        Vehicle vehicle = vehicles.get(position);
         holder.lineNumber.setText(vehicle.getLineId());
         holder.destination.setText(vehicle.getDestinationString());
         holder.lineNumber.setBackground(vehicle.getIcon());
@@ -42,11 +42,11 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         return vehicles.size();
     }
 
-    public List<AbstractVehicle> getVehicles() {
+    public List<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(List<AbstractVehicle> vehicles) {
+    public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
