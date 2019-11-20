@@ -18,8 +18,8 @@ public class Tram extends Vehicle {
      * @param entityId           unique object identifier for later use, if provided by the api
      * @param targetDestination  destination as on the sign of the transportation
      */
-    public Tram(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<DepartureTime, Station> targetDestination) {
-        super(queue, lineId, entityId, targetDestination, null);
+    public Tram(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<Station, DepartureTime> targetDestination) {
+        super(queue, lineId, entityId, targetDestination);
     }
 
     @Override

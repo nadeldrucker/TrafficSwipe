@@ -20,8 +20,8 @@ public class Walk extends Vehicle {
      * @param targetDestination  where to stop the walk
      * @param scheduledDeparture scheduled start of walk
      */
-    public Walk(RequestQueue queue, @NonNull TreeMap<DepartureTime, Station> targetDestination, @NonNull ZonedDateTime scheduledDeparture) {
-        super(queue, "Walk", null, targetDestination, null);
+    public Walk(RequestQueue queue, @NonNull TreeMap<Station, DepartureTime> targetDestination, @NonNull ZonedDateTime scheduledDeparture) {
+        super(queue, "Walk", null, targetDestination);
     }
 
     @Override

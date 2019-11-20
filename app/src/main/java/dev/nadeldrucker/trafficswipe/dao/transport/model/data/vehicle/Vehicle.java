@@ -14,6 +14,8 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import org.threeten.bp.Duration;
+import org.threeten.bp.ZonedDateTime;
 
 
 /**
@@ -23,25 +25,19 @@ public abstract class Vehicle extends TransportEntity {
 
     private String lineId;
     private String entityId;
-    private String targetDestination;
     final StaticUiElement uiElement=StaticUiElement.getInstance();
-    private SortedMap<DepartureTime, Station> stops;
+    private SortedMap<Station, DepartureTime> stops;
 
     /**
      * @param lineId             non-unique identifier for the specified transportation line
      * @param entityId           unique object identifier for later use, if provided by the api
-     * @param stops              All stops
-     * @param targetDestination  destination as on the sign of the transportation, if null, last stop will be taken
+     * @param stops              All stops and departures times from that station
      */
-    public Vehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<DepartureTime, Station> stops, String targetDestination) {
+    public Vehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<Station, DepartureTime> stops) {
         super(queue);
         this.lineId = lineId;
         this.entityId = entityId;
         this.stops = stops;
-        this.targetDestination = targetDestination;
-
-
-
     }
 
     /**
@@ -62,36 +58,22 @@ public abstract class Vehicle extends TransportEntity {
 
     /**
      * Get the last stop as Station object.
-     * Do not create a String out of this to show the user the destination
-     * use getDestinationSting() instead
      *
      * @return last Stop as Station
      */
-    public Station getTargetDestination() {
-        return stops.get(stops.lastKey());
+    public Station getFinalDestination() {
+        return stops.lastKey();
     }
 
     /**
      * Get a formatted String to show waiting time on gui
      *
-     * @param location where the user wants to board
-     * @return time until vehicle departures from location
+     * @param toStation station where the vehicle is headed to
+     * @return time until vehicle departure from the station
      */
-    public String getRemainingTime(Location location) {
-        return "TODO implement me"; //Todo
-
+    public Duration getTimeToStation(Station toStation) {
+        return Duration.between(ZonedDateTime.now(), stops.get(toStation).getActualDeparture());
     }
-
-    /**
-     * Get either an explicit DestinationString or the name of the last stop
-     *
-     * @return Name of Destination
-     */
-    public String getDestinationString() {
-        if (targetDestination != null) return targetDestination;
-        return stops.get(stops.lastKey()).getName();
-    }
-
 
     /**
      * @return icon for this vehicle
