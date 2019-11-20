@@ -1,6 +1,7 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 import com.android.volley.RequestQueue;
+import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
@@ -12,7 +13,7 @@ import org.threeten.bp.temporal.ChronoUnit;
 public class DepartureTime extends TransportEntity implements Comparable<DepartureTime> {
 
     private ZonedDateTime departure;
-    private long delay;
+    private Duration delay;
 
     /**
      * preferred constructor
@@ -20,7 +21,7 @@ public class DepartureTime extends TransportEntity implements Comparable<Departu
      * @param departure scheduled departure
      * @param delay     delay in seconds
      */
-    public DepartureTime(RequestQueue queue, ZonedDateTime departure, long delay) {
+    public DepartureTime(RequestQueue queue, ZonedDateTime departure, Duration delay) {
         super(queue);
         this.departure = departure;
         this.delay = delay;
@@ -34,11 +35,11 @@ public class DepartureTime extends TransportEntity implements Comparable<Departu
         this.departure = departure;
     }
 
-    public long getDelay() {
+    public Duration getDelay() {
         return delay;
     }
 
-    public void setDelay(long delay) {
+    public void setDelay(Duration delay) {
         this.delay = delay;
     }
 
@@ -48,7 +49,7 @@ public class DepartureTime extends TransportEntity implements Comparable<Departu
      * @return departure including delay
      */
     public ZonedDateTime getActualDeparture() {
-        return departure.plusSeconds(delay);
+        return departure.plus(delay);
     }
 
     /**
