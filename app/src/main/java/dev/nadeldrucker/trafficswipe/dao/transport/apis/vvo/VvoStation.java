@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import dev.nadeldrucker.jvvo.Models.Stop;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Departure;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
