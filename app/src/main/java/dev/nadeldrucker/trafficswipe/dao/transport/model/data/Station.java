@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.android.volley.RequestQueue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
@@ -12,7 +13,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 /**
  * Represents a station in the public transport network.
  */
-public class Station extends TransportEntity {
+public abstract class Station extends TransportEntity {
     private String name;
     private String shortage;
     private Location location;
@@ -42,10 +43,7 @@ public class Station extends TransportEntity {
         return location;
     }
 
-    public CompletableFuture<List<Vehicle>> getDepartures() {
-        //TODO
-        return null;
-    }
+    public abstract CompletableFuture<Map<Vehicle, DepartureTime>> getDepartures();
 
     @Override
     public boolean equals(@Nullable Object obj) {

@@ -1,21 +1,23 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 
-import org.jetbrains.annotations.NotNull;
+import com.android.volley.RequestQueue;
 import org.threeten.bp.ZonedDateTime;
 
 import java.sql.Timestamp;
 import java.util.SortedSet;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Route is a "collection" of RouteStep. It also provides some additional features.
  */
-public class Route implements Comparable<Route> {
+public class Route extends TransportEntity {
 
     private SortedSet<RouteStep> route;
     private Timestamp arrival;
 
-    public Route(SortedSet<RouteStep> route, Timestamp arrival) {
+    public Route(RequestQueue queue, SortedSet<RouteStep> route, Timestamp arrival) {
+        super(queue);
         this.route = route;
         this.arrival = arrival;
     }
@@ -28,13 +30,8 @@ public class Route implements Comparable<Route> {
         return route;
     }
 
-    public ZonedDateTime getStartTime() {
-        return route.first().getConnection().getActualDeparture();
-    }
-
-
-    @Override
-    public int compareTo(@NotNull Route o) {
-        return this.getStartTime().compareTo(o.getStartTime());
+    public CompletableFuture<ZonedDateTime> getStartTime() {
+        Station start = route.first().getStart();
+        return start.getDepartures().thenApply(departures -> departures.get(route.first().getConnection()).getActualDeparture());
     }
 }
