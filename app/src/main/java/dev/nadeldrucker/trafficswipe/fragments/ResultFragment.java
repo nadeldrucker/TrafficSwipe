@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.dao.transport.TransportApiFactory;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
@@ -44,7 +43,7 @@ public class ResultFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerResult);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapter = new RecyclerResultAdapter(new ArrayList<>());
+        recyclerAdapter = new RecyclerResultAdapter();
         recyclerView.setAdapter(recyclerAdapter);
 
         tvName = view.findViewById(R.id.tvResult);
@@ -59,13 +58,9 @@ public class ResultFragment extends Fragment {
         tvName.setText(name);
     }
 
-    private void onDeparturesChanged(List<Vehicle> departures) {
-        recyclerAdapter.setVehicles(departures);
-        recyclerAdapter.notifyDataSetChanged();
-    }
-
     /**
      * Queries data from api
+     *
      * @param query query string
      */
     private void queryData(String query) {
@@ -84,8 +79,16 @@ public class ResultFragment extends Fragment {
             }
         }).exceptionally(throwable -> {
             Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }).thenAccept(this::onDeparturesChanged);
+    }
+
+    private void onDeparturesChanged(Map<Vehicle, DepartureTime> vehicleDepartureTimeMap) {
+        recyclerAdapter.setDepartureItems(vehicleDepartureTimeMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(entry -> new RecyclerResultAdapter.DepartureItem(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList()));
+        recyclerAdapter.notifyDataSetChanged();
     }
 
 
