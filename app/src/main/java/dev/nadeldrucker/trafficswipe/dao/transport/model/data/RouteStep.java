@@ -10,7 +10,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.AbstractVe
 /**
  * RouteStep is one little step of a route. It contains a start, stop and a vehicle.
  */
-public class RouteStep implements Comparable {
+public class RouteStep implements Comparable<RouteStep> {
     private Station start, stop;
     private AbstractVehicle connection;
 
@@ -34,9 +34,7 @@ public class RouteStep implements Comparable {
 
 
     @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof RouteStep))
-            throw new IllegalArgumentException("You can only compare objects of the class RouteStep");
-        return this.connection.getRemainingTime(start).compareTo(((RouteStep) o).connection.getScheduledDeparture());
+    public int compareTo(@NotNull RouteStep o) {
+        return this.connection.getRemainingTime(start).compareTo(o.connection.getScheduledDeparture());
     }
 }

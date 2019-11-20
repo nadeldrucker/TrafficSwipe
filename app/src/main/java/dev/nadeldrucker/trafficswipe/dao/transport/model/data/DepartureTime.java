@@ -1,5 +1,6 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
+import com.android.volley.RequestQueue;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
@@ -10,19 +11,10 @@ import java.io.Serializable;
 /**
  * Class to bundle scheduled departure together with a delay
  */
-public class DepartureTime implements Serializable, Comparable {
+public class DepartureTime extends AbstractTransportEntity implements Comparable<DepartureTime> {
 
     private ZonedDateTime departure;
     private long delay;
-
-    /**
-     * use this constructor only if the api doesn't provide a delay
-     *
-     * @param departure scheduled departure
-     */
-    public DepartureTime(ZonedDateTime departure) {
-        this(departure, 0);
-    }
 
     /**
      * preferred constructor
@@ -30,8 +22,8 @@ public class DepartureTime implements Serializable, Comparable {
      * @param departure scheduled departure
      * @param delay     delay in seconds
      */
-    public DepartureTime(ZonedDateTime departure, long delay) {
-
+    public DepartureTime(RequestQueue queue, ZonedDateTime departure, long delay) {
+        super(queue);
         this.departure = departure;
         this.delay = delay;
     }
@@ -71,14 +63,8 @@ public class DepartureTime implements Serializable, Comparable {
 
     }
 
-    /**
-     * Required for sorted structures
-     *
-     * @param o must be DepartureTime
-     */
     @Override
-    public int compareTo(Object o) {
-        if (!(o instanceof DepartureTime)) throw new IllegalArgumentException("Can not compare");
-        return getActualDeparture().compareTo(((DepartureTime) o).getActualDeparture());
+    public int compareTo(DepartureTime o) {
+        return getActualDeparture().compareTo(o.getActualDeparture());
     }
 }

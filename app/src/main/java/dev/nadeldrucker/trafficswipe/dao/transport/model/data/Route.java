@@ -10,7 +10,7 @@ import java.util.SortedSet;
 /**
  * Route is a "collection" of RouteStep. It also provides some additional features.
  */
-public class Route implements Comparable {
+public class Route implements Comparable<Route> {
 
     private SortedSet<RouteStep> route;
     private Timestamp arrival;
@@ -34,10 +34,7 @@ public class Route implements Comparable {
 
 
     @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof Route))
-            throw new IllegalArgumentException("You can only compare objects of the class Route");
-
-        return this.getStartTime().compareTo(((Route) o).getStartTime());
+    public int compareTo(@NotNull Route o) {
+        return this.getStartTime().compareTo(o.getStartTime());
     }
 }
