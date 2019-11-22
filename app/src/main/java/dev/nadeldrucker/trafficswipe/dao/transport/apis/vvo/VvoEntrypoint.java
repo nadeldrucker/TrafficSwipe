@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import dev.nadeldrucker.jvvo.Models.Stop;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;

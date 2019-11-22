@@ -7,17 +7,16 @@ import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.SortedMap;
-import java.util.stream.Collectors;
-
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
+
+import java.util.Map;
+import java.util.Optional;
+
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
+import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
 
 
 /**
@@ -27,7 +26,7 @@ public abstract class Vehicle extends TransportEntity {
 
     private String lineId;
     private String entityId;
-    final StaticUiElement uiElement=StaticUiElement.getInstance();
+    final VehicleUiSupport uiElement = VehicleUiSupport.getInstance();
     private Map<Station, DepartureTime> stops;
 
     /**

@@ -15,13 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.Volley;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.TransportApiFactory;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.TransportApiFactory;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;

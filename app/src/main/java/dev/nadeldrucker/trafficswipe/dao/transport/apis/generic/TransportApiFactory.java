@@ -1,10 +1,10 @@
-package dev.nadeldrucker.trafficswipe.dao.transport;
+package dev.nadeldrucker.trafficswipe.dao.transport.apis.generic;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
+
 import com.android.volley.RequestQueue;
+
 import dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo.VvoEntrypoint;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
 
 public class TransportApiFactory {
 

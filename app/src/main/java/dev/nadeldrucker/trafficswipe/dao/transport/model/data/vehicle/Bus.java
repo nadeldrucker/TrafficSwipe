@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
 
 public class Bus extends Vehicle {
     /**
@@ -24,6 +25,6 @@ public class Bus extends Vehicle {
 
     @Override
     public Drawable getIcon() {
-        return uiElement.adjustColor(uiElement.getSQUARE(), StaticUiElement.hash(getLineId()));
+        return uiElement.adjustColor(uiElement.getSQUARE(), VehicleUiSupport.hash(getLineId()));
     }
 }
