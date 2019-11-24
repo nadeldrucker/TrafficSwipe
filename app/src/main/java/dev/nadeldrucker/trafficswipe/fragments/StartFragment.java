@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +58,7 @@ public class StartFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+                previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
                 if (etSearch.getText().toString().length() >= 3) {
                     Log.d(TAG, "edit text is done! " + etSearch.getText().toString());
                     setSoftKeyboardState(false, etSearch);
@@ -73,6 +75,8 @@ public class StartFragment extends Fragment {
 
             setSoftKeyboardState(true, etSearch);
         });
+        previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
+
     }
 
     /**
@@ -99,5 +103,23 @@ public class StartFragment extends Fragment {
         Bundle b = new Bundle();
         b.putString(BUNDLE_QUERY, query);
         Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment, b);
+    }
+
+    /**
+     * Shows a String char by char in TextViews filled with '●'
+     *
+     * @param s   String that should be displayed
+     * @param tvs TextViews where each should have enough space for one char
+     */
+
+    private void previewString(String s, TextView... tvs) {
+        char[] preview = new char[tvs.length];
+        for (int i = 0; i < preview.length; i++) preview[i] = '●';
+        if (s != null) {
+            s = s.trim().toUpperCase();
+            for (int i = 0; i < preview.length && i < s.length(); i++)
+                preview[i] = s.toCharArray()[i];
+        }
+        for (int i = 0; i < tvs.length; i++) tvs[i].setText(String.valueOf(preview[i]));
     }
 }
