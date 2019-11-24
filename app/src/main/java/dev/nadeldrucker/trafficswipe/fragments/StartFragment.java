@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -44,19 +43,6 @@ public class StartFragment extends Fragment {
         fabHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet));
 
         final EditText etSearch = view.findViewById(R.id.etSearch);
-        etSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                Log.d(TAG, "edit text is done! " + etSearch.getText().toString());
-
-                setSoftKeyboardState(false, etSearch);
-
-                showDepartureTable(etSearch.getText().toString());
-                etSearch.clearFocus();
-                etSearch.getText().clear();
-                return true;
-            }
-            return false;
-        });
         etSearch.addTextChangedListener(new TextWatcher() {
 
 
