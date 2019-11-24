@@ -2,20 +2,27 @@ package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.android.volley.RequestQueue;
-import dev.nadeldrucker.jvvo.Models.Stop;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+
 import org.threeten.bp.Duration;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import dev.nadeldrucker.jvvo.Models.Stop;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Bus;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.SBahn;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Tram;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 public class VvoStation extends Station {
 
@@ -57,7 +64,23 @@ public class VvoStation extends Station {
                             stops.put(new VvoStation(getQueue(), departure.getDirection(), null, null), finalDepartureTime);
 
                             // create vehicle
-                            Vehicle v = new VvoVehicle(getQueue(), departure.getLine(), departure.getId(), stops);
+                            /*
+                            I think if departure.diva.number starts with 1 it's a tram
+                                                                         2        bus
+                             */
+                            Vehicle v;
+                            switch (departure.getDiva().getNumber().charAt(0)) {
+                                case '1':
+                                    v = new Tram(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    break;
+                                case '2':
+                                    v = new Bus(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    break;
+                                default:
+                                    //FIXME for now, the Sbahn Icon is shown whenever we're unable to parse vehicle type
+                                    v = new SBahn(getQueue(), departure.getLine(), departure.getId(), stops);
+
+                            }
 
                             // add vehicle with departure time to vehicle map
                             vehicleDepartures.put(v, departureTime);

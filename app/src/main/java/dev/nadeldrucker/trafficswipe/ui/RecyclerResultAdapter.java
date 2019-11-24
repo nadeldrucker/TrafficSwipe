@@ -4,16 +4,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
-import org.threeten.bp.Duration;
-import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
@@ -42,14 +42,12 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         Vehicle vehicle = departureItem.vehicle;
         holder.lineNumber.setText(vehicle.getLineId());
         holder.destination.setText(vehicle.getFinalDestination().getName());
-        holder.lineNumber.setBackground(vehicle.getIcon());
+
 
         String text = UiUtil.formatDuration(departureItem.departureTime.getRemainingTime());
         holder.departureTime.setText(text);
-    }
+        holder.lineNumber.setBackground(vehicle.getIcon());
 
-    public List<DepartureItem> getDepartureItems() {
-        return departureItems;
     }
 
     public void setDepartureItems(List<DepartureItem> departureItems) {

@@ -12,6 +12,7 @@
         android:id="@+id/layColor"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="16dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,13 +31,14 @@
         android:id="@+id/tvDestination"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
         android:text="Wilder Mann"
         android:textColor="@color/colorText"
         android:textSize="18sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@+id/tvDepartureTime"
-        app:layout_constraintStart_toEndOf="@id/layColor"
+        app:layout_constraintStart_toEndOf="@+id/layColor"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

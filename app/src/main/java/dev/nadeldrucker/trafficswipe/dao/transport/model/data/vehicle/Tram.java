@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
 
-import java.util.TreeMap;
+import java.util.Map;
 
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
@@ -19,7 +19,7 @@ public class Tram extends Vehicle {
      * @param entityId           unique object identifier for later use, if provided by the api
      * @param targetDestination  destination as on the sign of the transportation
      */
-    public Tram(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<Station, DepartureTime> targetDestination) {
+    public Tram(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull Map<Station, DepartureTime> targetDestination) {
         super(queue, lineId, entityId, targetDestination);
     }
 
