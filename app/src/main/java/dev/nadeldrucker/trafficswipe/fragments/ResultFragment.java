@@ -33,7 +33,7 @@ public class ResultFragment extends Fragment {
     private static final String TAG = ResultFragment.class.getName();
 
     private RecyclerResultAdapter recyclerAdapter;
-    private TextView tvName;
+    private TextView tvResult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,16 +48,17 @@ public class ResultFragment extends Fragment {
         recyclerAdapter = new RecyclerResultAdapter();
         recyclerView.setAdapter(recyclerAdapter);
 
-        tvName = view.findViewById(R.id.tvResult);
-
+        tvResult = view.findViewById(R.id.tvResult);
+        TextView tvTitle = view.findViewById(R.id.tvType);
         String query = Objects.requireNonNull(getArguments()).getString(StartFragment.BUNDLE_QUERY);
-        tvName.setText(query);
+        tvResult.setText(query);
+        tvTitle.setText(R.string.activity_title_departures);
 
         queryData(query);
     }
 
     private void onStationNameChanged(String name) {
-        tvName.setText(name);
+        tvResult.setText(name);
     }
 
     /**

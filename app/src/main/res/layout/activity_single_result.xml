@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:maxHeight="60dp"
+    android:layout_marginEnd="24dp"
     android:layout_marginBottom="5dp"
-    android:layout_marginEnd="24dp">
+    android:maxHeight="40dp"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/layColor"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +28,7 @@
 
     <TextView
         android:id="@+id/tvDestination"
-        android:layout_width="0dp"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
@@ -45,9 +44,10 @@
         android:id="@+id/tvDepartureTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
         android:gravity="center"
         android:text="in 12:29 Minuten"
         android:textColor="@color/colorTextSecondary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toEndOf="@+id/tvDestination"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
