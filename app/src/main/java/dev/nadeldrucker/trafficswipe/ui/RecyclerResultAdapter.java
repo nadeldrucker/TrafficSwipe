@@ -47,6 +47,7 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         String text = UiUtil.formatDuration(departureItem.departureTime.getRemainingTime());
         holder.departureTime.setText(text);
         holder.lineNumber.setBackground(vehicle.getIcon());
+        holder.destination.setSelected(true);
 
     }
 
