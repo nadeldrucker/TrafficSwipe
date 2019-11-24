@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+import org.threeten.bp.Duration;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,9 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         holder.lineNumber.setText(vehicle.getLineId());
         holder.destination.setText(vehicle.getFinalDestination().getName());
         holder.lineNumber.setBackground(vehicle.getIcon());
-        holder.departureTime.setText(departureItem.departureTime.toString());
+
+        String text = UiUtil.formatDuration(departureItem.departureTime.getRemainingTime());
+        holder.departureTime.setText(text);
     }
 
     public List<DepartureItem> getDepartureItems() {

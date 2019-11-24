@@ -31,9 +31,9 @@ public class VvoStation extends Station {
         CompletableFuture<Map<Vehicle, DepartureTime>> completableFuture = new CompletableFuture<>();
         dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, getQueue(), response -> {
             if (response.getResponse().isPresent()) {
-                HashMap<Vehicle, DepartureTime> vehicleMap = new HashMap<>();
+                HashMap<Vehicle, DepartureTime> vehicleDepartures = new HashMap<>();
 
-                // for every departure create an entry in the vehicle map
+                // for every departure create an entry in the vehicle departure map
                 response.getResponse().get().getDepartures()
                         .forEach(departure -> {
                             ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(ZoneId.systemDefault());
@@ -52,16 +52,17 @@ public class VvoStation extends Station {
                             // add this station to the vehicles stops
                             stops.put(this, departureTime);
 
-                            // add final station to the vehicles stops
-                            stops.put(new VvoStation(getQueue(), departure.getDirection(), null, null), null);
+                            // add final station to the vehicles stops (use max time, making it the last station)
+                            DepartureTime finalDepartureTime = new DepartureTime(Instant.ofEpochMilli(Long.MAX_VALUE).atZone(ZoneId.systemDefault()), Duration.ofSeconds(0));
+                            stops.put(new VvoStation(getQueue(), departure.getDirection(), null, null), finalDepartureTime);
 
                             // create vehicle
                             Vehicle v = new VvoVehicle(getQueue(), departure.getLine(), departure.getId(), stops);
 
                             // add vehicle with departure time to vehicle map
-                            vehicleMap.put(v, departureTime);
+                            vehicleDepartures.put(v, departureTime);
                         });
-                completableFuture.complete(vehicleMap);
+                completableFuture.complete(vehicleDepartures);
             } else if (response.getError().isPresent()) {
                 completableFuture.completeExceptionally(new RequestException("Couldn't complete request! " + response.getError().get().getDescription()));
             }

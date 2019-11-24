@@ -60,11 +60,10 @@ public class DepartureTime implements Comparable<DepartureTime> {
     /**
      * Get the time between now and the actual departure
      *
-     * @return formatted as readable String
+     * @return duration until departure
      */
-    public String getRemainingTime() {
-        return getActualDeparture().minus(ZonedDateTime.now().toEpochSecond(), ChronoUnit.SECONDS).format(DateTimeFormatter.ofPattern("[HH:]mm:ss"));
-
+    public Duration getRemainingTime() {
+        return Duration.between(ZonedDateTime.now(), getActualDeparture());
     }
 
     @Override
