@@ -1,55 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".SingleResult">
+    android:maxHeight="60dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="24dp">
 
-    <TextView
-        android:id="@+id/txtTarget"
-        android:layout_width="155dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:gravity="start"
-        android:text="Wilder Mann"
-        android:textAlignment="textStart"
-        android:textColor="@color/colorText"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/layColor"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/layColor"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorAccent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txtNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/tvLineNumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:text="360"
             android:textAlignment="center"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textSize="20sp" />
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/txtCountdown"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
+        android:id="@+id/tvDestination"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Wilder Mann"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/tvDepartureTime"
+        app:layout_constraintStart_toEndOf="@id/layColor"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDepartureTime"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="in 12:29 Minuten"
         android:textColor="@color/colorTextSecondary"
-        app:layout_constraintStart_toEndOf="@+id/txtTarget"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

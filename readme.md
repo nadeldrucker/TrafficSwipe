@@ -3,7 +3,7 @@
 
 
 TrafficSwipe is a responsive and fast navigation app for public transportation. You can use it with 
-one hand to get departures or navigate in Dresden.
+one hand to get vehicles or navigate in Dresden.
 
 It is build by [Paul] and [Philipp]. We are using the external resources or libraries:
 

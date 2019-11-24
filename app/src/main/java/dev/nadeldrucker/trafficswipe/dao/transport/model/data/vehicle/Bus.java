@@ -5,23 +5,26 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.sql.Timestamp;
-import java.time.Duration;
+import com.android.volley.RequestQueue;
 
-public class Bus extends AbstractVehicle {
+import java.util.TreeMap;
+
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
+
+public class Bus extends Vehicle {
     /**
      * @param lineId             non-unique identifier for the specified transportation line
      * @param entityId           unique object identifier for later use, if provided by the api
      * @param targetDestination  destination as on the sign of the transportation
-     * @param scheduledDeparture departure without delay
-     * @param delay              zero, but not null, if there is no delay
      */
-    public Bus(@NonNull String lineId, @Nullable String entityId, @NonNull String targetDestination, @NonNull Timestamp scheduledDeparture, @NonNull Duration delay) {
-        super(lineId, entityId, targetDestination, scheduledDeparture, delay);
+    public Bus(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull TreeMap<Station, DepartureTime> targetDestination) {
+        super(queue, lineId, entityId, targetDestination);
     }
 
     @Override
     public Drawable getIcon() {
-        return uiElement.adjustColor(uiElement.getSQUARE(), StaticUiElement.hash(getLineId()));
+        return uiElement.adjustColor(uiElement.getSQUARE(), VehicleUiSupport.hash(getLineId()));
     }
 }

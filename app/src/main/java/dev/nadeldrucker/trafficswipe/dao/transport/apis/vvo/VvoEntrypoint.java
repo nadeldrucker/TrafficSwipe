@@ -1,15 +1,17 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
 import com.android.volley.RequestQueue;
-import dev.nadeldrucker.jvvo.Models.Stop;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Entrypoint;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+import dev.nadeldrucker.jvvo.Models.Stop;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 public class VvoEntrypoint extends Entrypoint {
 
@@ -25,7 +27,7 @@ public class VvoEntrypoint extends Entrypoint {
             if (response.getResponse().isPresent()) {
                 List<Station> stations = response.getResponse().get().getStops()
                         .stream()
-                        .map(VvoStation::fromJVVOStop)
+                        .map(stop -> VvoStation.fromJVVOStop(queue, stop))
                         .collect(Collectors.toList());
                 future.complete(stations);
             } else if (response.getError().isPresent()) {
@@ -40,6 +42,21 @@ public class VvoEntrypoint extends Entrypoint {
     public CompletableFuture<Route> getRoute(Station start, Station destination) {
         CompletableFuture<Route> future = new CompletableFuture<>();
         return future;
+    }
+
+    @Override
+    public CompletableFuture<List<Route>> getRoutes(Station from, Station to) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public CompletableFuture<List<Vehicle>> getDepartures(Station from) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public CompletableFuture<List<Vehicle>> getDepartures(Station from, Station over) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
 

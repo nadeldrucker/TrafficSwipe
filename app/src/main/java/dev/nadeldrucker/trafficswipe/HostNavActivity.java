@@ -1,12 +1,12 @@
 package dev.nadeldrucker.trafficswipe;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.os.Bundle;
-import android.widget.ImageView;
 
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.StaticUiElement;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
 
 public class HostNavActivity extends AppCompatActivity {
 
@@ -14,10 +14,9 @@ public class HostNavActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        new StaticUiElement(getApplicationContext()); //fixme Potential reference leak because context is stored static
+        new VehicleUiSupport(getApplicationContext()); //fixme Potential reference leak because context is stored static
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_host_nav);
-
-
 
     }
 }

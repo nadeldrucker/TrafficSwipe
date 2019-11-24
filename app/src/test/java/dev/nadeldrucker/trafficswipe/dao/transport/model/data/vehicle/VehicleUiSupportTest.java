@@ -7,16 +7,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
 
-public class StaticUiElementTest {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+public class VehicleUiSupportTest {
     private String[] lines = {"360", "66E", "66", "63", "36", "E66"};
 
     @Test
     public void hashDifferent() {
         ArrayList<Integer> result = new ArrayList<>();
         for (String line : lines)
-            result.add(StaticUiElement.hash(line));
+            result.add(VehicleUiSupport.hash(line));
         Set<Integer> resultSet = new HashSet<>(result);
         assertEquals("There should not be duplicate hashes", resultSet.size(), result.size());
         System.out.println("Hash result: " + Arrays.toString(result.toArray()));
@@ -39,7 +42,7 @@ public class StaticUiElementTest {
         String line1 = new String("360");
         String line2 = new String("360");
         assertFalse("You simplified this junit test in an illegal way!", line1 == line2);
-        assertEquals("Both hashes should be the same", StaticUiElement.hash(line1), StaticUiElement.hash(line2));
+        assertEquals("Both hashes should be the same", VehicleUiSupport.hash(line1), VehicleUiSupport.hash(line2));
 
     }
 

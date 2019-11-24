@@ -1,4 +1,4 @@
-package dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle;
+package dev.nadeldrucker.trafficswipe.logic;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -14,8 +14,8 @@ import dev.nadeldrucker.trafficswipe.R;
 /**
  * Class for UI stuff that is required to create icons
  */
-public final class StaticUiElement {
-    private static StaticUiElement instance;
+public final class VehicleUiSupport {
+    private static VehicleUiSupport instance;
     private final int[] COLORS;
     private final Context CONTEXT;
     private final Drawable SQUARE;
@@ -26,7 +26,7 @@ public final class StaticUiElement {
      *
      * @param context android context to access resources (e.g. drawables)
      */
-    public StaticUiElement(Context context) {
+    public VehicleUiSupport(Context context) {
         CONTEXT = context;
         CIRCLE = ContextCompat.getDrawable(context, R.drawable.circle);
         SQUARE = ContextCompat.getDrawable(context, R.drawable.square);
@@ -64,7 +64,7 @@ public final class StaticUiElement {
      * @param s String to hash
      * @return simple hash
      */
-    static int hash(String s) {
+    public static int hash(String s) {
         int hash = 0;
         for (int i = 0; i < s.length(); i++) {
             hash += Math.pow(s.charAt(i), i + 1);
@@ -84,7 +84,7 @@ public final class StaticUiElement {
     affect program state or change the semantics, unless the method call throws an exception
     (exception is not considered to be a side effect).
      */
-    static StaticUiElement getInstance() {
+    public static VehicleUiSupport getInstance() {
         return instance;
     }
 
@@ -105,7 +105,7 @@ public final class StaticUiElement {
      *                  from the same line has the same icon color.
      * @return recolored drawable
      */
-    Drawable adjustColor(@NotNull Drawable source, int colorSeed) {
+    public Drawable adjustColor(@NotNull Drawable source, int colorSeed) {
         source.setColorFilter(COLORS[colorSeed % COLORS.length], PorterDuff.Mode.MULTIPLY);
         return source;
     }
@@ -116,7 +116,7 @@ public final class StaticUiElement {
      * @param source drawable to recolor
      * @return recolored drawable
      */
-    Drawable adjustColor(@NotNull Drawable source) {
+    public Drawable adjustColor(@NotNull Drawable source) {
         source.setColorFilter(ContextCompat.getColor(CONTEXT, R.color.colorSBahn), PorterDuff.Mode.MULTIPLY);
         return source;
     }
