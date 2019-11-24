@@ -1,11 +1,12 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
 import org.threeten.bp.Duration;
+import org.threeten.bp.ZonedDateTime;
 
 /**
  * Common ui operations
  */
-public class UiUtil {
+class UiUtil {
 
     /**
      * Formats a duration to a human readable string
@@ -13,7 +14,7 @@ public class UiUtil {
      * @param duration input duration
      * @return formatted duration
      */
-    public static String formatDuration(Duration duration) {
+    static String formatDuration(Duration duration) {
         long absSec = Math.abs(duration.getSeconds());
 
         String formatted = String.format("%d:%02d:%02d", absSec / 3600, (absSec % 3600) / 60, (absSec % 60));
@@ -23,4 +24,16 @@ public class UiUtil {
         return formatted;
     }
 
+
+    /**
+     * Formats a timestamp for the footer where the last refresh timestamp is shown
+     *
+     * @param timestamp input
+     * @return String for result footer
+     */
+    static String formatTimestamp(ZonedDateTime timestamp) {
+
+        return "Realtime data from " + (timestamp.getSecond() - ZonedDateTime.now().getSecond()) + " seconds ago";
+
+    }
 }

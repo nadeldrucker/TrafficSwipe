@@ -1,6 +1,5 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.threeten.bp.Duration;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,14 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
     private List<DepartureItem> departureItems = new ArrayList<>();
-    private CountDownTimer mCountDownTimer;
     private ArrayList<TimeEventContainer> timeEvents = new ArrayList<>();
     private Handler handler = new Handler();
+    private TextView tvRefresh;
+    private ZonedDateTime lastRefresh = ZonedDateTime.now();
+
+    private ZonedDateTime getLastRefresh() {
+        return lastRefresh;
+    }
 
 
     public static class DepartureItem {
@@ -53,6 +57,7 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_single_result, parent, false);
         handler.post(runnableCode);
+        tvRefresh = v.findViewById(R.id.tvTimestamp);
         return new ViewHolder(v);
     }
 
@@ -67,31 +72,37 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         holder.lineNumber.setBackground(vehicle.getIcon());
         holder.destination.setSelected(true);
         //add event to Timer
-        timeEvents.add(new TimeEventContainer(holder.departureTime::setText, UiUtil::formatDuration, departureItem.departureTime::getRemainingTime));
+        timeEvents.add(new TimeEventContainer<>(holder.departureTime::setText, UiUtil::formatDuration, departureItem.departureTime::getRemainingTime));
 
+    }
+
+    public void setDepartureItems(List<DepartureItem> departureItems) {
+        this.departureItems = departureItems;
+        lastRefresh = ZonedDateTime.now();
+        //remove all old events
+        timeEvents = new ArrayList<>();
+        //add event for last refresh timer
+        timeEvents.add(new TimeEventContainer<>(tvRefresh::setText, UiUtil::formatTimestamp, this::getLastRefresh));
     }
 
     /**
      * Class to bundle all methods together that needs to be called to refresh the timer
+     * @author Philipp
      */
-    private class TimeEventContainer {
+    private class TimeEventContainer<SourceType> {
         private final Consumer<String> displayMethod;
-        private final Function<Duration, String> formatterMethod;
-        private final Supplier<Duration> getterMethod;
+        private final Function<SourceType, String> formatterMethod;
+        private final Supplier<SourceType> getterMethod;
 
-        public TimeEventContainer(Consumer<String> displayMethod, Function<Duration, String> formatterMethod, Supplier<Duration> getterMethod) {
+        TimeEventContainer(Consumer<String> displayMethod, Function<SourceType, String> formatterMethod, Supplier<SourceType> getterMethod) {
             this.displayMethod = displayMethod;
             this.formatterMethod = formatterMethod;
             this.getterMethod = getterMethod;
         }
 
-        public void execute() {
+        void execute() {
             displayMethod.accept(formatterMethod.apply(getterMethod.get()));
         }
-    }
-
-    public void setDepartureItems(List<DepartureItem> departureItems) {
-        this.departureItems = departureItems;
     }
 
     @Override

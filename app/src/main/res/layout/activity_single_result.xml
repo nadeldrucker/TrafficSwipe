@@ -46,11 +46,12 @@
 
     <TextView
         android:id="@+id/tvDepartureTime"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:gravity="center"
-        android:text="in 12:29 Minuten"
+        android:gravity="left|center_vertical"
+        android:singleLine="true"
+        android:text="in 12:29"
         android:textColor="@color/colorTextSecondary"
         app:layout_constraintStart_toEndOf="@+id/tvDestination"
         app:layout_constraintTop_toTopOf="parent" />
