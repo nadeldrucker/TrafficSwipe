@@ -28,6 +28,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
+import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import org.threeten.bp.Duration;
 import org.threeten.bp.temporal.ChronoUnit;
 
@@ -37,6 +38,7 @@ public class ResultFragment extends Fragment {
 
     private RecyclerResultAdapter recyclerAdapter;
     private TextView tvResult;
+    private TextView tvLastFetch;
     private final Handler handler = new Handler();
 
     private Runnable secondLoop;
@@ -46,11 +48,15 @@ public class ResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         secondLoop = () -> {
             // calculate time passed since last update
-            long updateDelta = System.currentTimeMillis() - lastUpdateTime;
+            if (lastUpdateTime != 0) {
+                long updateDelta = System.currentTimeMillis() - lastUpdateTime;
 
-            recyclerAdapter.getViewHolders().forEach(viewHolder -> {
-                viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS));
-            });
+                recyclerAdapter.getViewHolders().forEach(viewHolder -> {
+                    viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS));
+                });
+
+                updateLastFetchTime(updateDelta);
+            }
 
             handler.postDelayed(this.secondLoop, 1000);
         };
@@ -72,6 +78,8 @@ public class ResultFragment extends Fragment {
         String query = Objects.requireNonNull(getArguments()).getString(StartFragment.BUNDLE_QUERY);
         tvResult.setText(query);
         tvTitle.setText(R.string.activity_title_departures);
+
+        tvLastFetch = view.findViewById(R.id.tvLastFetch);
 
         queryData(query);
     }
@@ -117,7 +125,19 @@ public class ResultFragment extends Fragment {
                 .collect(Collectors.toList()));
 
         lastUpdateTime = System.currentTimeMillis();
+        updateLastFetchTime(0);
 
         recyclerAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Updated textView with last updated and formatted time
+     *
+     * @param updateDeltaMillis time since last update in millis
+     */
+    private void updateLastFetchTime(long updateDeltaMillis) {
+        Duration duration = Duration.of(updateDeltaMillis, ChronoUnit.MILLIS);
+        String formatted = UiUtil.formatDuration(duration);
+        tvLastFetch.setText(String.format("Time since last refresh: %s", formatted));
     }
 }
