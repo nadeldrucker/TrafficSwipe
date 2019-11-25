@@ -78,7 +78,7 @@ public abstract class Vehicle extends TransportEntity {
      * @return time until vehicle departure from the station
      */
     public Duration getTimeToStation(Station toStation) {
-        return Duration.between(ZonedDateTime.now(), stops.get(toStation).getActualDeparture());
+        return Duration.between(ZonedDateTime.now(), stops.get(toStation).getDepartureTimeWithDelay());
     }
 
     /**

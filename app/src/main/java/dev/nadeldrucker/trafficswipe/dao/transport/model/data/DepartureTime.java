@@ -1,11 +1,8 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 import androidx.annotation.Nullable;
-import com.android.volley.RequestQueue;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.temporal.ChronoUnit;
 
 
 /**
@@ -44,11 +41,11 @@ public class DepartureTime implements Comparable<DepartureTime> {
     }
 
     /**
-     * get expected departure
+     * get expected departure inclufing delay
      *
      * @return departure including delay
      */
-    public ZonedDateTime getActualDeparture() {
+    public ZonedDateTime getDepartureTimeWithDelay() {
         ZonedDateTime dateTime = departure;
         if (delay != null) {
             dateTime.plus(delay);
@@ -63,11 +60,11 @@ public class DepartureTime implements Comparable<DepartureTime> {
      * @return duration until departure
      */
     public Duration getRemainingTime() {
-        return Duration.between(ZonedDateTime.now(), getActualDeparture());
+        return Duration.between(ZonedDateTime.now(), getDepartureTimeWithDelay());
     }
 
     @Override
     public int compareTo(DepartureTime o) {
-        return getActualDeparture().compareTo(o.getActualDeparture());
+        return getDepartureTimeWithDelay().compareTo(o.getDepartureTimeWithDelay());
     }
 }
