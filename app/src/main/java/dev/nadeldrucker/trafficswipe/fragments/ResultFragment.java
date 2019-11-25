@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.android.volley.toolbox.Volley;
 
 import java.util.Collections;
@@ -39,6 +40,7 @@ public class ResultFragment extends Fragment {
     private RecyclerResultAdapter recyclerAdapter;
     private TextView tvResult;
     private TextView tvLastFetch;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private final Handler handler = new Handler();
 
     private Runnable secondLoop;
@@ -84,6 +86,12 @@ public class ResultFragment extends Fragment {
         tvTitle.setText(R.string.activity_title_departures);
 
         tvLastFetch = view.findViewById(R.id.tvLastFetch);
+
+        swipeRefreshLayout = view.findViewById(R.id.refreshLayoutResult);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            queryData(query);
+        });
 
         queryData(query);
     }
@@ -138,6 +146,8 @@ public class ResultFragment extends Fragment {
         updateLastFetchTime(0);
 
         recyclerAdapter.notifyDataSetChanged();
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     /**
