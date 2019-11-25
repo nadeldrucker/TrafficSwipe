@@ -44,9 +44,13 @@ public class ResultFragment extends Fragment {
     private Runnable secondLoop;
     private long lastUpdateTime;
 
+    private boolean isViewDestroyed = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         secondLoop = () -> {
+            if (isViewDestroyed) return;
+
             // calculate time passed since last update
             if (lastUpdateTime != 0) {
                 long updateDelta = System.currentTimeMillis() - lastUpdateTime;
@@ -82,6 +86,12 @@ public class ResultFragment extends Fragment {
         tvLastFetch = view.findViewById(R.id.tvLastFetch);
 
         queryData(query);
+    }
+
+    @Override
+    public void onDestroyView() {
+        isViewDestroyed = true;
+        super.onDestroyView();
     }
 
     private void onStationNameChanged(String name) {
