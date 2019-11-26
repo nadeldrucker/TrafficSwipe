@@ -1,22 +1,17 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle;
 
-import android.graphics.drawable.Drawable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.android.volley.RequestQueue;
-
+import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.Map;
 import java.util.Optional;
-
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.TransportEntity;
-import dev.nadeldrucker.trafficswipe.logic.VehicleUiSupport;
 
 
 /**
@@ -26,8 +21,28 @@ public abstract class Vehicle extends TransportEntity {
 
     private String lineId;
     private String entityId;
-    final VehicleUiSupport uiElement = VehicleUiSupport.getInstance();
     private Map<Station, DepartureTime> stops;
+
+    private final int[] lineColors = new int[]{
+            R.color.colorTheme1a,
+            R.color.colorTheme1b,
+            R.color.colorTheme1c,
+            R.color.colorTheme2a,
+            R.color.colorTheme2b,
+            R.color.colorTheme2c,
+            R.color.colorTheme3a,
+            R.color.colorTheme3b,
+            R.color.colorTheme3c,
+            R.color.colorTheme4a,
+            R.color.colorTheme4b,
+            R.color.colorTheme4c,
+            R.color.colorTheme5a,
+            R.color.colorTheme5b,
+            R.color.colorTheme5c,
+            R.color.colorTheme6a,
+            R.color.colorTheme6b,
+            R.color.colorTheme6c
+    };
 
     /**
      * @param lineId             non-unique identifier for the specified transportation line
@@ -82,8 +97,15 @@ public abstract class Vehicle extends TransportEntity {
     }
 
     /**
-     * @return icon for this vehicle
+     * @return icon resource id for this vehicle
      */
-    public abstract Drawable getIcon();
+    public abstract int getIconDrawableResource();
 
+    /**
+     * returns the icon color for this line.
+     * @return  line color resource id
+     */
+    public int getIconColor(){
+        return lineColors[lineId.hashCode() % lineColors.length];
+    }
 }

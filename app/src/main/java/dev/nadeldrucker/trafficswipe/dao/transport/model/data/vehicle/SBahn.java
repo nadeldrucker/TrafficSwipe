@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 
 import java.util.Map;
 
+import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 
@@ -23,7 +24,7 @@ public class SBahn extends Vehicle {
     }
 
     @Override
-    public Drawable getIcon() {
-        return uiElement.adjustColor(uiElement.getCIRCLE());
+    public int getIconDrawableResource() {
+        return R.drawable.circle;
     }
 }

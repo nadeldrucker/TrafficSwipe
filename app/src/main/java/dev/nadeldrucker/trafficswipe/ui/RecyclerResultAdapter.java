@@ -1,19 +1,21 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.BlendModeColorFilterCompat;
+import androidx.core.graphics.BlendModeCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
@@ -23,6 +25,11 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
 
     private List<DepartureItem> departureItems = new ArrayList<>();
     private Set<ViewHolder> viewHolders = new HashSet<>();
+    private Context context;
+
+    public RecyclerResultAdapter(Context context) {
+        this.context = context;
+    }
 
     public static class DepartureItem {
         public Vehicle vehicle;
@@ -74,7 +81,14 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         Vehicle vehicle = departureItem.vehicle;
 
         holder.lineNumber.setText(vehicle.getLineId());
-        holder.lineNumber.setBackground(vehicle.getIcon());
+
+        Drawable background = context.getDrawable(vehicle.getIconDrawableResource());
+        Objects.requireNonNull(background);
+
+        int backgroundColor = context.getColor(vehicle.getIconColor());
+
+        background.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(backgroundColor, BlendModeCompat.MULTIPLY));
+        holder.lineNumber.setBackground(background);
 
         holder.destination.setText(vehicle.getFinalDestination().getName());
         holder.destination.setSelected(true);

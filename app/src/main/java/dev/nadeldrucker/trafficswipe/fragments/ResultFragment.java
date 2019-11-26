@@ -76,7 +76,7 @@ public class ResultFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerResult);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapter = new RecyclerResultAdapter();
+        recyclerAdapter = new RecyclerResultAdapter(getContext());
         recyclerView.setAdapter(recyclerAdapter);
 
         tvResult = view.findViewById(R.id.tvResult);

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.android.volley.RequestQueue;
 
+import dev.nadeldrucker.trafficswipe.R;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.TreeMap;
@@ -25,7 +26,7 @@ public class Walk extends Vehicle {
     }
 
     @Override
-    public Drawable getIcon() {
-        return null;
+    public int getIconDrawableResource() {
+        return -1;
     }
 }
