@@ -69,13 +69,13 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_result, parent, false);
-        ViewHolder holder = new ViewHolder(v);
-        viewHolders.add(holder);
-        return holder;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        viewHolders.add(holder);
+
         DepartureItem departureItem = departureItems.get(position);
 
         Vehicle vehicle = departureItem.vehicle;
