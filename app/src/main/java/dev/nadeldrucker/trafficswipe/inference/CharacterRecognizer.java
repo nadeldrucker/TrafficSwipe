@@ -4,20 +4,17 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.*;
 import android.util.Log;
 import dev.nadeldrucker.trafficswipe.App;
-import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
 import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
 import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.Tensor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 /**
  * Class for inferring handwritten characters
@@ -74,6 +71,10 @@ public class CharacterRecognizer {
         return instance;
     }
 
+    /**
+     * Puts the bitmap in the byte buffer and converts to grayscale 0-1
+     * @param bitmap bitmap to use
+     */
     private void putBitmapInBuffer(Bitmap bitmap) {
         int[] imagePixels = new int[WIDTH * HEIGHT];
 
@@ -91,6 +92,11 @@ public class CharacterRecognizer {
         }
     }
 
+    /**
+     * Infers a character from a path using a predefined tflite model
+     * @param path path to use as input
+     * @return character inferred
+     */
     public char infer(List<List<TouchCoordinate>> path) {
         Bitmap bitmapFromPaths = createBitmapFromPaths(path);
         putBitmapInBuffer(bitmapFromPaths);
@@ -110,6 +116,11 @@ public class CharacterRecognizer {
         return indexInAlphabetToChar((int) maxIndex);
     }
 
+    /**
+     * Creates a scaled bitmap from the given paths. Scales and preprocesses them accordingly.
+     * @param rawPaths paths to use as input
+     * @return bitmap
+     */
     private Bitmap createBitmapFromPaths(List<List<TouchCoordinate>> rawPaths) {
         Bitmap bitmap = Bitmap.createBitmap(PRESCALE_WIDTH, PRESCALE_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -143,6 +154,12 @@ public class CharacterRecognizer {
         return Bitmap.createScaledBitmap(bitmap, WIDTH, HEIGHT, true);
     }
 
+    /**
+     * Preprocesses the paths given by adding a padding, making the image square, centering the image.
+     * @param paths paths to use as input
+     * @param scale width/height to use
+     * @return scaled paths
+     */
     private List<List<TouchCoordinate>> preprocessPaths(List<List<TouchCoordinate>> paths, float scale) {
         float maxX = paths.stream().flatMap(List::stream).max(Comparator.comparing(TouchCoordinate::getX)).map(TouchCoordinate::getX).orElse(Float.MAX_VALUE);
         float maxY = paths.stream().flatMap(List::stream).max(Comparator.comparing(TouchCoordinate::getY)).map(TouchCoordinate::getY).orElse(Float.MAX_VALUE);
@@ -203,6 +220,11 @@ public class CharacterRecognizer {
         return grayscaleValue / 255.0f;
     }
 
+    /**
+     * Calculates the character based on the index in the alphabet.
+     * @param index index of char in alphabet
+     * @return character
+     */
     private static char indexInAlphabetToChar(int index) {
         final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return alphabet.charAt(index);
