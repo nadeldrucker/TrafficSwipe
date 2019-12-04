@@ -45,7 +45,8 @@
         app:maxImageSize="35dp"
         app:tint="@color/colorText"/>
 
-    <dev.nadeldrucker.trafficswipe.animation.TouchPathView
+    <dev.nadeldrucker.trafficswipe.ui.CharacterDrawView
+        android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constrainedHeight="true"
