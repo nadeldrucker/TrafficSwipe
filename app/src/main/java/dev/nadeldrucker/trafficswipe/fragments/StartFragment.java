@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,12 +23,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.inference.CharacterRecognizer;
+import dev.nadeldrucker.trafficswipe.ui.CharacterDrawView;
 
 public class StartFragment extends Fragment {
 
     private static final String TAG = "StartFragment";
     public static final String BUNDLE_QUERY = "query";
-
 
     public StartFragment() {
     }
@@ -72,11 +74,17 @@ public class StartFragment extends Fragment {
         final FloatingActionButton fabSearch = view.findViewById(R.id.startFragment_searchFab);
         fabSearch.setOnClickListener(v -> {
             etSearch.requestFocus();
-
             setSoftKeyboardState(true, etSearch);
         });
         previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
 
+        CharacterDrawView drawView = view.findViewById(R.id.drawView);
+        drawView.setListener(l -> {
+            Log.d(TAG, "onViewCreated: accepted values");
+            char inferredChar = CharacterRecognizer.getInstance().infer(l);
+            drawView.clearTouchPaths();
+            Objects.requireNonNull(getActivity()).runOnUiThread(() -> etSearch.getText().append(inferredChar));
+        });
     }
 
     /**
