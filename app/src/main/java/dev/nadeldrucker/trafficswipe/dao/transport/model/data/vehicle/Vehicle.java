@@ -106,6 +106,6 @@ public abstract class Vehicle extends TransportEntity {
      * @return  line color resource id
      */
     public int getIconColor(){
-        return lineColors[lineId.hashCode() % lineColors.length];
+        return lineColors[Math.abs(lineId.hashCode()) % lineColors.length];
     }
 }
