@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -15,13 +14,13 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
  */
 public abstract class Station extends TransportEntity {
     private String name;
-    private String shortage;
+    private String abbreviation;
     private Location location;
 
-    public Station(RequestQueue queue, String name, Location location, String shortage) {
+    public Station(RequestQueue queue, String name, Location location, String abbreviation) {
         super(queue);
         this.name = name;
-        this.shortage = shortage;
+        this.abbreviation = abbreviation;
         this.location = location;
     }
 
@@ -31,8 +30,8 @@ public abstract class Station extends TransportEntity {
         this.location = location;
     }
 
-    public String getShortage() {
-        return shortage;
+    public char[] getAbbreviation() {
+        return abbreviation;
     }
 
     public String getName() {
@@ -48,8 +47,8 @@ public abstract class Station extends TransportEntity {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Station) {
-            if (((Station) obj).shortage != null || shortage != null)
-                return shortage.equals(((Station) obj).shortage);
+            if (((Station) obj).abbreviation != null || abbreviation != null)
+                return abbreviation.equals(((Station) obj).abbreviation);
             return ((Station) obj).name.equals(name);
         } else if (obj instanceof Location)
             return location.getLatitude() == ((Location) obj).getLatitude() && location.getLongitude() == ((Location) obj).getLongitude();
