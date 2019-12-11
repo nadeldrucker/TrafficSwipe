@@ -11,6 +11,7 @@ import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -90,10 +91,10 @@ public abstract class Vehicle extends TransportEntity {
      * Get a formatted String to show waiting time on gui
      *
      * @param toStation station where the vehicle is headed to
-     * @return time until vehicle departure from the station
+     * @return time until vehicle departure from the station, null if the stop doesn't exist
      */
     public Duration getTimeToStation(Station toStation) {
-        return Duration.between(ZonedDateTime.now(), stops.get(toStation).getDepartureTimeWithDelay());
+        return Duration.between(ZonedDateTime.now(), Objects.requireNonNull(stops.get(toStation)).getDepartureTimeWithDelay());
     }
 
     /**
@@ -106,6 +107,6 @@ public abstract class Vehicle extends TransportEntity {
      * @return  line color resource id
      */
     public int getIconColor(){
-        return lineColors[lineId.hashCode() % lineColors.length];
+        return lineColors[Math.abs(lineId.hashCode()) % lineColors.length];
     }
 }
