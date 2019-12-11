@@ -20,10 +20,12 @@ import java.util.concurrent.ExecutionException;
 public abstract class AbstractVolleyMockApiTest {
 
     public RequestQueue requestQueue;
+    public MockHttpStack mockHttpStack;
 
     @Before
     public void before() throws ExecutionException, InterruptedException {
-        requestQueue = new RequestQueue(new NoCache(), new BasicNetwork(new MockHttpStack()), 1, new ExecutorDelivery(new InstantExecutor()));
+        mockHttpStack = new MockHttpStack();
+        requestQueue = new RequestQueue(new NoCache(), new BasicNetwork(mockHttpStack), 1, new ExecutorDelivery(new InstantExecutor()));
         requestQueue.start();
     }
 

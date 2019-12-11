@@ -1,0 +1,44 @@
+{
+  "request": {
+    "url": "https://webapi.vvo-online.de/tr/pointfinder"
+  },
+  "response": {
+    "statusCode": 200,
+    "body": {
+      "PointStatus": "List",
+      "Status": {
+        "Code": "Ok"
+      },
+      "Points": [
+        "33000132|||Nürnberger Platz|5656599|4621244|0||",
+        "33000012|||Bautzner Straße / Rothenburger Straße|5660113|4622913|0||",
+        "33000903|||Altenberger Platz|5657169|4626874|0||",
+        "33000553|||Flensburger Straße|5661377|4616873|0||",
+        "33000513|||Regensburger Straße|5655990|4620829|0||",
+        "33006591||Weixdorf (Dresden)|Radeburger Landstraße|5670188|4625640|0||",
+        "33000067|||Altenberger Straße|5657590|4626758|0||",
+        "33000088|||Marienberger Straße|5656036|4626762|0||",
+        "33000249|||Trachenberger Platz|5662481|4621169|0||",
+        "33000825|||Wittenberger Straße|5658388|4625731|0||",
+        "33000214|||Scharfenberger Straße|5661246|4618817|0||",
+        "33000454||Cossebaude/Neu-Leuteritz|Erna-Berger-Straße|5662682|4614200|0||",
+        "33000401|||Fährstelle Eisenberger Straße|5660895|4620953|0||",
+        "33000720|||Bamberger Straße|5656814|4620222|0||",
+        "33000186|||Hamburger Straße|5659612|4619396|0||",
+        "33000269|||Moritzburger Weg|5664159|4623992|0||",
+        "33000048|||Augsburger Straße|5659083|4625026|0||",
+        "33000007|||Straßburger Platz|5658241|4623174|0||",
+        "33003778||Weißig (Dresden)|Radeberger Straße|5660917|4632273|0||",
+        "33000156|||Würzburger Straße|5656877|4619599|0||",
+        "33003799||Weißig (Dresden)|Radeberger Straße Süd|5660578|4632360|0||",
+        "33000025|||S-Bf. Freiberger Straße|5658462|4620722|0||",
+        "33006590||Weixdorf (Dresden)|Alte Moritzburger Straße|5669886|4625787|0||",
+        "33000026|||Schwimmhalle Freiberger Platz|5658668|4621113|0||",
+        "33000244|||Bürgerstraße|5661616|4621030|0||",
+        "33000044|||Gabelsbergerstraße|5658663|4624532|0||",
+        "33000393|||Wormser Str. (Ersatz für Gabelsbergerstr.)|5658440|4625080|0||"
+      ],
+      "ExpirationTime": "\/Date(1576187306987+0100)\/"
+    }
+  }
+}

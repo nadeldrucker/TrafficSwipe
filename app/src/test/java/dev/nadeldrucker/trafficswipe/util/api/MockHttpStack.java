@@ -14,15 +14,14 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mocked http stack providing responses predefined in json files.
  */
-class MockHttpStack extends BaseHttpStack {
+public class MockHttpStack extends BaseHttpStack {
+
+    private List<MockFile> nextResponses = new ArrayList<>();
 
     @Override
     public HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) {
@@ -33,9 +32,8 @@ class MockHttpStack extends BaseHttpStack {
         }
 
         if (request instanceof JsonObjectRequest) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("test", "hallo!");
-            return createValidResponse(jsonObject);
+            MockFile mockFile = nextResponses.get(nextResponses.size() - 1);
+            return createValidResponse(mockFile.response.body, mockFile.response.statusCode);
         } else {
             throw new UnsupportedOperationException("Only JsonRequests are supported atm!");
         }
@@ -46,19 +44,20 @@ class MockHttpStack extends BaseHttpStack {
      *
      * @param mockFilePath path to mockfile
      */
-    public void queueNextRequest(String mockFilePath) {
+    public void queueNextResponse(String mockFilePath) {
         MockFile mockFile = MockFileReader.getInstance().readApiMockFile(mockFilePath);
+        nextResponses.add(mockFile);
     }
 
-    private HttpResponse createValidResponse(JsonObject responseBody) {
+    private HttpResponse createValidResponse(JsonObject responseBody, int statusCode) {
         DateFormat dateFormat = new SimpleDateFormat("EEE, dd mmm yyyy HH:mm:ss zzz");
         List<Header> headers = Arrays.asList(new Header("Access-Control-Allow-Origin", "*"),
-                new Header("Content-Type", "*"),
+                new Header("Content-Type", "application/json"),
                 new Header("Date", dateFormat.format(new Date())));
 
         byte[] bodyBytes = responseBody.toString().getBytes(StandardCharsets.UTF_8);
         InputStream stream = new ByteArrayInputStream(bodyBytes);
 
-        return new HttpResponse(200, headers, bodyBytes.length, stream);
+        return new HttpResponse(statusCode, headers, bodyBytes.length, stream);
     }
 }
