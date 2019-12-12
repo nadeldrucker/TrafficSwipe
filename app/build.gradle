@@ -21,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     aaptOptions {
         noCompress "tflite"
     }
@@ -46,4 +49,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation 'org.apache.httpcomponents:httpcore:4.4.10'
+    testImplementation 'org.apache.httpcomponents:httpclient:4.5.6'
+    testImplementation 'org.json:json:20090211'
 }
