@@ -48,7 +48,7 @@ public class DepartureTime implements Comparable<DepartureTime> {
     public ZonedDateTime getDepartureTimeWithDelay() {
         ZonedDateTime dateTime = departure;
         if (delay != null) {
-            dateTime.plus(delay);
+            dateTime = dateTime.plus(delay);
         }
 
         return dateTime;
