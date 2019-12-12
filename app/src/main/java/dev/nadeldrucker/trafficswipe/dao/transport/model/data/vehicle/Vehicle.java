@@ -88,7 +88,7 @@ public abstract class Vehicle extends TransportEntity {
     }
 
     /**
-     * Get a formatted String to show waiting time on gui
+     * Get duration to station
      *
      * @param toStation station where the vehicle is headed to
      * @return time until vehicle departure from the station, null if the stop doesn't exist

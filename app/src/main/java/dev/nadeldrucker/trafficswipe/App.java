@@ -2,6 +2,7 @@ package dev.nadeldrucker.trafficswipe;
 
 import android.app.Application;
 import android.content.Context;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 public class App extends Application {
 
@@ -17,7 +18,8 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        instance = this;
         super.onCreate();
+        AndroidThreeTen.init(this);
+        instance = this;
     }
 }
