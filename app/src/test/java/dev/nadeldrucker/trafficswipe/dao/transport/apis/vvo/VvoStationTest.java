@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class VvoStationTest extends AbstractVolleyMockApiTest {
      */
     @Test
     public void getStops() throws ExecutionException, InterruptedException {
+        System.out.println("Current timezone: " + ZoneId.systemDefault().toString());
+
         mockHttpStack.queueNextResponse("mocks/vvo/GETDepartures.json");
         List<Map.Entry<Vehicle, DepartureTime>> list = vvoStation.getDepartures().get().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
@@ -40,10 +43,10 @@ public class VvoStationTest extends AbstractVolleyMockApiTest {
 
         // check 8 direction gorbitz (first entry)
         Map.Entry<Vehicle, DepartureTime> gorbitz8 = list.get(0);
+        assertEquals("voe:11008: :H:j19", gorbitz8.getKey().getEntityId());
         assertEquals(LocalDateTime.of(2019, 12, 12, 21, 38, 0), gorbitz8.getValue().getDepartureTimeWithDelay().toLocalDateTime());
         assertEquals(Duration.of(0, ChronoUnit.SECONDS), gorbitz8.getValue().getDelay());
         assertTrue(gorbitz8.getKey() instanceof Tram);
-        assertEquals("voe:11008: :H:j19", gorbitz8.getKey().getEntityId());
         assertEquals("8", gorbitz8.getKey().getLineId());
 
         // check a departure that is delayed

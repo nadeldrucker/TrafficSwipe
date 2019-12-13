@@ -7,6 +7,7 @@ import com.android.volley.toolbox.NoCache;
 import org.junit.After;
 import org.junit.Before;
 
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -24,6 +25,7 @@ public abstract class AbstractVolleyMockApiTest {
 
     @Before
     public void before() throws ExecutionException, InterruptedException {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
         mockHttpStack = new MockHttpStack();
         requestQueue = new RequestQueue(new NoCache(), new BasicNetwork(mockHttpStack), 1, new ExecutorDelivery(new InstantExecutor()));
         requestQueue.start();
