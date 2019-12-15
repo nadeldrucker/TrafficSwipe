@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 public final class App extends Application {
 
@@ -28,7 +29,8 @@ public final class App extends Application {
 
     @Override
     public void onCreate() {
-        instance = this;
         super.onCreate();
+        AndroidThreeTen.init(this);
+        instance = this;
     }
 }

@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
-
+import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -35,6 +35,7 @@ public abstract class AbstractVolleyMockApiTest {
 
     @Before
     public void before() throws ExecutionException, InterruptedException {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
         mockHttpStack = new MockHttpStack();
         requestQueue = new RequestQueue(new NoCache(), new BasicNetwork(mockHttpStack), 1, new ExecutorDelivery(new InstantExecutor()));
         requestQueue.start();

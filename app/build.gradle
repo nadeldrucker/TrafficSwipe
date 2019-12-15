@@ -23,6 +23,11 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
     }
     aaptOptions {
         noCompress "tflite"
@@ -58,4 +63,9 @@ dependencies {
     testImplementation 'org.apache.httpcomponents:httpclient:4.5.6'
     testImplementation 'org.json:json:20090211'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+    // use normal threetenbp for unit testing, circumvents lacking context
+    testImplementation ('org.threeten:threetenbp:1.3.2'){
+        exclude group:'com.jakewharton.threetenabp', module:'threetenabp'
+    }
 }

@@ -28,6 +28,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 public class VvoStation extends Station {
 
     private String stopId;
+    private static final ZoneId VVO_ZONE = ZoneId.of("Europe/Berlin");
 
     public VvoStation(@NonNull RequestQueue queue, @NonNull String name, @Nullable Location location, @Nullable String stopId) {
         super(queue, name, location);
@@ -45,11 +46,11 @@ public class VvoStation extends Station {
                 // for every departure create an entry in the vehicle departure map
                 response.getResponse().get().getDepartures()
                         .forEach(departure -> {
-                            ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(ZoneId.systemDefault());
+                            ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(VVO_ZONE);
 
                             Duration d = null;
                             if (departure.getRealTime() != null) {
-                                ZonedDateTime actualDeparture = Instant.ofEpochMilli(departure.getRealTime().getTime()).atZone(ZoneId.systemDefault());
+                                ZonedDateTime actualDeparture = Instant.ofEpochMilli(departure.getRealTime().getTime()).atZone(VVO_ZONE);
                                 d = Duration.between(scheduledDepartureTime, actualDeparture);
                             }
 
@@ -62,7 +63,7 @@ public class VvoStation extends Station {
                             stops.put(this, departureTime);
 
                             // add final station to the vehicles stops (use max time, making it the last station)
-                            DepartureTime finalDepartureTime = new DepartureTime(Instant.ofEpochMilli(Long.MAX_VALUE).atZone(ZoneId.systemDefault()), Duration.ofSeconds(0));
+                            DepartureTime finalDepartureTime = new DepartureTime(Instant.ofEpochMilli(Long.MAX_VALUE).atZone(VVO_ZONE), Duration.ofSeconds(0));
                             stops.put(new VvoStation(getQueue(), departure.getDirection(), null, null), finalDepartureTime);
 
                             // create vehicle

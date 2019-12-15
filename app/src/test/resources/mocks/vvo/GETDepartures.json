@@ -5,62 +5,24 @@
   "response": {
     "statusCode": 200,
     "body": {
-      "Name": "Nürnberger Platz",
+      "Name": "Hauptbahnhof",
       "Status": {
         "Code": "Ok"
       },
       "Place": "Dresden",
-      "ExpirationTime": "\/Date(1575587020438+0100)\/",
+      "ExpirationTime": "\/Date(1576183044796+0100)\/",
       "Departures": [
         {
-          "Id": "voe:21061: :R:j19",
-          "LineName": "61",
-          "Direction": "Bühlau",
-          "Platform": {
-            "Name": "3",
-            "Type": "Platform"
-          },
-          "Mot": "CityBus",
-          "RealTime": "\/Date(1575587520000-0000)\/",
-          "ScheduledTime": "\/Date(1575587520000-0000)\/",
-          "State": "InTime",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "21061",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:21061: :H:j19",
-          "LineName": "61",
-          "Direction": "Löbtau",
-          "Platform": {
-            "Name": "6",
-            "Type": "Platform"
-          },
-          "Mot": "CityBus",
-          "RealTime": "\/Date(1575587640000-0000)\/",
-          "ScheduledTime": "\/Date(1575587580000-0000)\/",
-          "State": "Delayed",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "21061",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11008: :R:j19",
+          "Id": "voe:11008: :H:j19",
           "LineName": "8",
-          "Direction": "Infineon Süd",
+          "Direction": "Gorbitz",
           "Platform": {
-            "Name": "3",
+            "Name": "2",
             "Type": "Platform"
           },
           "Mot": "Tram",
-          "RealTime": "\/Date(1575587640000-0000)\/",
-          "ScheduledTime": "\/Date(1575587640000-0000)\/",
+          "RealTime": "\/Date(1576183080000-0000)\/",
+          "ScheduledTime": "\/Date(1576183080000-0000)\/",
           "State": "InTime",
           "RouteChanges": [
             "4054"
@@ -72,21 +34,177 @@
           "CancelReasons": []
         },
         {
-          "Id": "voe:11003: :R:j19",
-          "LineName": "3",
-          "Direction": "Coschütz",
+          "Id": "voe:11007: :R:j19",
+          "LineName": "7",
+          "Direction": "Weixdorf",
+          "Platform": {
+            "Name": "1",
+            "Type": "Platform"
+          },
+          "Mot": "Tram",
+          "RealTime": "\/Date(1576183200000-0000)\/",
+          "ScheduledTime": "\/Date(1576183200000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "11007",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:23360: :R:j19",
+          "LineName": "360",
+          "Direction": "Pirnaischer Platz",
+          "Platform": {
+            "Name": "5",
+            "Type": "Platform"
+          },
+          "Mot": "PlusBus",
+          "RealTime": "\/Date(1576183380000-0000)\/",
+          "ScheduledTime": "\/Date(1576183380000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "23360",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:11007: :H:j19",
+          "LineName": "7",
+          "Direction": "Pennrich",
           "Platform": {
             "Name": "2",
             "Type": "Platform"
           },
           "Mot": "Tram",
-          "RealTime": "\/Date(1575588180000-0000)\/",
-          "ScheduledTime": "\/Date(1575588180000-0000)\/",
+          "RealTime": "\/Date(1576183440000-0000)\/",
+          "ScheduledTime": "\/Date(1576183440000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "11007",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:11003: :H:j19",
+          "LineName": "3",
+          "Direction": "Wilder Mann",
+          "Platform": {
+            "Name": "3",
+            "Type": "Platform"
+          },
+          "Mot": "Tram",
+          "RealTime": "\/Date(1576183500000-0000)\/",
+          "ScheduledTime": "\/Date(1576183440000-0000)\/",
+          "State": "Delayed",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "11003",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:21066: :R:j19",
+          "LineName": "66",
+          "Direction": "Lockwitz",
+          "Platform": {
+            "Name": "5",
+            "Type": "Platform"
+          },
+          "Mot": "CityBus",
+          "RealTime": "\/Date(1576183560000-0000)\/",
+          "ScheduledTime": "\/Date(1576183560000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [
+            "6868"
+          ],
+          "Diva": {
+            "Number": "21066",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:11003: :R:j19",
+          "LineName": "3",
+          "Direction": "Coschütz",
+          "Platform": {
+            "Name": "4",
+            "Type": "Platform"
+          },
+          "Mot": "Tram",
+          "RealTime": "\/Date(1576183680000-0000)\/",
+          "ScheduledTime": "\/Date(1576183680000-0000)\/",
           "State": "InTime",
           "RouteChanges": [],
           "Diva": {
             "Number": "11003",
             "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "ddb:92D02: :H:j20",
+          "LineName": "S 2",
+          "Direction": "Dresden Flughafen",
+          "Platform": {
+            "Name": "19",
+            "Type": "Railtrack"
+          },
+          "Mot": "SuburbanRailway",
+          "RealTime": "\/Date(1576183680000-0000)\/",
+          "ScheduledTime": "\/Date(1576183680000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "92D02",
+            "Network": "ddb"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "voe:11008: :R:j19",
+          "LineName": "8",
+          "Direction": "Hellerau",
+          "Platform": {
+            "Name": "3",
+            "Type": "Platform"
+          },
+          "Mot": "Tram",
+          "RealTime": "\/Date(1576183740000-0000)\/",
+          "ScheduledTime": "\/Date(1576183740000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [
+            "4054"
+          ],
+          "Diva": {
+            "Number": "11008",
+            "Network": "voe"
+          },
+          "CancelReasons": []
+        },
+        {
+          "Id": "ddb:90D15: :R:j20",
+          "LineName": "RE 15",
+          "Direction": "Hoyerswerda Bahnhof",
+          "Platform": {
+            "Name": "2",
+            "Type": "Railtrack"
+          },
+          "Mot": "Train",
+          "RealTime": "\/Date(1576183860000-0000)\/",
+          "ScheduledTime": "\/Date(1576183860000-0000)\/",
+          "State": "InTime",
+          "RouteChanges": [],
+          "Diva": {
+            "Number": "90D15",
+            "Network": "ddb"
           },
           "CancelReasons": []
         },
@@ -95,12 +213,12 @@
           "LineName": "8",
           "Direction": "Südvorstadt",
           "Platform": {
-            "Name": "5",
+            "Name": "4",
             "Type": "Platform"
           },
           "Mot": "Tram",
-          "RealTime": "\/Date(1575588480000-0000)\/",
-          "ScheduledTime": "\/Date(1575588480000-0000)\/",
+          "RealTime": "\/Date(1576183980000-0000)\/",
+          "ScheduledTime": "\/Date(1576183980000-0000)\/",
           "State": "InTime",
           "RouteChanges": [
             "4054"
@@ -112,186 +230,80 @@
           "CancelReasons": []
         },
         {
-          "Id": "voe:11003: :H:j19",
-          "LineName": "3",
-          "Direction": "Wilder Mann",
+          "Id": "voe:11007: :R:j19",
+          "LineName": "7",
+          "Direction": "Weixdorf",
           "Platform": {
             "Name": "1",
             "Type": "Platform"
           },
           "Mot": "Tram",
-          "RealTime": "\/Date(1575588720000-0000)\/",
-          "ScheduledTime": "\/Date(1575588720000-0000)\/",
+          "RealTime": "\/Date(1576184100000-0000)\/",
+          "ScheduledTime": "\/Date(1576184100000-0000)\/",
           "State": "InTime",
           "RouteChanges": [],
           "Diva": {
-            "Number": "11003",
+            "Number": "11007",
             "Network": "voe"
           },
           "CancelReasons": []
         },
         {
-          "Id": "voe:21061: :R:j19",
-          "LineName": "61",
-          "Direction": "Bühlau",
+          "Id": "voe:23360: :H:j19",
+          "LineName": "360",
+          "Direction": "Dippoldiswalde Busbahnhof",
           "Platform": {
-            "Name": "3",
+            "Name": "6",
             "Type": "Platform"
           },
-          "Mot": "CityBus",
-          "RealTime": "\/Date(1575589320000-0000)\/",
-          "ScheduledTime": "\/Date(1575589320000-0000)\/",
+          "Mot": "PlusBus",
+          "RealTime": "\/Date(1576184160000-0000)\/",
+          "ScheduledTime": "\/Date(1576184160000-0000)\/",
           "State": "InTime",
           "RouteChanges": [],
           "Diva": {
-            "Number": "21061",
+            "Number": "23360",
             "Network": "voe"
           },
           "CancelReasons": []
         },
         {
-          "Id": "voe:21061: :H:j19",
-          "LineName": "61",
-          "Direction": "Löbtau",
+          "Id": "voe:21066: :H:j19",
+          "LineName": "66",
+          "Direction": "Freital-Burgk",
           "Platform": {
             "Name": "6",
             "Type": "Platform"
           },
           "Mot": "CityBus",
-          "RealTime": "\/Date(1575589380000-0000)\/",
-          "ScheduledTime": "\/Date(1575589380000-0000)\/",
-          "State": "InTime",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "21061",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11008: :R:j19",
-          "LineName": "8",
-          "Direction": "Infineon Süd",
-          "Platform": {
-            "Name": "3",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "RealTime": "\/Date(1575589440000-0000)\/",
-          "ScheduledTime": "\/Date(1575589440000-0000)\/",
+          "RealTime": "\/Date(1576184220000-0000)\/",
+          "ScheduledTime": "\/Date(1576184220000-0000)\/",
           "State": "InTime",
           "RouteChanges": [
-            "4054"
+            "6868"
           ],
           "Diva": {
-            "Number": "11008",
+            "Number": "21066",
             "Network": "voe"
           },
           "CancelReasons": []
         },
         {
-          "Id": "voe:11003: :H:j19",
-          "LineName": "3",
-          "Direction": "Btf Trachenberge",
+          "Id": "ddb:92D01: :H:j20",
+          "LineName": "S 1",
+          "Direction": "Bad Schandau Nationalparkbahnhof",
           "Platform": {
-            "Name": "1",
-            "Type": "Platform"
+            "Name": "18",
+            "Type": "Railtrack"
           },
-          "Mot": "Tram",
-          "RealTime": "\/Date(1575589620000-0000)\/",
-          "ScheduledTime": "\/Date(1575589620000-0000)\/",
+          "Mot": "SuburbanRailway",
+          "RealTime": "\/Date(1576184340000-0000)\/",
+          "ScheduledTime": "\/Date(1576184340000-0000)\/",
           "State": "InTime",
           "RouteChanges": [],
           "Diva": {
-            "Number": "11003",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11003: :R:j19",
-          "LineName": "3",
-          "Direction": "Coschütz",
-          "Platform": {
-            "Name": "2",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "RealTime": "\/Date(1575589980000-0000)\/",
-          "ScheduledTime": "\/Date(1575589980000-0000)\/",
-          "State": "InTime",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "11003",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11003: :H:j19",
-          "LineName": "3",
-          "Direction": "Wilder Mann",
-          "Platform": {
-            "Name": "1",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "ScheduledTime": "\/Date(1575592320000-0000)\/",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "11003",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11003: :R:j19",
-          "LineName": "3",
-          "Direction": "Coschütz",
-          "Platform": {
-            "Name": "2",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "ScheduledTime": "\/Date(1575593580000-0000)\/",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "11003",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11003: :H:j19",
-          "LineName": "3",
-          "Direction": "Wilder Mann",
-          "Platform": {
-            "Name": "1",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "ScheduledTime": "\/Date(1575595920000-0000)\/",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "11003",
-            "Network": "voe"
-          },
-          "CancelReasons": []
-        },
-        {
-          "Id": "voe:11003: :R:j19",
-          "LineName": "3",
-          "Direction": "Coschütz",
-          "Platform": {
-            "Name": "2",
-            "Type": "Platform"
-          },
-          "Mot": "Tram",
-          "ScheduledTime": "\/Date(1575597180000-0000)\/",
-          "RouteChanges": [],
-          "Diva": {
-            "Number": "11003",
-            "Network": "voe"
+            "Number": "92D01",
+            "Network": "ddb"
           },
           "CancelReasons": []
         }
