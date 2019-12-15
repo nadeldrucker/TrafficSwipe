@@ -57,4 +57,5 @@ dependencies {
     testImplementation 'org.apache.httpcomponents:httpcore:4.4.10'
     testImplementation 'org.apache.httpcomponents:httpclient:4.5.6'
     testImplementation 'org.json:json:20090211'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }
