@@ -41,7 +41,7 @@ public class TransportApiFactory {
                 return new VvoEntrypoint(queue);
         }
 
-        return null;
+        throw new IllegalArgumentException("ApiProvider has no implementation!");
     }
 
 }

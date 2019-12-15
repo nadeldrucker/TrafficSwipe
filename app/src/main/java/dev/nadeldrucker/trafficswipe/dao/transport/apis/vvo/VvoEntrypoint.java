@@ -1,5 +1,7 @@
 package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.android.volley.RequestQueue;
 
 import java.util.List;
@@ -7,8 +9,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import dev.nadeldrucker.jvvo.Models.Stop;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
@@ -20,8 +22,8 @@ public class VvoEntrypoint extends Entrypoint {
     }
 
     @Override
-    public CompletableFuture<List<Station>> getStops(String name) {
-        CompletableFuture<List<Station>> future = new CompletableFuture<>();
+    public LiveData<DataWrapper<List<Station>>> getStops(String name) {
+        MutableLiveData<DataWrapper<List<Station>>> liveData = new MutableLiveData<>();
 
         Stop.find(name, queue, response -> {
             if (response.getResponse().isPresent()) {
@@ -29,13 +31,13 @@ public class VvoEntrypoint extends Entrypoint {
                         .stream()
                         .map(stop -> VvoStation.fromJVVOStop(queue, stop))
                         .collect(Collectors.toList());
-                future.complete(stations);
+                liveData.postValue(DataWrapper.createOfData(stations));
             } else if (response.getError().isPresent()) {
-                future.completeExceptionally(new RequestException("Couldn't complete getStops request! " + response.getError().get().getDescription()));
+                liveData.postValue(DataWrapper.createOfError(DataWrapper.ErrorType.NETWORK_ERROR, "Couldn't complete getStops request! " + response.getError().get().getDescription()));
             }
         });
 
-        return future;
+        return liveData;
     }
 
     @Override

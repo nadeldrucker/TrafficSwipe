@@ -2,12 +2,14 @@ package dev.nadeldrucker.trafficswipe.dao.transport.model.data;
 
 import androidx.annotation.Nullable;
 
+import androidx.lifecycle.LiveData;
 import com.android.volley.RequestQueue;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 
 /**
@@ -43,7 +45,7 @@ public abstract class Station extends TransportEntity {
         return location;
     }
 
-    public abstract CompletableFuture<Map<Vehicle, DepartureTime>> getDepartures();
+    public abstract LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures();
 
     @Override
     public boolean equals(@Nullable Object obj) {

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
+import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import org.threeten.bp.Duration;
 import org.threeten.bp.temporal.ChronoUnit;
 
@@ -80,55 +83,33 @@ public class ResultFragment extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         tvResult = view.findViewById(R.id.tvResult);
-        TextView tvTitle = view.findViewById(R.id.tvType);
-        String query = Objects.requireNonNull(getArguments()).getString(StartFragment.BUNDLE_QUERY);
-        tvResult.setText(query);
-        tvTitle.setText(R.string.activity_title_departures);
 
         tvLastFetch = view.findViewById(R.id.tvLastFetch);
 
         swipeRefreshLayout = view.findViewById(R.id.refreshLayoutResult);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            queryData(query);
         });
 
-        queryData(query);
+        FragmentActivity activity = Objects.requireNonNull(getActivity());
+
+        DeparturesViewModel viewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
+
+        viewModel.getStations().observe(activity, listDataWrapper -> listDataWrapper.evaluate(
+                stations -> tvResult.setText(stations.get(0).getName()),
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+        );
+
+        viewModel.getDepartures().observe(activity, mapDataWrapper -> mapDataWrapper.evaluate(
+                this::onDeparturesChanged,
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+        );
     }
 
     @Override
     public void onDestroyView() {
         isViewDestroyed = true;
         super.onDestroyView();
-    }
-
-    private void onStationNameChanged(String name) {
-        tvResult.setText(name);
-    }
-
-    /**
-     * Queries data from api
-     *
-     * @param query query string
-     */
-    private void queryData(String query) {
-        Entrypoint api = TransportApiFactory.createTransportApiDao(TransportApiFactory.ApiProvider.VVO,
-                Volley.newRequestQueue(Objects.requireNonNull(getContext())));
-
-        Objects.requireNonNull(api);
-
-        api.getStops(query).thenCompose(stations -> {
-            if (stations.size() > 0) {
-                Station station = stations.get(0);
-                onStationNameChanged(station.getName());
-                return station.getDepartures();
-            } else {
-                throw new RuntimeException("No stations found!");
-            }
-        }).exceptionally(throwable -> {
-            Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-            return Collections.emptyMap();
-        }).thenAccept(this::onDeparturesChanged);
     }
 
     /**

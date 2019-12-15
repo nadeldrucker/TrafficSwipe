@@ -3,8 +3,11 @@ package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.android.volley.RequestQueue;
 
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import org.threeten.bp.Duration;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
@@ -12,10 +15,8 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import dev.nadeldrucker.jvvo.Models.Stop;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
@@ -34,8 +35,9 @@ public class VvoStation extends Station {
     }
 
     @Override
-    public CompletableFuture<Map<Vehicle, DepartureTime>> getDepartures() {
-        CompletableFuture<Map<Vehicle, DepartureTime>> completableFuture = new CompletableFuture<>();
+    public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
+        MutableLiveData<DataWrapper<Map<Vehicle, DepartureTime>>> liveData = new MutableLiveData<>();
+
         dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, getQueue(), response -> {
             if (response.getResponse().isPresent()) {
                 HashMap<Vehicle, DepartureTime> vehicleDepartures = new HashMap<>();
@@ -85,12 +87,12 @@ public class VvoStation extends Station {
                             // add vehicle with departure time to vehicle map
                             vehicleDepartures.put(v, departureTime);
                         });
-                completableFuture.complete(vehicleDepartures);
+                liveData.postValue(DataWrapper.createOfData(vehicleDepartures));
             } else if (response.getError().isPresent()) {
-                completableFuture.completeExceptionally(new RequestException("Couldn't complete request! " + response.getError().get().getDescription()));
+                liveData.postValue(DataWrapper.createOfError(DataWrapper.ErrorType.NETWORK_ERROR, "Couldn't complete request! " + response.getError().get().getDescription()));
             }
         });
-        return completableFuture;
+        return liveData;
     }
 
     /**

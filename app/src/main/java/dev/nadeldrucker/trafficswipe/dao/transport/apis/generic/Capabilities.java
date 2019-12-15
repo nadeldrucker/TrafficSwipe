@@ -3,6 +3,7 @@ package dev.nadeldrucker.trafficswipe.dao.transport.apis.generic;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import androidx.lifecycle.LiveData;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Route;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
@@ -16,7 +17,7 @@ public interface Capabilities {
      * @param name name to query
      * @return future throwing exception if an error occurs
      */
-    CompletableFuture<List<Station>> getStops(String name);
+    LiveData<DataWrapper<List<Station>>> getStops(String name);
 
     /**
      * @param start       start station
