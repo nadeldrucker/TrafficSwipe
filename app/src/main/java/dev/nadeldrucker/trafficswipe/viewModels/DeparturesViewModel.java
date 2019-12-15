@@ -1,9 +1,6 @@
 package dev.nadeldrucker.trafficswipe.viewModels;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.*;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
@@ -29,6 +26,7 @@ public class DeparturesViewModel extends ViewModel {
 
     public DeparturesViewModel() {
         Entrypoint dao = TransportApiFactory.createTransportApiDao(TransportApiFactory.ApiProvider.VVO, App.getRequestQueue());
+
         stations = Transformations.switchMap(stationName, dao::getStops);
         departures = Transformations.switchMap(stations, wrappedStationList -> {
             AtomicReference<LiveData<DataWrapper<Map<Vehicle, DepartureTime>>>> lambdaDepartures = new AtomicReference<>(new MutableLiveData<>());
@@ -52,5 +50,9 @@ public class DeparturesViewModel extends ViewModel {
 
     public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
         return departures;
+    }
+
+    public void refresh(){
+        stationName.postValue(stationName.getValue());
     }
 }

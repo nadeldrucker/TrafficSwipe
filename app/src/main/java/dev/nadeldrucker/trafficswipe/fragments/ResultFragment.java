@@ -59,11 +59,7 @@ public class ResultFragment extends Fragment {
             // calculate time passed since last update
             if (lastUpdateTime != 0) {
                 long updateDelta = System.currentTimeMillis() - lastUpdateTime;
-
-                recyclerAdapter.getViewHolders().forEach(viewHolder -> {
-                    viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS));
-                });
-
+                recyclerAdapter.getViewHolders().forEach(viewHolder -> viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS)));
                 updateLastFetchTime(updateDelta);
             }
 
@@ -88,9 +84,6 @@ public class ResultFragment extends Fragment {
 
         swipeRefreshLayout = view.findViewById(R.id.refreshLayoutResult);
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-        });
-
         FragmentActivity activity = Objects.requireNonNull(getActivity());
 
         DeparturesViewModel viewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
@@ -104,6 +97,8 @@ public class ResultFragment extends Fragment {
                 this::onDeparturesChanged,
                 error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
         );
+
+        swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);
     }
 
     @Override
@@ -123,12 +118,11 @@ public class ResultFragment extends Fragment {
                 .map(entry -> new RecyclerResultAdapter.DepartureItem(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
 
+        recyclerAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+
         lastUpdateTime = System.currentTimeMillis();
         updateLastFetchTime(0);
-
-        recyclerAdapter.notifyDataSetChanged();
-
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     /**
