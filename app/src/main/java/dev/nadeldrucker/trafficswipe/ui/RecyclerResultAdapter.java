@@ -90,7 +90,7 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         background.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(backgroundColor, BlendModeCompat.MULTIPLY));
         holder.lineNumber.setBackground(background);
 
-        holder.destination.setText(vehicle.getFinalDestination().getName());
+        holder.destination.setText(vehicle.getDirection());
         holder.destination.setSelected(true);
 
         holder.originalTimeUntilDeparture = departureItem.departureTime.getRemainingTime();
@@ -106,6 +106,7 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
 
     public void setDepartureItems(List<DepartureItem> departureItems) {
         this.departureItems = departureItems;
+        notifyDataSetChanged();
     }
 
     public List<DepartureItem> getDepartureItems(){

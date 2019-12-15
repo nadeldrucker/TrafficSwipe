@@ -7,12 +7,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.android.volley.RequestQueue;
 
+import dev.nadeldrucker.jvvo.Models.Departure;
+import dev.nadeldrucker.jvvo.Models.Mode;
 import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import org.threeten.bp.Duration;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +42,7 @@ public class VvoStation extends Station {
     public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
         MutableLiveData<DataWrapper<Map<Vehicle, DepartureTime>>> liveData = new MutableLiveData<>();
 
-        dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, getQueue(), response -> {
+        dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, new Date(), Departure.DateType.departure, Mode.getAll(), true, getQueue(), response -> {
             if (response.getResponse().isPresent()) {
                 HashMap<Vehicle, DepartureTime> vehicleDepartures = new HashMap<>();
 
@@ -74,14 +77,14 @@ public class VvoStation extends Station {
                             Vehicle v;
                             switch (departure.getDiva().getNumber().charAt(0)) {
                                 case '1':
-                                    v = new Tram(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new Tram(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
                                     break;
                                 case '2':
-                                    v = new Bus(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new Bus(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
                                     break;
                                 default:
                                     //FIXME for now, the Sbahn Icon is shown whenever we're unable to parse vehicle type
-                                    v = new SBahn(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new SBahn(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
 
                             }
 

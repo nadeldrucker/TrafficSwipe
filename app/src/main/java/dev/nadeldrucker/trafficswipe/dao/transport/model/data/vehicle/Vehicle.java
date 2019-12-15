@@ -22,6 +22,7 @@ public abstract class Vehicle extends TransportEntity {
 
     private String lineId;
     private String entityId;
+    private String direction;
     private Map<Station, DepartureTime> stops;
 
     private final int[] lineColors = new int[]{
@@ -50,11 +51,12 @@ public abstract class Vehicle extends TransportEntity {
      * @param entityId           unique object identifier for later use, if provided by the api
      * @param stops              All stops and departures times from that station
      */
-    public Vehicle(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull Map<Station, DepartureTime> stops) {
+    public Vehicle(RequestQueue queue, @NonNull String lineId, @NonNull String direction, @Nullable String entityId, @NonNull Map<Station, DepartureTime> stops) {
         super(queue);
         this.lineId = lineId;
         this.entityId = entityId;
         this.stops = stops;
+        this.direction = direction;
     }
 
     /**
@@ -71,6 +73,13 @@ public abstract class Vehicle extends TransportEntity {
      */
     public String getEntityId() {
         return entityId;
+    }
+
+    /**
+     * @return direction of the vehicle, e.g. text on the display
+     */
+    public String getDirection() {
+        return direction;
     }
 
     /**

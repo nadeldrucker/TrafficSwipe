@@ -118,7 +118,6 @@ public class ResultFragment extends Fragment {
                 .map(entry -> new RecyclerResultAdapter.DepartureItem(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
 
-        recyclerAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
 
         lastUpdateTime = System.currentTimeMillis();
