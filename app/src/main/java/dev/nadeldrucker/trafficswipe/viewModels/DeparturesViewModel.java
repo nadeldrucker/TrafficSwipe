@@ -1,0 +1,58 @@
+package dev.nadeldrucker.trafficswipe.viewModels;
+
+import androidx.lifecycle.*;
+import dev.nadeldrucker.trafficswipe.App;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.TransportApiFactory;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * View model for departures table.<br>
+ * <p>
+ * Update the station name or the refreshTrigger to refresh departures.
+ */
+public class DeparturesViewModel extends ViewModel {
+
+    private MutableLiveData<String> stationName = new MutableLiveData<>();
+    private LiveData<DataWrapper<List<Station>>> stations;
+    private LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> departures;
+
+    public DeparturesViewModel() {
+        Entrypoint dao = TransportApiFactory.createTransportApiDao(TransportApiFactory.ApiProvider.VVO, App.getRequestQueue());
+
+        stations = Transformations.switchMap(stationName, dao::getStops);
+        departures = Transformations.switchMap(stations, wrappedStationList -> {
+            AtomicReference<LiveData<DataWrapper<Map<Vehicle, DepartureTime>>>> lambdaDepartures = new AtomicReference<>(new MutableLiveData<>());
+
+            wrappedStationList.evaluate(
+                    data -> lambdaDepartures.set(data.get(0).getDepartures()),
+                    error -> lambdaDepartures.set(new MutableLiveData<>(DataWrapper.createOfError(error)))
+            );
+
+            return lambdaDepartures.get();
+        });
+    }
+
+    public LiveData<DataWrapper<List<Station>>> getStations() {
+        return stations;
+    }
+
+    public MutableLiveData<String> getUserStationName() {
+        return stationName;
+    }
+
+    public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
+        return departures;
+    }
+
+    public void refresh(){
+        stationName.postValue(stationName.getValue());
+    }
+}

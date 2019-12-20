@@ -10,13 +10,15 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
 import java.util.Map;
 
 public class Bus extends Vehicle {
+
     /**
-     * @param lineId             non-unique identifier for the specified transportation line
-     * @param entityId           unique object identifier for later use, if provided by the api
-     * @param targetDestination  destination as on the sign of the transportation
+     * @param lineId            non-unique identifier for the specified transportation line
+     * @param direction         direction of vehicle as seen on the display
+     * @param entityId          unique object identifier for later use, if provided by the api
+     * @param targetDestination destination as on the sign of the transportation
      */
-    public Bus(RequestQueue queue, @NonNull String lineId, @Nullable String entityId, @NonNull Map<Station, DepartureTime> targetDestination) {
-        super(queue, lineId, entityId, targetDestination);
+    public Bus(RequestQueue queue, @NonNull String lineId, @NonNull String direction, @Nullable String entityId, @NonNull Map<Station, DepartureTime> targetDestination) {
+        super(queue, lineId, direction, entityId, targetDestination);
     }
 
     @Override

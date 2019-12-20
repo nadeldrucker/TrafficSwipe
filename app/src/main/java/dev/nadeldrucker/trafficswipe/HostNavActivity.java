@@ -9,7 +9,6 @@ public class HostNavActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_host_nav);
     }
 }

@@ -32,6 +32,8 @@ public class Route extends TransportEntity {
 
     public CompletableFuture<ZonedDateTime> getStartTime() {
         Station start = route.first().getStart();
-        return start.getDepartures().thenApply(departures -> departures.get(route.first().getConnection()).getDepartureTimeWithDelay());
+        // TODO fix this
+        // return start.getDepartures().thenApply(departures -> departures.get(route.first().getConnection()).getDepartureTimeWithDelay());
+        return null;
     }
 }

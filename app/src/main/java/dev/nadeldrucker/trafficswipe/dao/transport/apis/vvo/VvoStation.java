@@ -3,19 +3,23 @@ package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.android.volley.RequestQueue;
 
+import dev.nadeldrucker.jvvo.Models.Departure;
+import dev.nadeldrucker.jvvo.Models.Mode;
+import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
 import org.threeten.bp.Duration;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import dev.nadeldrucker.jvvo.Models.Stop;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.connection.RequestException;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
@@ -27,6 +31,7 @@ import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
 public class VvoStation extends Station {
 
     private String stopId;
+    private static final ZoneId VVO_ZONE = ZoneId.of("Europe/Berlin");
 
     public VvoStation(@NonNull RequestQueue queue, @NonNull String name, @Nullable Location location, @Nullable String stopId) {
         super(queue, name, location);
@@ -34,20 +39,21 @@ public class VvoStation extends Station {
     }
 
     @Override
-    public CompletableFuture<Map<Vehicle, DepartureTime>> getDepartures() {
-        CompletableFuture<Map<Vehicle, DepartureTime>> completableFuture = new CompletableFuture<>();
-        dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, getQueue(), response -> {
+    public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
+        MutableLiveData<DataWrapper<Map<Vehicle, DepartureTime>>> liveData = new MutableLiveData<>();
+
+        dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, new Date(), Departure.DateType.departure, Mode.getAll(), true, getQueue(), response -> {
             if (response.getResponse().isPresent()) {
                 HashMap<Vehicle, DepartureTime> vehicleDepartures = new HashMap<>();
 
                 // for every departure create an entry in the vehicle departure map
                 response.getResponse().get().getDepartures()
                         .forEach(departure -> {
-                            ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(ZoneId.systemDefault());
+                            ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(VVO_ZONE);
 
                             Duration d = null;
                             if (departure.getRealTime() != null) {
-                                ZonedDateTime actualDeparture = Instant.ofEpochMilli(departure.getRealTime().getTime()).atZone(ZoneId.systemDefault());
+                                ZonedDateTime actualDeparture = Instant.ofEpochMilli(departure.getRealTime().getTime()).atZone(VVO_ZONE);
                                 d = Duration.between(scheduledDepartureTime, actualDeparture);
                             }
 
@@ -60,7 +66,7 @@ public class VvoStation extends Station {
                             stops.put(this, departureTime);
 
                             // add final station to the vehicles stops (use max time, making it the last station)
-                            DepartureTime finalDepartureTime = new DepartureTime(Instant.ofEpochMilli(Long.MAX_VALUE).atZone(ZoneId.systemDefault()), Duration.ofSeconds(0));
+                            DepartureTime finalDepartureTime = new DepartureTime(Instant.ofEpochMilli(Long.MAX_VALUE).atZone(VVO_ZONE), Duration.ofSeconds(0));
                             stops.put(new VvoStation(getQueue(), departure.getDirection(), null, null), finalDepartureTime);
 
                             // create vehicle
@@ -71,26 +77,26 @@ public class VvoStation extends Station {
                             Vehicle v;
                             switch (departure.getDiva().getNumber().charAt(0)) {
                                 case '1':
-                                    v = new Tram(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new Tram(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
                                     break;
                                 case '2':
-                                    v = new Bus(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new Bus(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
                                     break;
                                 default:
                                     //FIXME for now, the Sbahn Icon is shown whenever we're unable to parse vehicle type
-                                    v = new SBahn(getQueue(), departure.getLine(), departure.getId(), stops);
+                                    v = new SBahn(getQueue(), departure.getLine(), departure.getDirection(), departure.getId(), stops);
 
                             }
 
                             // add vehicle with departure time to vehicle map
                             vehicleDepartures.put(v, departureTime);
                         });
-                completableFuture.complete(vehicleDepartures);
+                liveData.postValue(DataWrapper.createOfData(vehicleDepartures));
             } else if (response.getError().isPresent()) {
-                completableFuture.completeExceptionally(new RequestException("Couldn't complete request! " + response.getError().get().getDescription()));
+                liveData.postValue(DataWrapper.createOfError(DataWrapper.ErrorType.NETWORK_ERROR, "Couldn't complete request! " + response.getError().get().getDescription()));
             }
         });
-        return completableFuture;
+        return liveData;
     }
 
     /**

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.inference.CharacterRecognizer;
 import dev.nadeldrucker.trafficswipe.ui.CharacterDrawView;
+import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 
 public class StartFragment extends Fragment {
 
@@ -108,9 +110,8 @@ public class StartFragment extends Fragment {
      * @param query name to query
      */
     protected void showDepartureTable(String query){
-        Bundle b = new Bundle();
-        b.putString(BUNDLE_QUERY, query);
-        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment, b);
+        new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class).getUserStationName().postValue(query);
+        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment);
     }
 
     /**
