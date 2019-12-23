@@ -2,9 +2,11 @@ package dev.nadeldrucker.trafficswipe.dao.transport.apis.vvo;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.android.volley.RequestQueue;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -26,14 +28,16 @@ public class VvoEntrypoint extends Entrypoint {
         MutableLiveData<DataWrapper<List<Station>>> liveData = new MutableLiveData<>();
 
         Stop.find(name, queue, response -> {
-            if (response.getResponse().isPresent()) {
-                List<Station> stations = response.getResponse().get().getStops()
+            if (response.getResponse().isPresent() && response.getResponse().get().getStops() != null) {
+                List<Station> stations = Objects.requireNonNull(response.getResponse().get().getStops())
                         .stream()
                         .map(stop -> VvoStation.fromJVVOStop(queue, stop))
                         .collect(Collectors.toList());
                 liveData.postValue(DataWrapper.createOfData(stations));
             } else if (response.getError().isPresent()) {
                 liveData.postValue(DataWrapper.createOfError(DataWrapper.ErrorType.NETWORK_ERROR, "Couldn't complete getStops request! " + response.getError().get().getDescription()));
+            } else if (response.getResponse().get().getStops() == null) {
+                liveData.postValue(DataWrapper.createOfError(DataWrapper.ErrorType.NULL_ERROR, "API returned null"));
             }
         });
 
