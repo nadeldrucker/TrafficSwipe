@@ -1,20 +1,23 @@
 package dev.nadeldrucker.trafficswipe.animation.renderables;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 
+
+import androidx.annotation.ColorInt;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TouchPath implements Renderable {
 
     private final List<TouchCoordinate> currentMoveCoordinates;
+    private final Paint paint = new Paint();
 
-    public TouchPath() {
+    public TouchPath(@ColorInt int color) {
         currentMoveCoordinates = new LinkedList<>();
+        paint.setColor(color);
     }
 
     public List<TouchCoordinate> getTouchPath(){
@@ -37,11 +40,10 @@ public class TouchPath implements Renderable {
             }
         }
 
-        Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
+        paint.setStrokeWidth(15);
         paint.setAntiAlias(true);
-        paint.setColor(Color.GREEN);
+
 
         canvas.drawPath(p, paint);
     }

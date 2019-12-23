@@ -6,14 +6,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import java.util.Arrays;
+import java.util.List;
+
 import dev.nadeldrucker.trafficswipe.animation.renderables.AnimatedCursor;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
 import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 
-import java.util.Arrays;
-import java.util.List;
-
+@Deprecated
 public class AnimationView extends RenderableView {
 
     private TouchPath touchPath;
@@ -31,7 +33,7 @@ public class AnimationView extends RenderableView {
     protected void onInit() {
         super.onInit();
 
-        touchPath = new TouchPath();
+        touchPath = new TouchPath(Color.MAGENTA);
 
         Paint p = new Paint();
         p.setColor(Color.GREEN);

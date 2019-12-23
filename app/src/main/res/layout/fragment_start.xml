@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="R"
-            android:textColor="@color/colorTheme6a"
+            android:textColor="@color/colorAccent3"
             android:textSize="36sp"
             app:layout_constraintStart_toEndOf="@+id/tvChar2"
             app:layout_constraintTop_toTopOf="parent" />
