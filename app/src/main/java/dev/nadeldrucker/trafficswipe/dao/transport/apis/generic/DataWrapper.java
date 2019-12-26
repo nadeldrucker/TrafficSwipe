@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 public final class DataWrapper<T> {
 
     public enum ErrorType {
-        NETWORK_ERROR
+        NETWORK_ERROR,
+        NULL_ERROR
     }
 
     public static class DataError {
