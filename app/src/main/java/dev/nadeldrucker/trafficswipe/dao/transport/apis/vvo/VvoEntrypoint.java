@@ -46,8 +46,7 @@ public class VvoEntrypoint extends Entrypoint {
 
     @Override
     public CompletableFuture<Route> getRoute(Station start, Station destination) {
-        CompletableFuture<Route> future = new CompletableFuture<>();
-        return future;
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
