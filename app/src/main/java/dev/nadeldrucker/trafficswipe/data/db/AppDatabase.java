@@ -1,12 +1,15 @@
 package dev.nadeldrucker.trafficswipe.data.db;
 
 import android.content.Context;
-import androidx.annotation.VisibleForTesting;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import dev.nadeldrucker.trafficswipe.data.db.daos.AbbreviationDAO;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
+import dev.nadeldrucker.trafficswipe.data.db.util.AbbreviationCSVReader;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @Database(entities = {
         Abbreviation.class
@@ -19,17 +22,34 @@ public abstract class AppDatabase extends RoomDatabase {
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "tsw-db").build();
-            instance.populateInitialData();
+            instance.onInstanceCreated(context);
         }
 
         return instance;
     }
 
-    private void populateInitialData() {
+    /**
+     * Called on instantiation of the db
+     */
+    private void onInstanceCreated(Context context) {
         if (abbreviationDAO().count() == 0) {
-            runInTransaction(() -> {
-                // TODO insert data from csv
-            });
+            populateAbbreviations(context);
         }
+    }
+
+    public static final String[] abbreviationCsvAssetPaths = new String[]{
+            "kuerzel_dresden.csv",
+            "kuerzel_umland.csv"
+    };
+
+    private void populateAbbreviations(final Context context) {
+        runInTransaction(() -> Arrays.stream(abbreviationCsvAssetPaths).forEach(path -> {
+            try {
+                final Abbreviation[] abbreviations = AbbreviationCSVReader.readAbbreviationsFromStream(context.getAssets().open(path));
+                abbreviationDAO().insertAll(abbreviations);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 }

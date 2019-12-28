@@ -1,9 +1,6 @@
 package dev.nadeldrucker.trafficswipe.data.db.daos;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
+import androidx.room.*;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 
 @Dao
@@ -15,7 +12,7 @@ public interface AbbreviationDAO {
     @Query("SELECT COUNT(*) FROM abbreviation")
     int count();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Abbreviation... abbreviations);
 
     @Delete
