@@ -3,6 +3,8 @@ package dev.nadeldrucker.trafficswipe.data.db.util;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 
 import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -15,12 +17,13 @@ public class AbbreviationCSVReader {
      * @param inputStream {@link InputStream} to read from
      * @return {@link Stream} of {@link Abbreviation}
      */
-    public static Stream<Abbreviation> readAbbreviationsFromStream(InputStream inputStream) {
+    public static List<Abbreviation> readAbbreviationsFromStream(InputStream inputStream) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         try {
             return reader.lines()
-                    .map(AbbreviationCSVReader::readCSVLine);
+                    .map(AbbreviationCSVReader::readCSVLine)
+                    .collect(Collectors.toList());
         } finally {
             try {
                 inputStream.close();
