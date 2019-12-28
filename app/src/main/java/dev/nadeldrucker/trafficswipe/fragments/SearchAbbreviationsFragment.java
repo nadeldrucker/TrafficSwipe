@@ -72,5 +72,9 @@ public class SearchAbbreviationsFragment extends Fragment {
             etSearch.clearFocus();
             Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_resultFragment);
         });
+
+        view.findViewById(R.id.btnLocationSearch).setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_searchLocationFragment);
+        });
     }
 }

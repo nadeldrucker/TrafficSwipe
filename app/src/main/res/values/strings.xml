@@ -17,4 +17,5 @@
     <string name="search_stations">Search stations</string>
     <string name="search">Search...</string>
     <string name="search_by_location">Search by Location</string>
+    <string name="location_permission_denied">Location permission is needed to find nearby stations!</string>
 </resources>

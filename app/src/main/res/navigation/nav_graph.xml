@@ -48,5 +48,17 @@
         <action
             android:id="@+id/action_searchAbbreviationsFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_searchAbbreviationsFragment_to_searchLocationFragment"
+            app:destination="@id/searchLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchLocationFragment"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.SearchLocationFragment"
+        android:label="fragment_search_location"
+        tools:layout="@layout/fragment_search_location" >
+        <action
+            android:id="@+id/action_searchLocationFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
 </navigation>
