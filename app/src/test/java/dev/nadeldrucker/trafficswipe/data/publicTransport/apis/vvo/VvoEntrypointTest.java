@@ -28,11 +28,9 @@ public class VvoEntrypointTest extends AbstractVolleyMockApiTest {
     public void getStops() {
         mockHttpStack.queueNextResponse("mocks/vvo/GETFindStations.json");
         LiveData<DataWrapper<List<Station>>> liveStations = vvoEntrypoint.getStops("NUP");
-        waitForLiveData(liveStations, stations -> stations.evaluate(data -> {
-                    Assert.assertEquals("Nürnberger Platz", data.get(0).getName());
-                    Assert.assertEquals("Bautzner Straße / Rothenburger Straße", data.get(1).getName());
-                }, error -> Assert.fail(),
-                () -> Assert.fail("Invalid state!"))
-        );
+        waitForWrappedLiveData(liveStations, data -> {
+            Assert.assertEquals("Nürnberger Platz", data.get(0).getName());
+            Assert.assertEquals("Bautzner Straße / Rothenburger Straße", data.get(1).getName());
+        });
     }
 }

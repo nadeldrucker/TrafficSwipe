@@ -32,7 +32,7 @@ public class VvoStationTest extends AbstractVolleyMockApiTest {
      * Tests if the api returns the correctly transformed response on searching for stations.
      */
     @Test
-    public void getStops() throws ExecutionException, InterruptedException {
+    public void getStops() {
         mockHttpStack.queueNextResponse("mocks/vvo/GETDepartures.json");
 
         waitForWrappedLiveData(vvoStation.getDepartures(), vehicleDepartureTimeMap -> {

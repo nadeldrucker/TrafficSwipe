@@ -25,12 +25,6 @@ public class MockHttpStack extends BaseHttpStack {
 
     @Override
     public HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         if (request instanceof JsonObjectRequest) {
             MockFile mockFile = nextResponses.get(nextResponses.size() - 1);
             return createValidResponse(mockFile.response.body, mockFile.response.statusCode);

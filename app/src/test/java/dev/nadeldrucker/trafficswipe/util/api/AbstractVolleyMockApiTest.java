@@ -74,11 +74,20 @@ public abstract class AbstractVolleyMockApiTest {
      * @param <T> type of live data
      */
     public <T> void waitForWrappedLiveData(LiveData<DataWrapper<T>> liveData, Consumer<T> dataConsumer) {
-        waitForLiveData(liveData, tDataWrapper -> tDataWrapper.evaluate(
-                dataConsumer,
-                error -> Assert.fail(),
-                () -> waitForWrappedLiveData(liveData, dataConsumer)
-        ));
+        CountDownLatch latch = new CountDownLatch(1);
+
+        liveData.observeForever(value -> {
+            if (!value.isLoading()) {
+                latch.countDown();
+                dataConsumer.accept(value.getData().get());
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
