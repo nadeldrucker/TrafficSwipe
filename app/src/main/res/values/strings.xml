@@ -16,4 +16,5 @@
     <string name="activity_title_departures">Departures</string>
     <string name="search_stations">Search stations</string>
     <string name="search">Search...</string>
+    <string name="search_by_location">Search by Location</string>
 </resources>
