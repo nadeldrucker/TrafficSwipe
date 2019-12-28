@@ -23,8 +23,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.data.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.data.transport.model.data.vehicle.Vehicle;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;

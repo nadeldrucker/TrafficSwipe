@@ -17,8 +17,8 @@ import org.threeten.bp.Duration;
 import java.util.*;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.data.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.data.transport.model.data.vehicle.Vehicle;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
