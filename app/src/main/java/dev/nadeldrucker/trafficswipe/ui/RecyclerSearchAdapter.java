@@ -12,18 +12,20 @@ import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
     private List<Abbreviation> abbreviationList = new ArrayList<>();
+    private Consumer<Abbreviation> listener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final Button tvAbbreviation;
+        final Button btnAbbreviation;
         final TextView tvName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvAbbreviation = itemView.findViewById(R.id.tvAbbreviation);
+            btnAbbreviation = itemView.findViewById(R.id.tvAbbreviation);
             tvName = itemView.findViewById(R.id.tvName);
         }
     }
@@ -44,12 +46,22 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Abbreviation abbreviation = abbreviationList.get(position);
 
-        holder.tvAbbreviation.setText(abbreviation.getAbbreviation());
+        holder.btnAbbreviation.setText(abbreviation.getAbbreviation());
         holder.tvName.setText(abbreviation.getName());
+
+        holder.btnAbbreviation.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.accept(abbreviationList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return abbreviationList.size();
+    }
+
+    public void setItemButtonClickedListener(Consumer<Abbreviation> listener) {
+        this.listener = listener;
     }
 }

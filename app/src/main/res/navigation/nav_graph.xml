@@ -44,5 +44,9 @@
         android:id="@+id/searchAbbreviationsFragment"
         android:name="dev.nadeldrucker.trafficswipe.fragments.SearchAbbreviationsFragment"
         android:label="fragment_search_abbreviations"
-        tools:layout="@layout/fragment_search_abbreviations" />
+        tools:layout="@layout/fragment_search_abbreviations" >
+        <action
+            android:id="@+id/action_searchAbbreviationsFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
 </navigation>

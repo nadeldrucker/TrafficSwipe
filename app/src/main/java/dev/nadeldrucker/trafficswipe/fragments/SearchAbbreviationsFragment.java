@@ -1,25 +1,23 @@
 package dev.nadeldrucker.trafficswipe.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerSearchAdapter;
+import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.SearchViewModel;
 
 import java.util.Arrays;
@@ -48,8 +46,8 @@ public class SearchAbbreviationsFragment extends Fragment {
 
         final FragmentActivity activity = Objects.requireNonNull(getActivity());
 
-        SearchViewModel viewModel = new ViewModelProvider(activity).get(SearchViewModel.class);
-        viewModel.getQuery().postValue("%%");
+        final SearchViewModel searchViewModel = new ViewModelProvider(activity).get(SearchViewModel.class);
+        searchViewModel.getQuery().postValue("%%");
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,10 +61,16 @@ public class SearchAbbreviationsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                viewModel.getQuery().postValue("%" + s.toString() + "%");
+                searchViewModel.getQuery().postValue("%" + s.toString() + "%");
             }
         });
 
-        viewModel.getAbbreviations().observe(activity, abbreviations -> adapter.setAbbreviationList(Arrays.asList(abbreviations)));
+        searchViewModel.getAbbreviations().observe(activity, abbreviations -> adapter.setAbbreviationList(Arrays.asList(abbreviations)));
+
+        final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
+        adapter.setItemButtonClickedListener(abbreviation -> {
+            departuresViewModel.getUserStationName().postValue(abbreviation.getAbbreviation());
+            Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_resultFragment);
+        });
     }
 }
