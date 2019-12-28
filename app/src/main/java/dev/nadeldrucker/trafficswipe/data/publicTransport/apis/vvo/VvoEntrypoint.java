@@ -27,6 +27,8 @@ public class VvoEntrypoint extends Entrypoint {
     public LiveData<DataWrapper<List<Station>>> getStops(String name) {
         MutableLiveData<DataWrapper<List<Station>>> liveData = new MutableLiveData<>();
 
+        liveData.postValue(DataWrapper.createLoading());
+
         Stop.find(name, queue, response -> {
             if (response.getResponse().isPresent() && response.getResponse().get().getStops() != null) {
                 List<Station> stations = Objects.requireNonNull(response.getResponse().get().getStops())

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,12 +86,14 @@ public class ResultFragment extends Fragment {
 
         viewModel.getStations().observe(activity, listDataWrapper -> listDataWrapper.evaluate(
                 stations -> tvResult.setText(stations.get(0).getName()),
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                () -> tvResult.setText(""))
         );
 
         viewModel.getDepartures().observe(activity, mapDataWrapper -> mapDataWrapper.evaluate(
                 this::onDeparturesChanged,
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                () -> recyclerAdapter.setDepartureItems(Collections.emptyList()))
         );
 
         swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);

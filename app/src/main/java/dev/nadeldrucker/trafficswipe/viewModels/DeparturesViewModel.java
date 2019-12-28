@@ -33,7 +33,8 @@ public class DeparturesViewModel extends ViewModel {
 
             wrappedStationList.evaluate(
                     data -> lambdaDepartures.set(data.get(0).getDepartures()),
-                    error -> lambdaDepartures.set(new MutableLiveData<>(DataWrapper.createOfError(error)))
+                    error -> lambdaDepartures.set(new MutableLiveData<>(DataWrapper.createOfError(error))),
+                    () -> lambdaDepartures.set(new MutableLiveData<>(DataWrapper.createLoading()))
             );
 
             return lambdaDepartures.get();

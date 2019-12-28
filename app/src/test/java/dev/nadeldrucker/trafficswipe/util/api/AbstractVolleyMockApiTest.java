@@ -76,7 +76,8 @@ public abstract class AbstractVolleyMockApiTest {
     public <T> void waitForWrappedLiveData(LiveData<DataWrapper<T>> liveData, Consumer<T> dataConsumer) {
         waitForLiveData(liveData, tDataWrapper -> tDataWrapper.evaluate(
                 dataConsumer,
-                error -> Assert.fail()
+                error -> Assert.fail(),
+                () -> waitForWrappedLiveData(liveData, dataConsumer)
         ));
     }
 

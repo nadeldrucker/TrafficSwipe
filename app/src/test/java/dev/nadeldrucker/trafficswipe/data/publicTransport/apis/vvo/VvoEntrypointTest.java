@@ -31,7 +31,8 @@ public class VvoEntrypointTest extends AbstractVolleyMockApiTest {
         waitForLiveData(liveStations, stations -> stations.evaluate(data -> {
                     Assert.assertEquals("Nürnberger Platz", data.get(0).getName());
                     Assert.assertEquals("Bautzner Straße / Rothenburger Straße", data.get(1).getName());
-                }, error -> Assert.fail())
+                }, error -> Assert.fail(),
+                () -> Assert.fail("Invalid state!"))
         );
     }
 }

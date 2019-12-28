@@ -1,6 +1,7 @@
 package dev.nadeldrucker.trafficswipe.data.publicTransport.apis.generic;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -45,6 +46,11 @@ public final class DataWrapper<T> {
     private final T dataObject;
     private final DataError error;
 
+    private DataWrapper() {
+        dataObject = null;
+        error = null;
+    }
+
     private DataWrapper(@NotNull T dataObject) {
         this.dataObject = dataObject;
         error = null;
@@ -83,6 +89,15 @@ public final class DataWrapper<T> {
     }
 
     /**
+     * Creates a data wrapper representing a loading state.
+     * @param <G> type of wrapper
+     * @return empty data wrapper, aka. loading
+     */
+    public static <G> DataWrapper<G> createLoading() {
+        return new DataWrapper<>();
+    }
+
+    /**
      * @return optional containing {@link T} data if present, else {@link #getError()} is present.
      */
     public Optional<T> getData() {
@@ -97,18 +112,29 @@ public final class DataWrapper<T> {
     }
 
     /**
-     * Evaluates the data wrapper, calling a {@link Consumer} for both cases.
+     * Evaluates the data wrapper, calling a {@link Consumer} for both cases.<br>
+     * <b>Can only be used if the data is ready, can be checked using {@link #isLoading()}</b>
      * @param dataConsumer consumer called when data is present
      * @param errorConsumer consumer called when error is present
+     * @param loadingRunnable runnable executed when the wrapper is in the loading state
      */
-    public void evaluate(Consumer<T> dataConsumer, Consumer<DataError> errorConsumer) {
+    public void evaluate(Consumer<T> dataConsumer, Consumer<DataError> errorConsumer, @Nullable Runnable loadingRunnable) {
         if (getData().isPresent()) {
             dataConsumer.accept(getData().get());
         } else if (getError().isPresent()) {
             errorConsumer.accept(getError().get());
         } else {
-            throw new IllegalStateException("Data AND error are empty!");
+            if (loadingRunnable != null) {
+                loadingRunnable.run();
+            }
         }
+    }
+
+    /**
+     * @return true if neither data nor error are present.
+     */
+    public boolean isLoading() {
+        return !getError().isPresent() && !getData().isPresent();
     }
 
 }
