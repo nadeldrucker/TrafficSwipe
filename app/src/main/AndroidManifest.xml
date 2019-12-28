@@ -14,10 +14,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+            tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".HostNavActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

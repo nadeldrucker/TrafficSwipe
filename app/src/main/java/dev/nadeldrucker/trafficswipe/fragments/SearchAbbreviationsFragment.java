@@ -35,7 +35,6 @@ public class SearchAbbreviationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         EditText etSearch = view.findViewById(R.id.etSearch);
-        etSearch.requestFocus();
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerSearchResult);
         recyclerView.setHasFixedSize(true);
@@ -70,6 +69,7 @@ public class SearchAbbreviationsFragment extends Fragment {
         final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
         adapter.setItemButtonClickedListener(abbreviation -> {
             departuresViewModel.getUserStationName().postValue(abbreviation.getAbbreviation());
+            etSearch.clearFocus();
             Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_resultFragment);
         });
     }
