@@ -29,8 +29,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/etSearch"
         android:hint="@string/search"
-        android:inputType="text"
-        android:importantForAutofill="no">
-        <requestFocus/>
-    </EditText>
+        android:inputType="textNoSuggestions"
+        android:importantForAutofill="no"
+        android:textSize="26sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
