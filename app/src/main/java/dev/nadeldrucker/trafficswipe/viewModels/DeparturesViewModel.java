@@ -23,12 +23,18 @@ public class DeparturesViewModel extends ViewModel {
     private MutableLiveData<String> stationName = new MutableLiveData<>();
     private LiveData<DataWrapper<List<Station>>> stations;
     private LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> departures;
+    private MutableLiveData<Boolean> refreshMutable = new MutableLiveData<>();
 
     public DeparturesViewModel() {
         Entrypoint dao = TransportApiFactory.createTransportApiDao(TransportApiFactory.ApiProvider.VVO, App.getRequestQueue());
 
         stations = Transformations.switchMap(stationName, dao::getStops);
-        departures = Transformations.switchMap(stations, wrappedStationList -> {
+
+        MediatorLiveData<DataWrapper<List<Station>>> refreshMediator = new MediatorLiveData<>();
+        refreshMediator.addSource(stations, refreshMediator::setValue);
+        refreshMediator.addSource(refreshMutable, b -> refreshMediator.setValue(stations.getValue()));
+
+        departures = Transformations.switchMap(refreshMediator, wrappedStationList -> {
             AtomicReference<LiveData<DataWrapper<Map<Vehicle, DepartureTime>>>> lambdaDepartures = new AtomicReference<>(new MutableLiveData<>());
 
             wrappedStationList.evaluate(
@@ -54,6 +60,6 @@ public class DeparturesViewModel extends ViewModel {
     }
 
     public void refresh(){
-        stationName.postValue(stationName.getValue());
+        refreshMutable.setValue(refreshMutable.getValue());
     }
 }

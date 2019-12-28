@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,16 +85,26 @@ public class ResultFragment extends Fragment {
 
         DeparturesViewModel viewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
 
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
         viewModel.getStations().observe(activity, listDataWrapper -> listDataWrapper.evaluate(
                 stations -> tvResult.setText(stations.get(0).getName()),
                 error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
-                () -> tvResult.setText(""))
+                () -> {
+                    tvResult.setText("");
+                    progressBar.setVisibility(View.VISIBLE);
+                })
         );
 
         viewModel.getDepartures().observe(activity, mapDataWrapper -> mapDataWrapper.evaluate(
-                this::onDeparturesChanged,
+                vehicleDepartureTimeMap -> {
+                    onDeparturesChanged(vehicleDepartureTimeMap);
+                    progressBar.setVisibility(View.GONE);
+                },
                 error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
-                () -> recyclerAdapter.setDepartureItems(Collections.emptyList()))
+                () -> {
+                    recyclerAdapter.setDepartureItems(Collections.emptyList());
+                    progressBar.setVisibility(View.VISIBLE);
+                })
         );
 
         swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);

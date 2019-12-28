@@ -54,6 +54,7 @@ public class VvoStation extends Station {
     @Override
     public LiveData<DataWrapper<Map<Vehicle, DepartureTime>>> getDepartures() {
         MutableLiveData<DataWrapper<Map<Vehicle, DepartureTime>>> liveData = new MutableLiveData<>();
+        liveData.setValue(DataWrapper.createLoading());
 
         dev.nadeldrucker.jvvo.Models.Departure.monitor(stopId, new Date(), Departure.DateType.departure, Mode.getAll(), true, getQueue(), response -> {
             if (response.getResponse().isPresent()) {

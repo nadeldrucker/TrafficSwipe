@@ -68,7 +68,7 @@ public class SearchAbbreviationsFragment extends Fragment {
 
         final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
         adapter.setItemButtonClickedListener(abbreviation -> {
-            departuresViewModel.getUserStationName().postValue(abbreviation.getAbbreviation());
+            departuresViewModel.getUserStationName().setValue(abbreviation.getAbbreviation());
             etSearch.clearFocus();
             Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_resultFragment);
         });
