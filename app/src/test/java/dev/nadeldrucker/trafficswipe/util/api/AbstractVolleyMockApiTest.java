@@ -6,7 +6,7 @@ import com.android.volley.ExecutorDelivery;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.NoCache;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.apis.generic.DataWrapper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -74,10 +74,20 @@ public abstract class AbstractVolleyMockApiTest {
      * @param <T> type of live data
      */
     public <T> void waitForWrappedLiveData(LiveData<DataWrapper<T>> liveData, Consumer<T> dataConsumer) {
-        waitForLiveData(liveData, tDataWrapper -> tDataWrapper.evaluate(
-                dataConsumer,
-                error -> Assert.fail()
-        ));
+        CountDownLatch latch = new CountDownLatch(1);
+
+        liveData.observeForever(value -> {
+            if (!value.isLoading()) {
+                latch.countDown();
+                dataConsumer.accept(value.getData().get());
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

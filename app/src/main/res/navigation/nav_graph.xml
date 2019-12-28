@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_startFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_searchAbbreviationsFragment"
+            app:destination="@id/searchAbbreviationsFragment" />
     </fragment>
     <fragment
         android:id="@+id/helpSheet"
@@ -37,4 +40,13 @@
         android:name="dev.nadeldrucker.trafficswipe.fragments.ResultFragment"
         android:label="fragment_result"
         tools:layout="@layout/fragment_result" />
+    <fragment
+        android:id="@+id/searchAbbreviationsFragment"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.SearchAbbreviationsFragment"
+        android:label="fragment_search_abbreviations"
+        tools:layout="@layout/fragment_search_abbreviations" >
+        <action
+            android:id="@+id/action_searchAbbreviationsFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
 </navigation>

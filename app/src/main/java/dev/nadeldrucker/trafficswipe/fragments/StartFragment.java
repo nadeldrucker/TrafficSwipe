@@ -31,7 +31,6 @@ import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 public class StartFragment extends Fragment {
 
     private static final String TAG = "StartFragment";
-    public static final String BUNDLE_QUERY = "query";
 
     public StartFragment() {
     }
@@ -75,8 +74,9 @@ public class StartFragment extends Fragment {
 
         final FloatingActionButton fabSearch = view.findViewById(R.id.startFragment_searchFab);
         fabSearch.setOnClickListener(v -> {
-            etSearch.requestFocus();
-            setSoftKeyboardState(true, etSearch);
+            //etSearch.requestFocus();
+            //setSoftKeyboardState(true, etSearch);
+            Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_searchAbbreviationsFragment);
         });
         previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
 

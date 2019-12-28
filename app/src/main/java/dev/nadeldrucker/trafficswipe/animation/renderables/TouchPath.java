@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
+import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 
 import java.util.LinkedList;
 import java.util.List;

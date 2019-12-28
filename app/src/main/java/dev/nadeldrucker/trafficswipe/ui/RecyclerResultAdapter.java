@@ -1,7 +1,6 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,8 @@ import org.threeten.bp.Duration;
 import java.util.*;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 

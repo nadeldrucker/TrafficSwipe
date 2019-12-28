@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.android.volley.toolbox.Volley;
 
 import java.util.Collections;
 import java.util.Map;
@@ -25,11 +25,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.TransportApiFactory;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
@@ -88,14 +85,26 @@ public class ResultFragment extends Fragment {
 
         DeparturesViewModel viewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
 
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
         viewModel.getStations().observe(activity, listDataWrapper -> listDataWrapper.evaluate(
                 stations -> tvResult.setText(stations.get(0).getName()),
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                () -> {
+                    tvResult.setText("");
+                    progressBar.setVisibility(View.VISIBLE);
+                })
         );
 
         viewModel.getDepartures().observe(activity, mapDataWrapper -> mapDataWrapper.evaluate(
-                this::onDeparturesChanged,
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show())
+                vehicleDepartureTimeMap -> {
+                    onDeparturesChanged(vehicleDepartureTimeMap);
+                    progressBar.setVisibility(View.GONE);
+                },
+                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                () -> {
+                    recyclerAdapter.setDepartureItems(Collections.emptyList());
+                    progressBar.setVisibility(View.VISIBLE);
+                })
         );
 
         swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);

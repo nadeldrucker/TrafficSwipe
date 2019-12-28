@@ -14,4 +14,6 @@
     <string name="cancel">Cancel</string>
     <string name="fetching">Fetching...</string>
     <string name="activity_title_departures">Departures</string>
+    <string name="search_stations">Search stations</string>
+    <string name="search">Search...</string>
 </resources>
