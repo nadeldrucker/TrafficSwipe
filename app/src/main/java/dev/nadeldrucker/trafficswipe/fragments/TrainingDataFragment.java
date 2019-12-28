@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import dev.nadeldrucker.trafficswipe.Constants;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
-import dev.nadeldrucker.trafficswipe.dao.gestures.GestureDao;
+import dev.nadeldrucker.trafficswipe.data.gestures.GestureDao;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

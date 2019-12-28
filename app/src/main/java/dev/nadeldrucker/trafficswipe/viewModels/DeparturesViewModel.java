@@ -2,12 +2,12 @@ package dev.nadeldrucker.trafficswipe.viewModels;
 
 import androidx.lifecycle.*;
 import dev.nadeldrucker.trafficswipe.App;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.Entrypoint;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.TransportApiFactory;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.DepartureTime;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.Station;
-import dev.nadeldrucker.trafficswipe.dao.transport.model.data.vehicle.Vehicle;
+import dev.nadeldrucker.trafficswipe.data.transport.apis.generic.DataWrapper;
+import dev.nadeldrucker.trafficswipe.data.transport.apis.generic.Entrypoint;
+import dev.nadeldrucker.trafficswipe.data.transport.apis.generic.TransportApiFactory;
+import dev.nadeldrucker.trafficswipe.data.transport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.transport.model.data.Station;
+import dev.nadeldrucker.trafficswipe.data.transport.model.data.vehicle.Vehicle;
 
 import java.util.List;
 import java.util.Map;

@@ -1,11 +1,10 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
 import android.content.Context;
-import android.os.health.TimerStat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
-import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
+import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 
 import java.util.List;
 import java.util.Timer;

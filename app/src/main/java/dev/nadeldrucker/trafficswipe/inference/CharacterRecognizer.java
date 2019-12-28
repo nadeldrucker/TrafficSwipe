@@ -4,7 +4,7 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.*;
 import android.util.Log;
 import dev.nadeldrucker.trafficswipe.App;
-import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
+import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 import org.tensorflow.lite.Interpreter;
 
 import java.io.FileInputStream;

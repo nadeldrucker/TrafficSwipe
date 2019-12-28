@@ -6,7 +6,7 @@ import com.android.volley.ExecutorDelivery;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.NoCache;
-import dev.nadeldrucker.trafficswipe.dao.transport.apis.generic.DataWrapper;
+import dev.nadeldrucker.trafficswipe.data.transport.apis.generic.DataWrapper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

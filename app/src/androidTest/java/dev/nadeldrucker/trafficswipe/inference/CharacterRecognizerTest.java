@@ -1,6 +1,6 @@
 package dev.nadeldrucker.trafficswipe.inference;
 
-import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
+import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 import org.junit.Before;
 import org.junit.Test;
 

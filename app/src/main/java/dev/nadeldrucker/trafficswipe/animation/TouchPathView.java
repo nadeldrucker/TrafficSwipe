@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
-import dev.nadeldrucker.trafficswipe.dao.gestures.TouchCoordinate;
+import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
