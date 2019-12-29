@@ -23,8 +23,8 @@ public class StationCSVReaderTest {
         assertEquals("Dresden Bahnhof Mitte", s.fullName);
         assertEquals("Bahnhof Mitte", s.shortName);
         assertEquals("Dresden", s.city);
-        assertEquals(13.723395, s.latitude, 0.0);
-        assertEquals(51.055642, s.longitude, 0.0);
+        assertEquals(13.723395, s.longitude, 0.0);
+        assertEquals(51.055642, s.latitude, 0.0);
     }
 
 }

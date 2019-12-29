@@ -61,7 +61,7 @@ public class SearchLocationFragment extends Fragment {
     private void initModel() {
         final FragmentActivity activity = Objects.requireNonNull(getActivity());
         final LocationViewModel locationViewModel = new ViewModelProvider(activity).get(LocationViewModel.class);
-        locationViewModel.getLocationStationBeans().observe(this, stationLocationBeans -> {
+        locationViewModel.getLocationStationBeans().observe(getViewLifecycleOwner(), stationLocationBeans -> {
             adapter.updateSearchResults(stationLocationBeans);
         });
     }
