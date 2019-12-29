@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,13 +23,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 import dev.nadeldrucker.trafficswipe.inference.CharacterRecognizer;
 import dev.nadeldrucker.trafficswipe.ui.CharacterDrawView;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
+import dev.nadeldrucker.trafficswipe.viewModels.SearchViewModel;
 
 public class StartFragment extends Fragment {
 
     private static final String TAG = "StartFragment";
+    private SearchViewModel searchViewModel;
+    private String lastQuery;
 
     public StartFragment() {
     }
@@ -47,6 +50,7 @@ public class StartFragment extends Fragment {
         fabHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet));
 
         final EditText etSearch = view.findViewById(R.id.etSearch);
+        searchViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(SearchViewModel.class);
         etSearch.addTextChangedListener(new TextWatcher() {
 
 
@@ -60,17 +64,27 @@ public class StartFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                final String input = etSearch.getText().toString().trim();
 
-                previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
-                if (etSearch.getText().toString().length() >= 3) {
-                    Log.d(TAG, "edit text is done! " + etSearch.getText().toString());
+
+                previewString(input, view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
+                if (input.length() >= 3) {
+                    searchViewModel.getQuery().postValue(input);
+                    lastQuery = input.toUpperCase();
+
+                    Log.d(TAG, "edit text is done! " + s);
                     setSoftKeyboardState(false, etSearch);
-                    showDepartureTable(etSearch.getText().toString());
+
                     etSearch.clearFocus();
                     etSearch.getText().clear();
+
+
+
                 }
             }
         });
+
+        searchViewModel.getAbbreviations().observe(Objects.requireNonNull(getActivity()), this::handleResult);
 
         final FloatingActionButton fabSearch = view.findViewById(R.id.startFragment_searchFab);
         fabSearch.setOnClickListener(v -> {
@@ -78,7 +92,7 @@ public class StartFragment extends Fragment {
             //setSoftKeyboardState(true, etSearch);
             Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_searchAbbreviationsFragment);
         });
-        previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
+        previewString(etSearch.getText().toString().trim(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
 
         CharacterDrawView drawView = view.findViewById(R.id.drawView);
         drawView.setListener(l -> {
@@ -88,6 +102,7 @@ public class StartFragment extends Fragment {
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> etSearch.getText().append(inferredChar));
         });
     }
+
 
     /**
      * Sets the soft keyboard state.
@@ -107,11 +122,19 @@ public class StartFragment extends Fragment {
 
     /**
      * Displays the departure table using the specified query request.
-     * @param query name to query
+     * Or show an error if result is null
+     * @param result Abbreviation to query
      */
-    protected void showDepartureTable(String query){
-        new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class).getUserStationName().postValue(query);
-        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment);
+    private void handleResult(Abbreviation... result) {
+        if (getView() == null) return; //if activity isn't active anymore, do nothing
+        if (result.length > 0) {
+            new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class).getUserStationName().postValue(result[0].getName());
+            Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment);
+        } else {
+            ((TextView) Objects.requireNonNull(getView()).findViewById(R.id.tvInfo)).setText(lastQuery + " doesn't exist. Try again!");
+            ((EditText) Objects.requireNonNull(getView()).findViewById(R.id.etSearch)).getText().clear();
+
+        }
     }
 
     /**
