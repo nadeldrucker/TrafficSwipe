@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
+import dev.nadeldrucker.trafficswipe.ui.RecyclerLocationSearchAdapter;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerSearchAdapter;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 public class SearchLocationFragment extends Fragment {
 
     private static final int PERMISSION_GRANTED_CALLBACK = 42;
-    private RecyclerSearchAdapter adapter;
+    private RecyclerLocationSearchAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class SearchLocationFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new RecyclerSearchAdapter();
+        adapter = new RecyclerLocationSearchAdapter();
         recyclerView.setAdapter(adapter);
     }
 
@@ -57,13 +58,8 @@ public class SearchLocationFragment extends Fragment {
     private void initModel() {
         final FragmentActivity activity = Objects.requireNonNull(getActivity());
         final LocationViewModel locationViewModel = new ViewModelProvider(activity).get(LocationViewModel.class);
-        locationViewModel.getLocation().observe(this, location -> {
-            Log.d("LOCATION", location.toString());
-        });
-        locationViewModel.getStations().observe(this, result -> {
-            adapter.setAbbreviationList(result.stream()
-                    .map(station -> new Abbreviation(station.id, station.shortName))
-                    .collect(Collectors.toList()));
+        locationViewModel.getLocationStationBeans().observe(this, stationLocationBeans -> {
+            adapter.setSearchResults(stationLocationBeans);
         });
     }
 
