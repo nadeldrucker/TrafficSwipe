@@ -22,7 +22,7 @@ import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Veh
 
 public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAdapter.ViewHolder> {
 
-    private List<DepartureItem> departureItems = new ArrayList<>();
+    private final List<DepartureItem> departureItems = new ArrayList<>();
     private Set<ViewHolder> viewHolders = new HashSet<>();
     private Context context;
 
@@ -103,8 +103,9 @@ public class RecyclerResultAdapter extends RecyclerView.Adapter<RecyclerResultAd
         viewHolders.remove(holder);
     }
 
-    public void setDepartureItems(List<DepartureItem> departureItems) {
-        this.departureItems = departureItems;
+    public void updateDepartureItems(List<DepartureItem> departureItems) {
+        this.departureItems.clear();
+        this.departureItems.addAll(departureItems);
         notifyDataSetChanged();
     }
 

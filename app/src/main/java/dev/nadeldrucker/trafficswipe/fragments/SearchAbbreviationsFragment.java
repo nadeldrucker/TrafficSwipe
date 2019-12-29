@@ -64,13 +64,17 @@ public class SearchAbbreviationsFragment extends Fragment {
             }
         });
 
-        searchViewModel.getAbbreviations().observe(activity, abbreviations -> adapter.setAbbreviationList(Arrays.asList(abbreviations)));
+        searchViewModel.getAbbreviations().observe(activity, abbreviations -> adapter.updateAbbreviationList(Arrays.asList(abbreviations)));
 
         final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
         adapter.setItemButtonClickedListener(abbreviation -> {
             departuresViewModel.getUserStationName().setValue(abbreviation.getAbbreviation());
             etSearch.clearFocus();
             Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_resultFragment);
+        });
+
+        view.findViewById(R.id.btnLocationSearch).setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_searchAbbreviationsFragment_to_searchLocationFragment);
         });
     }
 }

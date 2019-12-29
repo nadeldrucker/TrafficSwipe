@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.room.*;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 
+import java.util.List;
+
 @Dao
 public interface AbbreviationDAO {
 
@@ -17,9 +19,6 @@ public interface AbbreviationDAO {
     int count();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(Abbreviation... abbreviations);
-
-    @Delete
-    void deleteAll(Abbreviation... abbreviation);
+    void insertAll(List<Abbreviation> abbreviations);
 
 }
