@@ -19,10 +19,11 @@
         android:layout_toStartOf="@id/tvDistance"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="0.4km"
-        android:textSize="20sp"
+        android:text="1200,0m"
+        android:gravity="end"
+        android:textSize="15sp"
         android:id="@+id/tvDistance"
         tools:ignore="HardcodedText"
         android:paddingRight="16dp"
