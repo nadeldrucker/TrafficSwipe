@@ -39,6 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             });
                         }
                     })
+                    .fallbackToDestructiveMigrationFrom(1)
                     .build();
         }
 
@@ -51,6 +52,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private void onInstanceCreated(Context context) {
         if (abbreviationDAO().count() == 0) {
             populateAbbreviations(context);
+        }
+        if (stationDAO().count() == 0) {
             populateStations(context);
         }
     }

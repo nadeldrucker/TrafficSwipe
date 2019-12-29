@@ -1,6 +1,5 @@
 package dev.nadeldrucker.trafficswipe.data.db.daos;
 
-import android.location.Location;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -23,7 +22,10 @@ public interface StationDAO {
      * @return stations sorted ascending
      */
     @Query("SELECT * FROM station ORDER BY ((latitude - (:lat)) * (latitude - (:lat)) + (longitude - (:lon)) * (longitude - (:lon))) ASC LIMIT 0, (:limit)")
-    LiveData<Station[]> queryNearest(double lat, double lon, int limit);
+    LiveData<List<Station>> queryNearest(double lat, double lon, int limit);
+
+    @Query("SELECT COUNT(*) FROM station")
+    int count();
 
     @Insert
     void insertAll(List<Station> stations);

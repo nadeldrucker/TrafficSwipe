@@ -28,8 +28,8 @@ public class LocationLiveData extends LiveData<Location> {
     protected void onActive() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(1000);
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(2000);
 
         locationCallback = new LocationCallback() {
             @Override

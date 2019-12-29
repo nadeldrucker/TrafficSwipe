@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import androidx.lifecycle.LiveData;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.Location;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.Route;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
@@ -18,6 +19,14 @@ public interface Capabilities {
      * @return future throwing exception if an error occurs
      */
     LiveData<DataWrapper<List<Station>>> getStops(String name);
+
+    /**
+     * Queries nearby stations based on location
+     *
+     * @param location location to use as query
+     * @return live data object containing the wrapped result
+     */
+    LiveData<DataWrapper<List<Station>>> getStops(Location location);
 
     /**
      * @param start       start station

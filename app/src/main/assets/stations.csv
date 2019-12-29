@@ -108,7 +108,7 @@ de:14612:124;Dresden Altreick;Altreick;Dresden;0100;;;13,795121;51,013037
 de:14612:125;Dresden Mügelner Straße;Mügelner Straße;Dresden;0100;;;13,806409;51,010886
 de:14612:126;Dresden Breitscheidstraße;Breitscheidstraße;Dresden;0100;;;13,811494;51,013747
 de:14612:127;Dresden Trattendorfer Straße;Trattendorfer Straße;Dresden;0100;;;13,800808;51,010127
-de:14612:128;Dresden Betriebshof Reick;";hof Reick";Dresden;0100;;;13,804663;51,010688
+de:14612:128;Dresden Betriebshof Reick;Betriebshof Reick;Dresden;0100;;;13,804663;51,010688
 de:14612:131;Dresden Reichenbachstraße;Reichenbachstraße;Dresden;0103;;;13,731387;51,035126
 de:14612:132;Dresden Nürnberger Platz;Nürnberger Platz;Dresden;0100;;;13,726943;51,031775
 de:14612:133;Dresden Südvorstadt;Südvorstadt;Dresden;0100;;;13,722080;51,034041
@@ -150,7 +150,7 @@ de:14612:178;Dresden Chamissostraße;Chamissostraße;Dresden;0100;;;13,687874;51
 de:14612:179;Dresden Hebbelplatz;Hebbelplatz;Dresden;0100;;;13,682743;51,051335
 de:14612:181;DD Krankenhaus Friedrichstadt;Krankenhaus Friedrichstadt;Dresden;0100;;;13,718203;51,05988
 de:14612:182;Dresden Vorwerkstraße;Vorwerkstraße;Dresden;0100;;;13,714578;51,061012
-de:14612:183;DD Betriebshof Waltherstraße;";hof Waltherstraße";Dresden;0100;;;13,711900;51,060341
+de:14612:183;DD Betriebshof Waltherstraße;Betriebshof Waltherstraße;Dresden;0100;;;13,711900;51,060341
 de:14612:184;Dresden Manitiusstraße;Manitiusstraße;Dresden;0100;;;13,714685;51,05657
 de:14612:185;Dresden Waltherstraße;Waltherstraße;Dresden;0100;;;13,710064;51,058121
 de:14612:186;Dresden Hamburger Straße;Hamburger Straße;Dresden;0100;;;13,701603;51,059233
@@ -191,7 +191,7 @@ de:14612:246;Dresden Friedensstraße;Friedensstraße;Dresden;0100;;;13,740880;51
 de:14612:247;Dresden Bischofsplatz;Bischofsplatz;Dresden;0100;;;13,746874;51,07196
 de:14612:248;Dresden Zeithainer Straße;Zeithainer Straße;Dresden;0100;;;13,730389;51,082157
 de:14612:249;Dresden Trachenberger Platz;Trachenberger Platz;Dresden;0100;;;13,727798;51,084631
-de:14612:250;Dresden Btf Trachenberge;";hof Trachenberge";Dresden;0100;;;13,729499;51,087375
+de:14612:250;Dresden Btf Trachenberge;Btf Trachenberge;Dresden;0100;;;13,729499;51,087375
 de:14612:251;Dresden Hubertusplatz;Hubertusplatz;Dresden;0100;;;13,723317;51,089633
 de:14612:252;Dresden Dorothea-Erxleben-Str;Dorothea-Erxleben-Straße;Dresden;0100;;;13,720627;51,092926
 de:14612:253;Dresden Wilder Mann;Wilder Mann;Dresden;0106;;;13,719248;51,095769
@@ -252,7 +252,7 @@ de:14612:334;Dresden Amalie-Dietrich-Platz;Amalie-Dietrich-Platz;Dresden;0100;;;
 de:14612:335;Dresden Merianplatz;Merianplatz;Dresden;0100;;;13,669996;51,044677
 de:14612:336;Dresden Kirschenstraße;Kirschenstraße;Dresden;0100;;;13,663548;51,046216
 de:14612:337;Dresden Schlehenstraße;Schlehenstraße;Dresden;0100;;;13,658921;51,048826
-de:14612:338;Dresden Betriebshof Gorbitz;";hof Gorbitz";Dresden;0100;;;13,652989;51,046851
+de:14612:338;Dresden Betriebshof Gorbitz;Betriebshof Gorbitz;Dresden;0100;;;13,652989;51,046851
 de:14612:340;Dresden Altnossener Straße;Altnossener Straße;Dresden;0104;;;13,645459;51,040009
 de:14612:341;Gompitz Rudolf-Walther-Straße;Rudolf-Walther-Straße;Gompitz;0104;;;13,637862;51,038893
 de:14612:342;Gompitz Gompitzer Höhe;Gompitzer Höhe;Gompitz;0104;;;13,632504;51,040182
@@ -570,7 +570,7 @@ de:14612:818;Dresden Alter Postweg;Alter Postweg;Dresden;0100;;;13,789116;50,992
 de:14612:819;Dresden Schneebergstraße;Schneebergstraße;Dresden;0100;;;13,788379;51,035957
 de:14612:820;Dresden Mansfelder Straße;Mansfelder Straße;Dresden;0100;;;13,779627;51,040873
 de:14612:821;Dresden Tiergartenstraße;Tiergartenstraße;Dresden;0100;;;13,771149;51,029828
-de:14612:822;Dresden Betriebshof Gruna;";hof Gruna";Dresden;0100;;;13,777220;51,027902
+de:14612:822;Dresden Betriebshof Gruna;Betriebshof Gruna;Dresden;0100;;;13,777220;51,027902
 de:14612:823;Dresden Grunaer Weg;Grunaer Weg;Dresden;0100;;;13,780372;51,03091
 de:14612:824;Dresden Spenerstraße;Spenerstraße;Dresden;0100;;;13,782231;51,043683
 de:14612:825;Dresden Wittenberger Straße;Wittenberger Straße;Dresden;0100;;;13,791495;51,046886
@@ -3600,7 +3600,7 @@ de:14625:6942;Hoske;Hoske;Hoske;0326;;;14,264574;51,364769
 de:14625:6943;Rachlau b HY Gasthaus;Gasthaus;Rachlau (Kr BZ);0326;0829;;14,279689;51,354515
 de:14625:6944;Rachlau b HY Am Spielplatz;Am Spielplatz;Rachlau (Kr BZ);0326;0829;;14,281430;51,355173
 de:14625:6945;Sollschwitz (b Hoyerswerda);Sollschwitz (b Hoyerswerda);Sollschwitz (b Kamenz);0320;;;14,215531;51,348689
-;Rachlau b HY Brücke;Brücke;Rachlau (Kr BZ);0829;0326;;14,277738;51,357151
+de:14625:6946;Rachlau b HY Brücke;Brücke;Rachlau (Kr BZ);0829;0326;;14,277738;51,357151
 de:14625:6947;Saalau;Saalau;Saalau;0320;;;14,233463;51,361717
 de:14625:6948;Kotten Dorf;Kotten Dorf;Kotten (Sachs);0320;;;14,246508;51,350706
 de:14625:6949;Kotten ehem Schule;ehem Schule;Kotten (Sachs);0320;;;14,244175;51,354068

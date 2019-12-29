@@ -5,11 +5,22 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/nearest_stations"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tvNearestStations"
+        android:padding="16dp"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:elevation="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintTop_toBottomOf="@id/tvNearestStations"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/recyclerLocationResult"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

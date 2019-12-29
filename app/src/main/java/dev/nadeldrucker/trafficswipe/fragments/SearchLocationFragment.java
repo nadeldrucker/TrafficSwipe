@@ -15,15 +15,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
+import dev.nadeldrucker.trafficswipe.ui.RecyclerSearchAdapter;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SearchLocationFragment extends Fragment {
 
     private static final int PERMISSION_GRANTED_CALLBACK = 42;
+    private RecyclerSearchAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,6 +42,13 @@ public class SearchLocationFragment extends Fragment {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         );
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerLocationResult);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new RecyclerSearchAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -46,6 +59,11 @@ public class SearchLocationFragment extends Fragment {
         final LocationViewModel locationViewModel = new ViewModelProvider(activity).get(LocationViewModel.class);
         locationViewModel.getLocation().observe(this, location -> {
             Log.d("LOCATION", location.toString());
+        });
+        locationViewModel.getStations().observe(this, result -> {
+            adapter.setAbbreviationList(result.stream()
+                    .map(station -> new Abbreviation(station.id, station.shortName))
+                    .collect(Collectors.toList()));
         });
     }
 

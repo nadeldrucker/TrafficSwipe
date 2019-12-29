@@ -19,7 +19,7 @@ public class StationCSVReader extends CSVReader<Station> {
         double wgsX = parseDoubleFromString(elements[7]);
         double wgsY = parseDoubleFromString(elements[8]);
 
-        return new Station(id, nameLong, nameShort, city, wgsX, wgsY);
+        return new Station(id, nameLong, nameShort, city, wgsY, wgsX);
     }
 
     private double parseDoubleFromString(String s) {
