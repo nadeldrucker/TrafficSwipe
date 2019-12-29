@@ -41,6 +41,10 @@ public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<Recycler
             this.distance = distance;
             this.abbreviation = abbreviation;
         }
+
+        public double getDistance() {
+            return distance;
+        }
     }
 
     public void setSearchResults(List<StationLocationBean> searchResults) {

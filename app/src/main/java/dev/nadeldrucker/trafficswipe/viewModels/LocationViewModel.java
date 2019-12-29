@@ -13,6 +13,7 @@ import dev.nadeldrucker.trafficswipe.ui.RecyclerLocationSearchAdapter;
 import dev.nadeldrucker.trafficswipe.viewModels.data.LocationLiveData;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class LocationViewModel extends ViewModel {
                                     Objects.requireNonNull(location.getValue()).distanceTo(station.getLocation()),
                                     // TODO get abbreviation from db :)
                                     "XXX"))
+                    .sorted(Comparator.comparingDouble(RecyclerLocationSearchAdapter.StationLocationBean::getDistance))
                     .collect(Collectors.toList())));
 
             return liveData;
