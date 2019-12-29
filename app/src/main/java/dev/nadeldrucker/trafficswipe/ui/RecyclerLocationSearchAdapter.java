@@ -13,10 +13,12 @@ import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<RecyclerLocationSearchAdapter.ViewHolder>{
 
     private List<StationLocationBean> searchResults = new ArrayList<>();
+    private Consumer<StationLocationBean> clickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvName;
@@ -56,10 +58,16 @@ public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<Recycler
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StationLocationBean s = searchResults.get(position);
+        final StationLocationBean s = searchResults.get(position);
 
         holder.tvName.setText(s.station.shortName);
         holder.tvDistance.setText(Constants.formatterMeters.format(s.distance) + "m");
+
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.accept(s);
+            }
+        });
     }
 
     @Override
@@ -67,5 +75,7 @@ public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<Recycler
         return searchResults.size();
     }
 
-
+    public void setClickListener(Consumer<StationLocationBean> clickListener) {
+        this.clickListener = clickListener;
+    }
 }

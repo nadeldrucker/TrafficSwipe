@@ -22,6 +22,7 @@ import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerLocationSearchAdapter;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerSearchAdapter;
+import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
 import java.util.Objects;
@@ -49,6 +50,12 @@ public class SearchLocationFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new RecyclerLocationSearchAdapter();
+        adapter.setClickListener(bean -> {
+            final DeparturesViewModel departuresViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class);
+            departuresViewModel.getUserStationName().setValue(bean.station.id);
+            Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_resultFragment);
+        });
+
         recyclerView.setAdapter(adapter);
     }
 
