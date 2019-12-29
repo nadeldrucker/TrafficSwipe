@@ -1,6 +1,7 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import dev.nadeldrucker.trafficswipe.animation.TouchPathView;
@@ -20,11 +21,11 @@ public class CharacterDrawView extends TouchPathView {
 
 
     public CharacterDrawView(Context context) {
-        super(context);
+        super(context, Color.CYAN);
     }
 
     public CharacterDrawView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, Color.CYAN);
     }
 
     @Override

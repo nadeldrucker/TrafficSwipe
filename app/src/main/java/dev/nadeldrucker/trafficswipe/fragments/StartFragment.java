@@ -12,9 +12,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.widget.Toast;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -81,13 +82,33 @@ public class StartFragment extends Fragment {
         previewString(etSearch.getText().toString(), view.findViewById(R.id.tvChar1), view.findViewById(R.id.tvChar2), view.findViewById(R.id.tvChar3));
 
         CharacterDrawView drawView = view.findViewById(R.id.drawView);
+        drawView.setColor(getNextColor(etSearch.getText().toString().trim().length()));
         drawView.setListener(l -> {
             Log.d(TAG, "onViewCreated: accepted values");
             char inferredChar = CharacterRecognizer.getInstance().infer(l);
             drawView.clearTouchPaths();
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> etSearch.getText().append(inferredChar));
+            Objects.requireNonNull(getActivity()).runOnUiThread(() -> drawView.setColor(getNextColor(etSearch.getText().toString().trim().length())));
         });
     }
+
+    /**
+     * Get the color for the next Char
+     *
+     * @param position number of already drawn chars
+     * @return Color as integer for the next char
+     */
+    private @ColorInt
+    int getNextColor(int position) {
+        int[] colorSet = {
+                ResourcesCompat.getColor(getResources(), R.color.colorAccent, null),
+                ResourcesCompat.getColor(getResources(), R.color.colorAccent2, null),
+                ResourcesCompat.getColor(getResources(), R.color.colorAccent3, null),
+                ResourcesCompat.getColor(getResources(), R.color.colorAccent, null)
+        };
+        return colorSet[position];
+    }
+
 
     /**
      * Sets the soft keyboard state.

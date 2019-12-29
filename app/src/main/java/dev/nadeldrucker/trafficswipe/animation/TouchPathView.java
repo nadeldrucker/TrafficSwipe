@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import androidx.annotation.ColorInt;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 import dev.nadeldrucker.trafficswipe.animation.renderables.TouchPath;
 import dev.nadeldrucker.trafficswipe.data.gestures.TouchCoordinate;
@@ -16,12 +17,21 @@ public class TouchPathView extends RenderableView {
 
     private final List<TouchPath> touchPaths = new ArrayList<>();
 
-    public TouchPathView(Context context) {
+    @ColorInt
+    private int color;
+
+    public TouchPathView(Context context, int color) {
         super(context);
+        this.color = color;
     }
 
-    public TouchPathView(Context context, AttributeSet attrs) {
+    public TouchPathView(Context context, AttributeSet attrs, int color) {
         super(context, attrs);
+        this.color = color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     @Override
@@ -39,7 +49,7 @@ public class TouchPathView extends RenderableView {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startTouchPath(TouchCoordinate.fromMotionEvent(event));
+                startTouchPath(TouchCoordinate.fromMotionEvent(event), color);
                 return true;
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
@@ -50,12 +60,12 @@ public class TouchPathView extends RenderableView {
         return false;
     }
 
-    private void startTouchPath(TouchCoordinate coordinate) {
-        touchPaths.add(new TouchPath());
+    private void startTouchPath(TouchCoordinate coordinate, int color) {
+        touchPaths.add(new TouchPath(color));
         appendTouchPath(coordinate);
     }
 
-    private void appendTouchPath (TouchCoordinate coordinate) {
+    private void appendTouchPath(TouchCoordinate coordinate) {
         touchPaths.get(touchPaths.size() - 1).getTouchPath().add(coordinate);
     }
 
@@ -63,7 +73,7 @@ public class TouchPathView extends RenderableView {
         return touchPaths.stream().map(TouchPath::getTouchPath).collect(Collectors.toList());
     }
 
-    public void clearTouchPaths(){
+    public void clearTouchPaths() {
         touchPaths.clear();
     }
 }
