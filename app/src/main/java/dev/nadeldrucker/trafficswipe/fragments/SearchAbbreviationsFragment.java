@@ -64,7 +64,7 @@ public class SearchAbbreviationsFragment extends Fragment {
             }
         });
 
-        searchViewModel.getAbbreviations().observe(activity, abbreviations -> adapter.setAbbreviationList(Arrays.asList(abbreviations)));
+        searchViewModel.getAbbreviations().observe(activity, abbreviations -> adapter.updateAbbreviationList(Arrays.asList(abbreviations)));
 
         final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
         adapter.setItemButtonClickedListener(abbreviation -> {

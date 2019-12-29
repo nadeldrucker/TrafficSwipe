@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<RecyclerLocationSearchAdapter.ViewHolder>{
 
-    private List<StationLocationBean> searchResults = new ArrayList<>();
+    private final List<StationLocationBean> searchResults = new ArrayList<>();
     private Consumer<StationLocationBean> clickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,8 +47,9 @@ public class RecyclerLocationSearchAdapter extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void setSearchResults(List<StationLocationBean> searchResults) {
-        this.searchResults = searchResults;
+    public void updateSearchResults(List<StationLocationBean> searchResults) {
+        this.searchResults.clear();
+        this.searchResults.addAll(searchResults);
         notifyDataSetChanged();
     }
 

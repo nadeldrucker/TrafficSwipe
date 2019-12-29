@@ -3,7 +3,6 @@ package dev.nadeldrucker.trafficswipe.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.data.db.entities.Abbreviation;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerLocationSearchAdapter;
-import dev.nadeldrucker.trafficswipe.ui.RecyclerSearchAdapter;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class SearchLocationFragment extends Fragment {
 
@@ -66,7 +62,7 @@ public class SearchLocationFragment extends Fragment {
         final FragmentActivity activity = Objects.requireNonNull(getActivity());
         final LocationViewModel locationViewModel = new ViewModelProvider(activity).get(LocationViewModel.class);
         locationViewModel.getLocationStationBeans().observe(this, stationLocationBeans -> {
-            adapter.setSearchResults(stationLocationBeans);
+            adapter.updateSearchResults(stationLocationBeans);
         });
     }
 

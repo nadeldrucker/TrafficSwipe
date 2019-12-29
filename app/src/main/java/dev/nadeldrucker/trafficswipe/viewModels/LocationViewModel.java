@@ -32,7 +32,6 @@ public class LocationViewModel extends ViewModel {
 
         locationStationBeans = Transformations.switchMap(stations, s -> {
             final MutableLiveData<List<RecyclerLocationSearchAdapter.StationLocationBean>> liveData = new MutableLiveData<>();
-            liveData.setValue(Collections.emptyList());
 
             AsyncTask.execute(() -> liveData.postValue(s.stream()
                     .map(station ->

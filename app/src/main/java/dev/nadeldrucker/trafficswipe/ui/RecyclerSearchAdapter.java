@@ -30,7 +30,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         }
     }
 
-    public void setAbbreviationList(List<Abbreviation> abbreviationList) {
+    public void updateAbbreviationList(List<Abbreviation> abbreviationList) {
         this.abbreviationList = abbreviationList;
         notifyDataSetChanged();
     }

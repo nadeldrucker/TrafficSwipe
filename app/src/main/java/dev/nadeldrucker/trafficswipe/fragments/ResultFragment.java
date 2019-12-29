@@ -102,7 +102,7 @@ public class ResultFragment extends Fragment {
                 },
                 error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
                 () -> {
-                    recyclerAdapter.setDepartureItems(Collections.emptyList());
+                    recyclerAdapter.updateDepartureItems(Collections.emptyList());
                     progressBar.setVisibility(View.VISIBLE);
                 })
         );
@@ -122,7 +122,7 @@ public class ResultFragment extends Fragment {
      * @param vehicleDepartureTimeMap departure table map
      */
     private void onDeparturesChanged(Map<Vehicle, DepartureTime> vehicleDepartureTimeMap) {
-        recyclerAdapter.setDepartureItems(vehicleDepartureTimeMap.entrySet().stream()
+        recyclerAdapter.updateDepartureItems(vehicleDepartureTimeMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .map(entry -> new RecyclerResultAdapter.DepartureItem(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
