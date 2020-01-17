@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.mapbox.mapboxsdk.Mapbox;
 
 public final class App extends Application {
 
@@ -30,7 +31,8 @@ public final class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AndroidThreeTen.init(this);
+        AndroidThreeTen.init(getApplicationContext());
+        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_token));
         instance = this;
     }
 }

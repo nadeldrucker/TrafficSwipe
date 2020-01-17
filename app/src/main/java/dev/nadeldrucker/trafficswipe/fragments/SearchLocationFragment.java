@@ -3,6 +3,7 @@ package dev.nadeldrucker.trafficswipe.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,36 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
-import dev.nadeldrucker.trafficswipe.ui.RecyclerLocationSearchAdapter;
-import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT_VIEWPORT;
 
 public class SearchLocationFragment extends Fragment {
 
     private static final int PERMISSION_GRANTED_CALLBACK = 42;
-    private RecyclerLocationSearchAdapter adapter;
+    public final String TAG = this.getClass().getSimpleName();
+
+    private MapboxMap mapboxMap;
+    private MapView mapView;
+    private SymbolManager symbolManager;
+    private List<Symbol> currentlyAddedSymbols = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,33 +53,59 @@ public class SearchLocationFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        requestLocationPermissions(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        );
+        super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerLocationResult);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(map -> {
+            mapboxMap = map;
 
-        adapter = new RecyclerLocationSearchAdapter();
-        adapter.setClickListener(bean -> {
-            final DeparturesViewModel departuresViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class);
-            departuresViewModel.getUserStationName().setValue(bean.station.id);
-            Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_resultFragment);
+            map.setStyle(Style.DARK, style -> {
+                Log.d(TAG, "onViewCreated: Map style set!");
+
+                symbolManager = new SymbolManager(mapView, map, style);
+                symbolManager.setIconAllowOverlap(true);
+                symbolManager.setIconIgnorePlacement(true);
+                symbolManager.setIconTranslate(new Float[]{-4f, 5f});
+                symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
+
+                requestLocationPermissions(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                );
+            });
         });
-
-        recyclerView.setAdapter(adapter);
     }
+
 
     /**
      * Init method called when permissions have been granted.
      */
-    private void initModel() {
+    private void onAllPermissionsGranted() {
+        // add user location to map
+        mapboxMap.getStyle(style -> {
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(Objects.requireNonNull(getContext()), style).build());
+            locationComponent.setLocationComponentEnabled(true);
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+        });
+
+
         final FragmentActivity activity = Objects.requireNonNull(getActivity());
         final LocationViewModel locationViewModel = new ViewModelProvider(activity).get(LocationViewModel.class);
+
         locationViewModel.getLocationStationBeans().observe(getViewLifecycleOwner(), stationLocationBeans -> {
-            adapter.updateSearchResults(stationLocationBeans);
+            symbolManager.delete(currentlyAddedSymbols);
+            currentlyAddedSymbols.clear();
+
+            stationLocationBeans.forEach(stationLocationBean -> {
+                currentlyAddedSymbols.add(symbolManager.create(new SymbolOptions()
+                        .withLatLng(new LatLng(stationLocationBean.station.latitude, stationLocationBean.station.longitude))
+                        .withIconImage("marker-15")
+                        .withIconSize(2.0f)
+                ));
+            });
         });
     }
 
@@ -82,7 +125,8 @@ public class SearchLocationFragment extends Fragment {
         if (!allPermissionsGranted) {
             requestPermissions(permissions, PERMISSION_GRANTED_CALLBACK);
         } else {
-            initModel();
+            // all permissions have been granted
+            onAllPermissionsGranted();
         }
     }
 
@@ -93,7 +137,7 @@ public class SearchLocationFragment extends Fragment {
                 Toast.makeText(getContext(), R.string.location_permission_denied, Toast.LENGTH_LONG).show();
                 Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
             } else {
-                initModel();
+                onAllPermissionsGranted();
             }
         }
     }

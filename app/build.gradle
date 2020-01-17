@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.navigation:navigation-fragment:2.1.0"
     implementation "androidx.navigation:navigation-ui:2.1.0"
-    implementation "androidx.fragment:fragment:1.2.0-rc04"
+    implementation "androidx.fragment:fragment:1.2.0-rc05"
     implementation 'com.google.android.material:material:1.2.0-alpha03'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -56,6 +56,8 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite:1.12.0'
     implementation "androidx.room:room-runtime:2.2.3"
     implementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:0.7.0'
     annotationProcessor "androidx.room:room-compiler:2.2.3"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -63,7 +65,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
-    debugImplementation 'androidx.fragment:fragment-testing:1.2.0-rc04'
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.0-rc05'
     androidTestImplementation 'org.mockito:mockito-android:2.19.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
@@ -77,4 +79,5 @@ dependencies {
     testImplementation ('org.threeten:threetenbp:1.3.2'){
         exclude group:'com.jakewharton.threetenabp', module:'threetenabp'
     }
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }

@@ -14,7 +14,7 @@
         android:text="Nürnberger PlatzNürnberger PlatzNürnberger Platz"
         tools:ignore="HardcodedText"
         android:layout_alignParentStart="true"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:id="@+id/tvName"
         android:layout_toStartOf="@id/tvDistance"/>
 
