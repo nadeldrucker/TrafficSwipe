@@ -29,12 +29,12 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT_VIEWPORT;
+import java.util.stream.Collectors;
 
 public class SearchLocationFragment extends Fragment {
 
@@ -46,6 +46,9 @@ public class SearchLocationFragment extends Fragment {
     private SymbolManager symbolManager;
     private List<Symbol> currentlyAddedSymbols = new ArrayList<>();
 
+    private boolean isInitPermission = false;
+    private boolean isInitMap = false;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search_location, container, false);
@@ -55,33 +58,37 @@ public class SearchLocationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        requestLocationPermissions(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        );
+
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(map -> {
-            mapboxMap = map;
-
             map.setStyle(Style.DARK, style -> {
                 Log.d(TAG, "onViewCreated: Map style set!");
 
                 symbolManager = new SymbolManager(mapView, map, style);
                 symbolManager.setIconAllowOverlap(true);
                 symbolManager.setIconIgnorePlacement(true);
-                symbolManager.setIconTranslate(new Float[]{-4f, 5f});
-                symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
 
-                requestLocationPermissions(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                );
+                isInitMap = true;
+                mapboxMap = map;
+                checkInitCompleted();
             });
         });
     }
 
+    private void checkInitCompleted() {
+        if (isInitPermission && isInitMap) onInit();
+    }
+
 
     /**
-     * Init method called when permissions have been granted.
+     * Init method called when everything was set up.
      */
-    private void onAllPermissionsGranted() {
+    private void onInit() {
         // add user location to map
         mapboxMap.getStyle(style -> {
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
@@ -97,15 +104,11 @@ public class SearchLocationFragment extends Fragment {
 
         locationViewModel.getLocationStationBeans().observe(getViewLifecycleOwner(), stationLocationBeans -> {
             symbolManager.delete(currentlyAddedSymbols);
-            currentlyAddedSymbols.clear();
-
-            stationLocationBeans.forEach(stationLocationBean -> {
-                currentlyAddedSymbols.add(symbolManager.create(new SymbolOptions()
-                        .withLatLng(new LatLng(stationLocationBean.station.latitude, stationLocationBean.station.longitude))
-                        .withIconImage("marker-15")
-                        .withIconSize(2.0f)
-                ));
-            });
+            currentlyAddedSymbols = symbolManager.create(stationLocationBeans.stream()
+                    .map(bean -> new SymbolOptions()
+                            .withLatLng(new LatLng(bean.station.latitude, bean.station.longitude))
+                            .withIconImage("marker-15")
+                            .withIconSize(2.5f)).collect(Collectors.toList()));
         });
     }
 
@@ -126,7 +129,8 @@ public class SearchLocationFragment extends Fragment {
             requestPermissions(permissions, PERMISSION_GRANTED_CALLBACK);
         } else {
             // all permissions have been granted
-            onAllPermissionsGranted();
+            isInitPermission = true;
+            checkInitCompleted();
         }
     }
 
@@ -137,8 +141,51 @@ public class SearchLocationFragment extends Fragment {
                 Toast.makeText(getContext(), R.string.location_permission_denied, Toast.LENGTH_LONG).show();
                 Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
             } else {
-                onAllPermissionsGranted();
+                isInitPermission = true;
+                checkInitCompleted();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 }
