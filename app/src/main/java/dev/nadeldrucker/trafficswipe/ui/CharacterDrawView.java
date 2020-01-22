@@ -1,5 +1,6 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -28,6 +29,7 @@ public class CharacterDrawView extends TouchPathView {
         super(context, attrs, Color.CYAN);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);

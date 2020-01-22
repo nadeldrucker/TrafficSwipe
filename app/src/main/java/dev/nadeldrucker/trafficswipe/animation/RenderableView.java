@@ -5,9 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import androidx.annotation.ColorInt;
 import dev.nadeldrucker.trafficswipe.animation.renderables.Renderable;
 
 import java.util.List;
@@ -18,6 +21,9 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
     private Thread renderingThread;
     private SurfaceHolder holder;
     private boolean isInitialized = false;
+
+    @ColorInt
+    private int bgColor = Color.BLACK;
 
     public RenderableView(Context context) {
         super(context);
@@ -42,10 +48,16 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
         if (isInitialized) return;
         isInitialized = true;
 
-        setZOrderOnTop(true);
+        //setZOrderOnTop(true);
+
+        Drawable background = this.getBackground();
+        if (background instanceof ColorDrawable) {
+            bgColor = ((ColorDrawable) background).getColor();
+        }
+        this.setBackground(null);
 
         holder = getHolder();
-        holder.setFormat(PixelFormat.TRANSLUCENT);
+        holder.setFormat(PixelFormat.OPAQUE);
         holder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -98,7 +110,7 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
 
                 Canvas c = holder.lockCanvas();
                 if (c != null) {
-                    c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                    c.drawColor(bgColor, PorterDuff.Mode.SRC_OVER);
                     for (Renderable renderable : renderableList) {
                         renderable.render(c);
                     }
@@ -123,6 +135,10 @@ public abstract class RenderableView extends SurfaceView implements Runnable {
                 }
             }
         }
+    }
+
+    public void setBackgroundColor(@ColorInt int color){
+        bgColor = color;
     }
 
 }
