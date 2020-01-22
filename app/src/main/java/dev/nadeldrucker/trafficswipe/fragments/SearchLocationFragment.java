@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import com.google.gson.Gson;
 import com.mapbox.android.gestures.MoveGestureDetector;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -34,6 +33,7 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
+import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.MapViewModel;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,8 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT_VIEWPORT;
 
 public class SearchLocationFragment extends Fragment {
 
@@ -80,18 +78,29 @@ public class SearchLocationFragment extends Fragment {
 
         mapView.getMapAsync(mapboxMap -> {
             // add user location to map
-            mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> {
+            mapboxMap.setStyle(Style.DARK, style -> {
+                style.addImage("marker-icon", getResources().getDrawable(R.drawable.ic_place_black_24dp, null));
+
                 final SymbolManager symbolManager;
                 symbolManager = new SymbolManager(mapView, mapboxMap, style);
                 symbolManager.setIconAllowOverlap(true);
                 symbolManager.setIconIgnorePlacement(true);
                 symbolManager.setTextOptional(true);
 
+                symbolManager.addClickListener(symbol -> {
+                    final Station station = App.getGson().fromJson(symbol.getData(), Station.class);
+
+                    final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
+                    departuresViewModel.getUserStationName().setValue(station.id);
+                    Navigation.findNavController(mapView.getRootView()).navigate(R.id.action_searchLocationFragment_to_resultFragment);
+                });
+
                 final LocationComponent locationComponent = mapboxMap.getLocationComponent();
                 locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(Objects.requireNonNull(getContext()), style).build());
                 locationComponent.setLocationComponentEnabled(true);
                 locationComponent.setRenderMode(RenderMode.COMPASS);
-                locationComponent.setCameraMode(CameraMode.TRACKING, 0, ZOOM_THRESHOLD, null, null, null);
+                locationComponent.setCameraMode(CameraMode.TRACKING);
+                locationComponent.zoomWhileTracking(ZOOM_THRESHOLD + .1D);
 
                 final List<Symbol> currentlyAddedSymbols = new ArrayList<>();
 
@@ -114,10 +123,13 @@ public class SearchLocationFragment extends Fragment {
                                             .noneMatch(symbol -> symbol.getLatLng().equals(new LatLng(station.latitude, station.longitude))))
                                     .map(bean -> new SymbolOptions()
                                             .withLatLng(new LatLng(bean.latitude, bean.longitude))
-                                            .withIconImage("marker-15")
-                                            .withIconSize(2.5f)
+                                            .withIconImage("marker-icon")
+                                            .withIconSize(1.2f)
                                             .withTextSize(10f)
-                                            .withTextField(bean.shortName))
+                                            .withTextOffset(new Float[]{0f, -2f})
+                                            .withTextField(bean.shortName)
+                                            .withTextColor("white")
+                                            .withData(App.getGson().toJsonTree(bean)))
                                     .collect(Collectors.toList()))
                     );
                 };
