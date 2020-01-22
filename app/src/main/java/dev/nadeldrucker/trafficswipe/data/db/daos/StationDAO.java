@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
 
 import java.util.List;
@@ -13,6 +14,12 @@ public interface StationDAO {
 
     @Query("SELECT * FROM station WHERE shortName LIKE (:shortName)")
     LiveData<Station[]> queryForShortName(String shortName);
+
+    @Query("SELECT * FROM station WHERE (latitude BETWEEN :minLat AND :maxLat) AND (longitude BETWEEN :minLon AND :maxLon)")
+    LiveData<List<Station>> queryWithinBounds(double minLat, double maxLat, double minLon, double maxLon);
+
+    @Query("SELECT * FROM station")
+    LiveData<List<Station>> getAll();
 
     /**
      * Queries the nearest stations based on their WGS84 coordinates
