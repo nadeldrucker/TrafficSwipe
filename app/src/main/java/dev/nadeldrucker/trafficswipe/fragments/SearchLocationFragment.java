@@ -92,7 +92,7 @@ public class SearchLocationFragment extends Fragment {
 
                     final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
                     departuresViewModel.getUserStationName().setValue(station.id);
-                    Navigation.findNavController(mapView.getRootView()).navigate(R.id.action_searchLocationFragment_to_resultFragment);
+                    Navigation.findNavController(mapView).navigate(R.id.action_searchLocationFragment_to_resultFragment);
                 });
 
                 final LocationComponent locationComponent = mapboxMap.getLocationComponent();
@@ -100,7 +100,7 @@ public class SearchLocationFragment extends Fragment {
                 locationComponent.setLocationComponentEnabled(true);
                 locationComponent.setRenderMode(RenderMode.COMPASS);
                 locationComponent.setCameraMode(CameraMode.TRACKING);
-                locationComponent.zoomWhileTracking(ZOOM_THRESHOLD + .1D);
+                locationComponent.zoomWhileTracking(ZOOM_THRESHOLD + 1D);
 
                 final List<Symbol> currentlyAddedSymbols = new ArrayList<>();
 
