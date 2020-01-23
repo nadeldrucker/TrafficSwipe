@@ -91,9 +91,9 @@ public class MapFragment extends Fragment {
                 symbolManager.addClickListener(symbol -> {
                     final Station station = App.getGson().fromJson(symbol.getData(), Station.class);
 
-                    final DeparturesViewModel departuresViewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
-                    departuresViewModel.getUserStationName().setValue(station.id);
-                    Navigation.findNavController(mapView).navigate(R.id.action_searchLocationFragment_to_resultFragment);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ResultFragment.ARG_QUERY, station.id);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_searchLocationFragment_to_resultFragment, bundle);
                 });
 
                 final LocationComponent locationComponent = mapboxMap.getLocationComponent();

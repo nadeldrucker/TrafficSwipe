@@ -166,8 +166,9 @@ public class StartFragment extends Fragment {
      * @param query name to query
      */
     protected void showDepartureTable(String query){
-        new ViewModelProvider(Objects.requireNonNull(getActivity())).get(DeparturesViewModel.class).getUserStationName().postValue(query);
-        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.action_startFragment_to_resultFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString(ResultFragment.ARG_QUERY, query);
+        Navigation.findNavController(requireView()).navigate(R.id.action_startFragment_to_resultFragment, bundle);
     }
 
     /**
