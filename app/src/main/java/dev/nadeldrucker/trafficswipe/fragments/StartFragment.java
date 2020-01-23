@@ -3,6 +3,7 @@ package dev.nadeldrucker.trafficswipe.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -57,6 +58,8 @@ public class StartFragment extends Fragment {
     private FrameLayout bottomSheet;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
+
+    private boolean isInitiallyHiddenBottomSheet = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -121,12 +124,21 @@ public class StartFragment extends Fragment {
         );
     }
 
+    public static int dpToPx(int dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
     private void initBottomSheet() {
         final LocationViewModel locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
         final List<Station> stations = new ArrayList<>();
 
         locationViewModel.getStations().observe(getViewLifecycleOwner(), s -> {
+            if (!s.isEmpty() && isInitiallyHiddenBottomSheet) {
+                BottomSheetBehavior.from(bottomSheet).setPeekHeight(dpToPx(100), true);
+                isInitiallyHiddenBottomSheet = false;
+            }
+
             stations.clear();
             stations.addAll(s);
             if (viewPager.getAdapter() != null) viewPager.getAdapter().notifyDataSetChanged();
