@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SearchLocationFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     private static final int PERMISSION_GRANTED_CALLBACK = 42;
     public final String TAG = this.getClass().getSimpleName();

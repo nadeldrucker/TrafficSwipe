@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchLocationFragment"
-        android:name="dev.nadeldrucker.trafficswipe.fragments.SearchLocationFragment"
+        android:name="dev.nadeldrucker.trafficswipe.fragments.MapFragment"
         android:label="fragment_search_location"
         tools:layout="@layout/fragment_search_location" >
         <action
