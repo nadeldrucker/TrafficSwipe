@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
+import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
@@ -35,102 +38,37 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 public class ResultFragment extends Fragment {
 
-    private static final String TAG = ResultFragment.class.getName();
-
-    private RecyclerResultAdapter recyclerAdapter;
-    private TextView tvResult;
-    private TextView tvLastFetch;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private final Handler handler = new Handler();
-
-    private Runnable secondLoop;
-    private long lastUpdateTime;
-
-    private boolean isViewDestroyed = false;
+    public static final String ARG_QUERY = "query";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        secondLoop = () -> {
-            if (isViewDestroyed) return;
-
-            // calculate time passed since last update
-            if (lastUpdateTime != 0) {
-                long updateDelta = System.currentTimeMillis() - lastUpdateTime;
-                recyclerAdapter.getViewHolders().forEach(viewHolder -> viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS)));
-                updateLastFetchTime(updateDelta);
-            }
-
-            handler.postDelayed(this.secondLoop, 1000);
-        };
-        handler.post(secondLoop);
-
         return inflater.inflate(R.layout.fragment_result, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerResult);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapter = new RecyclerResultAdapter(getContext());
-        recyclerView.setAdapter(recyclerAdapter);
+        Objects.requireNonNull(getArguments());
+        final String query = getArguments().getString(ARG_QUERY);
 
-        tvResult = view.findViewById(R.id.tvResult);
+        final DeparturesFragment departuresFragment = new DeparturesFragment();
+        departuresFragment.setQuery(query);
 
-        tvLastFetch = view.findViewById(R.id.tvLastFetch);
+        TextView tvTime = view.findViewById(R.id.tvLastFetch);
+        departuresFragment.setOnTimeSinceLastRefreshChangedListener(delta -> {
+            tvTime.setText(UiUtil.formatDuration(Duration.of(delta, ChronoUnit.MILLIS)));
+        });
 
-        swipeRefreshLayout = view.findViewById(R.id.refreshLayoutResult);
+        TextView tvStation = view.findViewById(R.id.tvResult);
+        departuresFragment.setOnStationsChangedListener(stations -> {
+            if (!stations.isEmpty()) {
+                final Station station = stations.get(0);
+                tvStation.setText(station.getName());
+            }
+        });
 
-        FragmentActivity activity = Objects.requireNonNull(getActivity());
-
-        DeparturesViewModel viewModel = new ViewModelProvider(activity).get(DeparturesViewModel.class);
-
-        ProgressBar progressBar = view.findViewById(R.id.progressBar);
-        viewModel.getStations().observe(activity, listDataWrapper -> listDataWrapper.evaluate(
-                stations -> tvResult.setText(stations.get(0).getName()),
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
-                () -> {
-                    tvResult.setText("");
-                    progressBar.setVisibility(View.VISIBLE);
-                })
-        );
-
-        viewModel.getDepartures().observe(activity, mapDataWrapper -> mapDataWrapper.evaluate(
-                vehicleDepartureTimeMap -> {
-                    onDeparturesChanged(vehicleDepartureTimeMap);
-                    progressBar.setVisibility(View.GONE);
-                },
-                error -> Toast.makeText(activity, error.getErrorMessage(), Toast.LENGTH_LONG).show(),
-                () -> {
-                    recyclerAdapter.updateDepartureItems(Collections.emptyList());
-                    progressBar.setVisibility(View.VISIBLE);
-                })
-        );
-
-        swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);
-    }
-
-    @Override
-    public void onDestroyView() {
-        isViewDestroyed = true;
-        super.onDestroyView();
-    }
-
-    /**
-     * Called when departures have been queried, and are ready to be displayed
-     *
-     * @param vehicleDepartureTimeMap departure table map
-     */
-    private void onDeparturesChanged(Map<Vehicle, DepartureTime> vehicleDepartureTimeMap) {
-        recyclerAdapter.updateDepartureItems(vehicleDepartureTimeMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
-                .map(entry -> new RecyclerResultAdapter.DepartureItem(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList()));
-
-        swipeRefreshLayout.setRefreshing(false);
-
-        lastUpdateTime = System.currentTimeMillis();
-        updateLastFetchTime(0);
+        final FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.containerResult, departuresFragment);
+        transaction.commit();
     }
 
     /**
@@ -141,6 +79,7 @@ public class ResultFragment extends Fragment {
     private void updateLastFetchTime(long updateDeltaMillis) {
         Duration duration = Duration.of(updateDeltaMillis, ChronoUnit.MILLIS);
         String formatted = UiUtil.formatDuration(duration);
-        tvLastFetch.setText(String.format("Time since last refresh: %s", formatted));
+        //tvLastFetch.setText(String.format("Time since last refresh: %s", formatted));
     }
+
 }
