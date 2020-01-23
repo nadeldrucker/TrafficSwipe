@@ -1,7 +1,6 @@
 package dev.nadeldrucker.trafficswipe.fragments;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -10,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import com.google.gson.Gson;
 import com.mapbox.android.gestures.MoveGestureDetector;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
@@ -34,7 +31,6 @@ import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
-import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.MapViewModel;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +50,7 @@ public class MapFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search_location, container, false);
+        return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
     @Override
