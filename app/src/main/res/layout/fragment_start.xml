@@ -87,22 +87,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:background="@color/colorPrimaryDark"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="80dp"
+        app:behavior_peekHeight="100dp"
         android:id="@+id/bottomSheet"
         android:clickable="true"
         android:focusable="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="ELLO WORDL" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include layout="@layout/bottom_sheet_stations"/>
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/startFragment_helpFab"
@@ -110,13 +107,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_help"
+        app:backgroundTint="@color/colorAccent"
         app:fabCustomSize="60dp"
-        app:maxImageSize="35dp"
+        app:layout_anchor="@id/spacer_fabs"
         app:layout_anchorGravity="top|end"
-        app:tint="@color/colorText"
-        app:layout_anchor="@id/spacer_fabs"/>
+        app:maxImageSize="35dp"
+        app:tint="@color/colorText" />
 
-    <FrameLayout
+    <View
         android:layout_width="50dp"
         android:layout_height="75dp"
         android:id="@+id/spacer_fabs"
@@ -129,10 +127,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_search"
+        app:backgroundTint="@color/colorAccent"
         app:fabCustomSize="60dp"
         app:maxImageSize="35dp"
         app:layout_anchorGravity="top|end"
         app:tint="@color/colorText"
-        app:layout_anchor="@id/bottomSheet"/>
+        app:layout_anchor="@id/spacer_fabsBottom"/>
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:id="@+id/spacer_fabsBottom"
+        app:layout_anchor="@id/bottomSheet"
+        app:layout_anchorGravity="top|end"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
