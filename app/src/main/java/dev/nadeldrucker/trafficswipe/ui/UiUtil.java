@@ -1,5 +1,9 @@
 package dev.nadeldrucker.trafficswipe.ui;
 
+import android.content.pm.PackageManager;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import dev.nadeldrucker.trafficswipe.App;
 import org.threeten.bp.Duration;
 
 /**
@@ -23,4 +27,23 @@ public class UiUtil {
         return formatted;
     }
 
+    /**
+     * Requests all permissions if not already granted.
+     * @param permissions permissions to request
+     */
+    public static void requestLocationPermissions(Runnable onAlreadyGranted, Fragment fragment, int callbackId, String... permissions) {
+        boolean allPermissionsGranted = true;
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(App.getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+            }
+        }
+
+        if (!allPermissionsGranted) {
+            fragment.requestPermissions(permissions, callbackId);
+        } else {
+            onAlreadyGranted.run();
+        }
+    }
 }

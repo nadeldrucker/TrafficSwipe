@@ -33,6 +33,7 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import dev.nadeldrucker.trafficswipe.App;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
+import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import dev.nadeldrucker.trafficswipe.viewModels.MapViewModel;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,7 @@ public class MapFragment extends Fragment {
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
-        requestLocationPermissions(
+        UiUtil.requestLocationPermissions(this::onInit, this, PERMISSION_GRANTED_CALLBACK,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         );
@@ -166,26 +167,6 @@ public class MapFragment extends Fragment {
                 });
             });
         });
-    }
-
-    /**
-     * Requests all permissions if not already granted.
-     * @param permissions permissions to request
-     */
-    private void requestLocationPermissions(String... permissions) {
-        boolean allPermissionsGranted = true;
-
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(App.getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                allPermissionsGranted = false;
-            }
-        }
-
-        if (!allPermissionsGranted) {
-            requestPermissions(permissions, PERMISSION_GRANTED_CALLBACK);
-        } else {
-            onInit();
-        }
     }
 
     @Override
