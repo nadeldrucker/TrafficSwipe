@@ -23,19 +23,27 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import dev.nadeldrucker.trafficswipe.R;
+import dev.nadeldrucker.trafficswipe.data.db.entities.Station;
 import dev.nadeldrucker.trafficswipe.inference.CharacterRecognizer;
 import dev.nadeldrucker.trafficswipe.ui.CharacterDrawView;
 import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
+import dev.nadeldrucker.trafficswipe.viewModels.LocationViewModel;
 
 public class StartFragment extends Fragment {
 
@@ -47,6 +55,8 @@ public class StartFragment extends Fragment {
     };
 
     private FrameLayout bottomSheet;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,8 +108,11 @@ public class StartFragment extends Fragment {
             });
         });
 
-        // Setup bottom fab
+        // Setup bottom sheet
         bottomSheet = view.findViewById(R.id.bottomSheet);
+
+        tabLayout = view.findViewById(R.id.sheetTabLayout);
+        viewPager = view.findViewById(R.id.sheetViewPager);
 
         // Request permissions for location...
         UiUtil.requestLocationPermissions(this::initBottomSheet, this, REQUEST_PERMISSIONS_CODE,
@@ -109,7 +122,34 @@ public class StartFragment extends Fragment {
     }
 
     private void initBottomSheet() {
+        final LocationViewModel locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
+        final List<Station> stations = new ArrayList<>();
+
+        locationViewModel.getStations().observe(getViewLifecycleOwner(), s -> {
+            stations.clear();
+            stations.addAll(s);
+            if (viewPager.getAdapter() != null) viewPager.getAdapter().notifyDataSetChanged();
+        });
+
+        viewPager.setAdapter(new FragmentStateAdapter(requireActivity()) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                final DeparturesFragment fragment = new DeparturesFragment();
+                fragment.setQuery(stations.get(position).id);
+                return fragment;
+            }
+
+            @Override
+            public int getItemCount() {
+                return stations.size();
+            }
+        });
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            tab.setText(stations.get(position).shortName);
+        }).attach();
     }
 
     @Override

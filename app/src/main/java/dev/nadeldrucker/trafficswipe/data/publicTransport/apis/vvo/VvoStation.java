@@ -14,6 +14,7 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dev.nadeldrucker.jvvo.Models.Departure;
@@ -61,7 +62,11 @@ public class VvoStation extends Station {
                 HashMap<Vehicle, DepartureTime> vehicleDepartures = new HashMap<>();
 
                 // for every departure create an entry in the vehicle departure map
-                response.getResponse().get().getDepartures()
+                final List<Departure> departureList = response.getResponse().get().getDepartures();
+
+                if (departureList == null) return;
+
+                departureList
                         .forEach(departure -> {
                             if (departure != null) {
                                 ZonedDateTime scheduledDepartureTime = Instant.ofEpochMilli(departure.getScheduledTime().getTime()).atZone(VVO_ZONE);

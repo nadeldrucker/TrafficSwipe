@@ -54,7 +54,7 @@ public class DeparturesFragment extends Fragment {
             if (lastUpdateTime != 0) {
                 long updateDelta = System.currentTimeMillis() - lastUpdateTime;
                 recyclerAdapter.getViewHolders().forEach(viewHolder -> viewHolder.subtractTimeFromOriginalDeparture(Duration.of(updateDelta, ChronoUnit.MILLIS)));
-                timeSinceLastRefreshChangedListener.accept(updateDelta);
+                if (timeSinceLastRefreshChangedListener != null) timeSinceLastRefreshChangedListener.accept(updateDelta);
             }
 
             handler.postDelayed(this.secondLoop, 1000);
@@ -164,7 +164,7 @@ public class DeparturesFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(false);
 
         lastUpdateTime = System.currentTimeMillis();
-        timeSinceLastRefreshChangedListener.accept(0L);
+        if (timeSinceLastRefreshChangedListener != null) timeSinceLastRefreshChangedListener.accept(0L);
     }
 
 }

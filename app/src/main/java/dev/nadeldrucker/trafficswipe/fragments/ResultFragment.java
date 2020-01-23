@@ -71,15 +71,4 @@ public class ResultFragment extends Fragment {
         transaction.commit();
     }
 
-    /**
-     * Updated textView with last updated and formatted time
-     *
-     * @param updateDeltaMillis time since last update in millis
-     */
-    private void updateLastFetchTime(long updateDeltaMillis) {
-        Duration duration = Duration.of(updateDeltaMillis, ChronoUnit.MILLIS);
-        String formatted = UiUtil.formatDuration(duration);
-        //tvLastFetch.setText(String.format("Time since last refresh: %s", formatted));
-    }
-
 }
