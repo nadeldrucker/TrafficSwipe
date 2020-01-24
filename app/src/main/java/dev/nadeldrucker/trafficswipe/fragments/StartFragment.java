@@ -59,10 +59,11 @@ public class StartFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
 
-    private boolean isInitiallyHiddenBottomSheet = true;
+    private boolean isInitiallyHiddenBottomSheet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isInitiallyHiddenBottomSheet = true;
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 
