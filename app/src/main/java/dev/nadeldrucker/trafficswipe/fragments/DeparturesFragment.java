@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,12 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import dev.nadeldrucker.trafficswipe.R;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.DepartureTime;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.Station;
 import dev.nadeldrucker.trafficswipe.data.publicTransport.model.data.vehicle.Vehicle;
 import dev.nadeldrucker.trafficswipe.ui.RecyclerResultAdapter;
-import dev.nadeldrucker.trafficswipe.ui.UiUtil;
 import dev.nadeldrucker.trafficswipe.viewModels.DeparturesViewModel;
 import org.threeten.bp.Duration;
 import org.threeten.bp.temporal.ChronoUnit;
@@ -114,31 +113,40 @@ public class DeparturesFragment extends Fragment {
         if (query != null) viewModel.getUserStationName().setValue(query);
 
 
-        ProgressBar progressBar = view.findViewById(R.id.progressBar);
         viewModel.getStations().observe(getViewLifecycleOwner(), listDataWrapper -> listDataWrapper.evaluate(
                 stations -> {
                     if (stationsConsumer != null) stationsConsumer.accept(stations);
                 },
-                error -> Toast.makeText(requireActivity(), error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                error -> {
+                    handleError();
+                },
                 () -> {
                     if (onLoadingListener != null) onLoadingListener.run();
-                    progressBar.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(true);
                 })
         );
 
         viewModel.getDepartures().observe(getViewLifecycleOwner(), mapDataWrapper -> mapDataWrapper.evaluate(
                 vehicleDepartureTimeMap -> {
                     onDeparturesChanged(vehicleDepartureTimeMap);
-                    progressBar.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                 },
-                error -> Toast.makeText(requireActivity(), error.getErrorMessage(), Toast.LENGTH_LONG).show(),
+                error -> {
+                    handleError();
+                },
                 () -> {
                     recyclerAdapter.updateDepartureItems(Collections.emptyList());
-                    progressBar.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(true);
                 })
         );
 
         swipeRefreshLayout.setOnRefreshListener(viewModel::refresh);
+    }
+
+    private void handleError() {
+        Snackbar.make(requireView(), "Couldn't complete request!", BaseTransientBottomBar.LENGTH_SHORT).show();
+        if (stationsConsumer != null) stationsConsumer.accept(Collections.emptyList());
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -152,7 +160,7 @@ public class DeparturesFragment extends Fragment {
      *
      * @param vehicleDepartureTimeMap departure table map
      */
-    private void onDeparturesChanged(Map<Vehicle, DepartureTime> vehicleDepartureTimeMap) {
+    private synchronized void onDeparturesChanged(Map<Vehicle, DepartureTime> vehicleDepartureTimeMap) {
         if (departuresChangedListener != null) departuresChangedListener.accept(vehicleDepartureTimeMap);
         if (timeSinceLastRefreshChangedListener != null) timeSinceLastRefreshChangedListener.accept(0L);
 
