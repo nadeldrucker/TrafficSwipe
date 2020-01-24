@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -130,6 +132,13 @@ public class StartFragment extends Fragment {
     }
 
     private void initBottomSheet() {
+        PowerManager powerManager = (PowerManager) requireActivity().getSystemService(Context.POWER_SERVICE);
+        Objects.requireNonNull(powerManager);
+        if (powerManager.isPowerSaveMode()) {
+            Log.d(TAG, "initBottomSheet: Power save mode activated, not displaying nearest stations");
+            return;
+        }
+
         final LocationViewModel locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
         final List<Station> stations = new ArrayList<>();
