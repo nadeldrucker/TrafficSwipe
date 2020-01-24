@@ -69,8 +69,8 @@ public class StartFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        final FloatingActionButton fabHelp = view.findViewById(R.id.startFragment_helpFab);
-        fabHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet));
+        //final FloatingActionButton fabHelp = view.findViewById(R.id.startFragment_helpFab);
+        //fabHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_helpSheet));
 
         final FloatingActionButton fabSearch = view.findViewById(R.id.startFragment_searchFab);
         fabSearch.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_startFragment_to_searchAbbreviationsFragment));
